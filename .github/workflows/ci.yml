@@ -25,20 +25,22 @@ jobs:
 
       - name: Install workspace tooling (melos)
         run: |
+          dart pub global activate melos
+          echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
           dart pub get
-          dart run melos --version
+          melos --version
 
       - name: Bootstrap
-        run: dart run melos bootstrap
+        run: melos bootstrap
 
       - name: Format check
-        run: dart run melos run format
+        run: melos run format
 
       - name: Analyze
-        run: dart run melos run analyze
+        run: melos run analyze
 
       - name: Test
-        run: dart run melos run test
+        run: melos run test
 
       - name: Guardrails base ref
         run: |
@@ -50,7 +52,7 @@ jobs:
           fi
 
       - name: Guardrails (architecture)
-        run: dart run melos run guardrails
+        run: melos run guardrails
 
       - name: Architecture checks — domain purity
         run: |
@@ -70,7 +72,7 @@ jobs:
           set -e
           echo "Checking for circular dependencies in all packages..."
           # Get all package paths via melos (no user input, only local melos data)
-          PACKAGES=$(dart run melos list --parsable 2>/dev/null | tr '\n' ' ')
+          PACKAGES=$(melos list --parsable 2>/dev/null | tr '\n' ' ')
           for pkg in $PACKAGES; do
             if [ -d "$pkg" ]; then
               pkg_name=$(basename "$pkg")
