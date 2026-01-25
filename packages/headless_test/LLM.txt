@@ -1,0 +1,15 @@
+Purpose:
+This package provides reusable test helpers for Headless (behavior/a11y/keyboard/overlay).
+
+Non-goals:
+- No golden-first UI snapshots by default.
+
+Invariants:
+- Helpers must be usable across components without pulling UI baseline dependencies.
+
+Correct usage:
+- Use helpers to assert semantics, focus behavior, keyboard-only scenarios, and overlay lifecycle.
+
+Anti-patterns:
+- Tying helpers to a specific renderer implementation.
+

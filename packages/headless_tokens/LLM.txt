@@ -1,0 +1,20 @@
+Purpose:
+This package provides typed design tokens (raw + semantic) for Headless.
+It is pure Dart and must stay usable without Flutter.
+
+Non-goals:
+- No runtime JSON parsing of W3C tokens.
+- No UI widgets, no theming implementations.
+
+Invariants:
+- Do not import Flutter packages here.
+- Raw tokens are a generated source of truth (tooling step).
+- Semantic tokens are a stable API surface; changes are additive in minor.
+
+Correct usage:
+- Import `package:headless_tokens/headless_tokens.dart` and use typed token APIs.
+
+Anti-patterns:
+- Adding `package:flutter/*` dependencies.
+- Adding widget/state logic into tokens.
+

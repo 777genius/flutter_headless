@@ -1,0 +1,90 @@
+import 'dart:math' as math;
+
+import 'package:flutter/widgets.dart';
+import 'package:headless_contracts/headless_contracts.dart';
+import 'package:headless_foundation/headless_foundation.dart';
+import 'package:headless_theme/headless_theme.dart';
+
+final class RAutocompleteMenuRequestComposer {
+  const RAutocompleteMenuRequestComposer();
+
+  RDropdownMenuRenderRequest createMenuRequest({
+    required BuildContext context,
+    required RDropdownButtonSpec spec,
+    required ROverlayPhase overlayPhase,
+    required int? selectedIndex,
+    required Set<int>? selectedItemsIndices,
+    required int? highlightedIndex,
+    required bool isTriggerHovered,
+    required bool isTriggerFocused,
+    required bool isDisabled,
+    required bool isExpanded,
+    required List<HeadlessListItemModel> items,
+    required RDropdownCommands commands,
+    required RDropdownButtonSlots? slots,
+    required RenderOverrides? overrides,
+    required String? semanticLabel,
+    HeadlessRequestFeatures features = HeadlessRequestFeatures.empty,
+  }) {
+    final theme = HeadlessThemeProvider.themeOf(context);
+    final tokenResolver = theme.capability<RDropdownTokenResolver>();
+
+    final state = RDropdownButtonState(
+      overlayPhase: overlayPhase,
+      selectedIndex: selectedIndex,
+      selectedItemsIndices: selectedItemsIndices,
+      highlightedIndex: highlightedIndex,
+      isTriggerPressed: false,
+      isTriggerHovered: isTriggerHovered,
+      isTriggerFocused: isTriggerFocused,
+      isDisabled: isDisabled,
+    );
+
+    final semantics = RDropdownSemantics(
+      label: semanticLabel,
+      isExpanded: isExpanded,
+      isEnabled: !isDisabled,
+    );
+
+    final baseConstraints = BoxConstraints(
+      minWidth: WcagConstants.kMinTouchTargetSize.width,
+      minHeight: WcagConstants.kMinTouchTargetSize.height,
+    );
+
+    final resolvedTokens = tokenResolver?.resolve(
+      context: context,
+      spec: spec,
+      triggerStates: state.toTriggerWidgetStates(),
+      overlayPhase: overlayPhase,
+      constraints: baseConstraints,
+      overrides: overrides,
+    );
+
+    final constraints = resolvedTokens == null
+        ? baseConstraints
+        : BoxConstraints(
+            minWidth: math.max(
+              baseConstraints.minWidth,
+              resolvedTokens.trigger.minSize.width,
+            ),
+            minHeight: math.max(
+              baseConstraints.minHeight,
+              resolvedTokens.trigger.minSize.height,
+            ),
+          );
+
+    return RDropdownMenuRenderRequest(
+      context: context,
+      spec: spec,
+      state: state,
+      items: items,
+      commands: commands,
+      semantics: semantics,
+      slots: slots,
+      resolvedTokens: resolvedTokens,
+      constraints: constraints,
+      overrides: overrides,
+      features: features,
+    );
+  }
+}

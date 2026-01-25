@@ -1,0 +1,42 @@
+name: headless
+description: Headless facade package (re-exports core contracts + common components).
+version: 0.0.0
+publish_to: none
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.16.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  headless_tokens:
+    path: ../headless_tokens
+  headless_foundation:
+    path: ../headless_foundation
+  headless_contracts:
+    path: ../headless_contracts
+  headless_theme:
+    path: ../headless_theme
+  headless_material:
+    path: ../headless_material
+  headless_cupertino:
+    path: ../headless_cupertino
+  headless_button:
+    path: ../components/headless_button
+  headless_checkbox:
+    path: ../components/headless_checkbox
+  headless_switch:
+    path: ../components/headless_switch
+  headless_dropdown_button:
+    path: ../components/headless_dropdown_button
+  headless_textfield:
+    path: ../components/headless_textfield
+  headless_autocomplete:
+    path: ../components/headless_autocomplete
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  lints: ^5.1.1
+

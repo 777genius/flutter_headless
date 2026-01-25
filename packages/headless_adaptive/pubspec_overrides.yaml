@@ -1,0 +1,18 @@
+# melos_managed_dependency_overrides: anchored_overlay_engine,headless_contracts,headless_cupertino,headless_foundation,headless_material,headless_theme,headless_tokens,headless_textfield
+dependency_overrides:
+  anchored_overlay_engine:
+    path: ../anchored_overlay_engine
+  headless_contracts:
+    path: ../headless_contracts
+  headless_cupertino:
+    path: ../headless_cupertino
+  headless_foundation:
+    path: ../headless_foundation
+  headless_material:
+    path: ../headless_material
+  headless_textfield:
+    path: ../components/headless_textfield
+  headless_theme:
+    path: ../headless_theme
+  headless_tokens:
+    path: ../headless_tokens

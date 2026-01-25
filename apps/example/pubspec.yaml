@@ -1,0 +1,43 @@
+name: headless_example
+description: Example app for Headless.
+publish_to: none
+
+version: 0.0.0
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.16.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  headless:
+    path: ../../packages/headless
+  headless_foundation:
+    path: ../../packages/headless_foundation
+  headless_material:
+    path: ../../packages/headless_material
+  headless_cupertino:
+    path: ../../packages/headless_cupertino
+  headless_adaptive:
+    path: ../../packages/headless_adaptive
+  headless_checkbox:
+    path: ../../packages/components/headless_checkbox
+  headless_switch:
+    path: ../../packages/components/headless_switch
+  headless_textfield:
+    path: ../../packages/components/headless_textfield
+  liquid_glass_apple:
+    path: ../../packages/liquid_glass_apple
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+

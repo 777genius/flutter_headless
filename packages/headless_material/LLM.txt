@@ -1,0 +1,38 @@
+Purpose:
+Material 3 preset for Headless components. Implements renderers and token resolvers.
+
+Non-goals:
+- Not a design system on its own.
+- Not modifying core component behavior.
+- Not providing 50+ Material parameters - use contract overrides.
+
+Key components:
+- MaterialHeadlessTheme: capability composition for Material 3 look.
+- MaterialButtonTokenResolver: deterministic state→tokens for button.
+- MaterialButtonRenderer: visual rendering without double-invoke.
+- MaterialDropdownTokenResolver: tokens for trigger/menu/item.
+- MaterialDropdownRenderer: trigger + menu rendering with close contract.
+
+Invariants:
+- Single activation source: renderer NEVER calls onPressed/onChanged directly.
+- Close contract: renderer MUST call onCompleteClose() after exit animation.
+- Overrides priority (v1.1): Material*Overrides > R*Overrides > theme defaults.
+- Deterministic: same inputs → same outputs.
+- Menu/trigger visuals берутся из resolvedTokens; без hardcode в renderers/primitives.
+
+Design decisions:
+- Dropdown renderer/resolver are non-generic (no `<T>`).
+- Component maps value↔index internally, renderer only sees labels/indices.
+- This avoids Dart generic variance complications.
+
+Correct usage:
+- Wrap app with HeadlessThemeProvider(theme: MaterialHeadlessTheme()).
+- Use RButtonOverrides/RDropdownOverrides for per-instance customization.
+- Use MaterialButtonOverrides/MaterialDropdownOverrides only for Material-specific knobs.
+- MaterialHeadlessTheme.copyWith() for scoped theme changes.
+- Request capabilities directly: theme.capability<RDropdownButtonRenderer>().
+
+Anti-patterns:
+- Calling callbacks.onPressed from renderer (causes double-invoke).
+- Ignoring overlayPhase in dropdown renderer.
+- Not calling onCompleteClose() after closing animation.

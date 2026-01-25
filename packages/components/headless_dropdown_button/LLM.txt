@@ -1,0 +1,71 @@
+Purpose:
+Headless DropdownButton component (behavior + a11y) built on foundation overlay/listbox.
+
+Non-goals:
+- No renderer implementation in this package.
+- No positioning logic (handled by overlay/renderer).
+- No combobox/search/query functionality (separate component).
+
+Key types (public API):
+- RDropdownButton<T>: The component widget (generic, knows about T).
+- HeadlessItemAdapter<T>: Maps domain T -> HeadlessListItemModel (golden path).
+- RDropdownOption<T>: Advanced public option with value + item model.
+- RDropdownStyle: Simple style sugar -> overrides.
+
+Style sugar:
+- RDropdownStyle is convenience sugar converted to `RenderOverrides.only(RDropdownOverrides.tokens(...))`.
+- Priority: explicit overrides > style > theme defaults.
+
+Key types (renderer contract, non-generic):
+- HeadlessListItemModel: Item anatomy + features (no Widget/BuildContext).
+- RDropdownButtonState: State with selectedIndex (not selectedValue).
+- RDropdownCommands: Uses selectIndex(int) (not onSelect(T)).
+- RDropdownButtonRenderRequest: Non-generic, renderer gets items as List<HeadlessListItemModel>.
+
+Value<->Index mapping:
+- Component maps items + adapter -> HeadlessListItemModel for renderer.
+- Component maps selectedValue -> selectedIndex for renderer.
+- Component maps selectIndex(index) -> onChanged(value) callback.
+
+Architecture (Composition Pattern):
+- DropdownOverlayController: Overlay lifecycle (open/close/phase management).
+- DropdownSelectionController: Selection, navigation, typeahead logic.
+- DropdownKeyboardController: Keyboard event handling for trigger and menu.
+- State class implements host interfaces and delegates to controllers.
+
+Invariants:
+- highlighted != selected: Navigation changes highlight, Enter/click commits to selection.
+- Disabled items are never selectable and are skipped during keyboard navigation.
+- Wrap-around (looping) is enabled: ArrowDown on last enabled -> first enabled.
+- Focus restore: After close, focus returns to trigger (POLA).
+- Close contract: close() -> closing phase, completeClose() -> closed phase.
+- If selected value is disabled, highlight falls back to first enabled on open.
+- Single activation source: GestureDetector for pointer, Focus.onKeyEvent for keyboard.
+- Semantics onTap is owned by the component to support SemanticsAction.tap (screen readers).
+- Min hit target 44x44 enforced (WCAG compliance).
+
+Overlay lifecycle:
+- Phases: opening -> open -> closing -> closed.
+- Renderer must call completeClose() after exit animation.
+- Fail-safe timeout prevents eternal closing state.
+
+Keyboard navigation:
+- Trigger: Space/Enter/ArrowDown opens menu.
+- Menu: ArrowDown/ArrowUp navigates (skipping disabled), Home/End jumps to boundaries.
+- Menu: Enter/Space selects highlighted item and closes.
+- Menu: Escape closes without changing selection.
+- Typeahead: Alphanumeric keys jump to matching item (startsWith, case-insensitive, 500ms reset).
+
+Correct usage:
+- Use via facade or import directly; provide renderer capability through theme composition.
+- Wrap widget tree with AnchoredOverlayEngineHost(controller: OverlayController(), child: ...).
+- Provide RDropdownButtonRenderer capability through HeadlessTheme.
+- Simple capability request: theme.capability<RDropdownButtonRenderer>() (no generics).
+- Token resolver request: theme.capability<RDropdownTokenResolver>() (no generics).
+
+Anti-patterns:
+- Implementing menu visuals in component instead of renderer/slots.
+- Calling close() multiple times without waiting for closed phase.
+- Forgetting AnchoredOverlayEngineHost ancestor (throws MissingOverlayHostException).
+- Confusing highlighted with selected (they are distinct states).
+- Accessing T values in renderer (use indices and labels instead).

@@ -1,0 +1,27 @@
+name: headless_material
+description: Material 3 preset for Headless components - renderers and token resolvers.
+version: 0.0.0
+publish_to: none
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.16.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  anchored_overlay_engine:
+    path: ../anchored_overlay_engine
+  headless_contracts:
+    path: ../headless_contracts
+  headless_theme:
+    path: ../headless_theme
+  headless_foundation:
+    path: ../headless_foundation
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  lints: ^5.1.1
+  headless_test:
+    path: ../headless_test

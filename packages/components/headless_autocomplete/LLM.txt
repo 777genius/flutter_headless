@@ -1,0 +1,45 @@
+Purpose:
+Headless Autocomplete component (input + menu) built on foundation overlay/listbox.
+
+Non-goals:
+- No renderer implementation in this package.
+- No async options or multi-select (v1).
+- No dependency on other component packages.
+
+Key types (public API):
+- RAutocomplete<T>: The component widget (generic, knows about T).
+- HeadlessItemAdapter<T>: Maps domain T -> HeadlessListItemModel (required).
+- RAutocompleteStyle: Simple styling sugar for field/options.
+
+Style sugar:
+- RAutocompleteStyle is convenience sugar converted to field/menu overrides:
+  `RenderOverrides.only(RTextFieldOverrides.tokens(...))` and
+  `RenderOverrides.only(RDropdownOverrides.tokens(...))`.
+- Priority: explicit overrides > style > theme defaults.
+
+Renderer contracts (non-generic):
+- Input: RTextFieldRenderer + RTextFieldRenderRequest.
+- Menu: RDropdownButtonRenderer + RDropdownMenuRenderRequest (menu-only).
+
+Architecture:
+- AutocompleteCoordinator: orchestrates input, options, selection, keyboard, menu.
+- AutocompleteMenuCoordinator: reusable menu overlay glue.
+- HeadlessMenuOverlayController: shared overlay lifecycle from foundation/menu.
+- ListboxController: navigation + highlight.
+
+Invariants:
+- No component-to-component deps.
+- Focus stays in input (menu does not steal focus).
+- Selection <-> text sync is centralized and guarded (no self-trigger).
+- Options are cached and recomputed only on text changes.
+- Renderer must call completeClose() after closing animation.
+
+Correct usage:
+- Provide RTextFieldRenderer and RDropdownButtonRenderer via HeadlessTheme.
+- Ensure AnchoredOverlayEngineHost exists above the widget tree.
+- Use HeadlessItemAdapter<T> to map T -> item model.
+
+Anti-patterns:
+- Using RDropdownButton as the menu engine.
+- Building widgets inside foundation models.
+- Passing unnormalized typeaheadLabel.

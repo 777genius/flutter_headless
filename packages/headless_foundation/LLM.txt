@@ -1,0 +1,19 @@
+Purpose:
+This package provides shared behavior primitives used by multiple Headless components:
+focus policies, listbox navigation, interactions, state resolution, effects executor.
+
+Non-goals:
+- No UI baselines / no Material-like visuals.
+- No dependency on headless_theme (foundation must not depend on theme).
+
+Invariants:
+- The package is stable infrastructure; avoid breaking changes.
+- Keep the package independent from app navigation (no Navigator/Route coupling).
+
+Correct usage:
+- Components use these primitives to implement behavior and expose state to renderers/themes.
+
+Anti-patterns:
+- Putting “shared widgets” here instead of behavior mechanisms.
+- Adding dependencies to component packages or headless_theme.
+

@@ -1,0 +1,24 @@
+Purpose:
+- Headless TextField for Flutter (behavior + a11y), delegating visual rendering to theme capabilities.
+
+Non-goals:
+- No baseline Material/Cupertino UI is provided in this package.
+- No app-level state management, formatting, validation, or business rules.
+
+Invariants:
+- Rendering is delegated to `RTextFieldRenderer` (theme capability).
+- Missing renderer capability throws a standardized `[Headless] Missing required capability...` error.
+- Semantics are owned by the component; renderer must not duplicate the root semantics.
+- Controlled/uncontrolled follows Flutter conventions: external controller is not disposed.
+
+Style sugar:
+- RTextFieldStyle is convenience sugar converted to `RenderOverrides.only(RTextFieldOverrides.tokens(...))`.
+- Priority: explicit overrides > style > theme defaults.
+
+Correct usage:
+- Wrap your app/subtree with `HeadlessThemeProvider` and provide `RTextFieldRenderer`.
+
+Anti-patterns:
+- Importing concrete renderer implementations into this package.
+- Creating implicit visual defaults inside `RTextField`.
+

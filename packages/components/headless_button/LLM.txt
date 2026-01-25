@@ -1,0 +1,29 @@
+Purpose:
+Headless Button component (behavior + a11y), visual output delegated to renderer contracts.
+
+Non-goals:
+- No default UI baseline inside the component package.
+
+Invariants:
+- No dependencies on other component packages.
+- Controlled/uncontrolled behavior must follow POLA (TextField-like).
+- Semantics (root a11y) is owned by the component, not the renderer.
+- Screen reader activation is provided via the component's pressable region (`GestureDetector.onTap`).
+- Do NOT use `Semantics(onTap: ...)` to avoid double-invoke risk.
+- Renderer must not introduce a second activation path (no tap handlers calling user callbacks).
+
+Style sugar:
+- RButtonStyle is convenience sugar converted to `RenderOverrides.only(RButtonOverrides.tokens(...))`.
+- Priority: explicit overrides > style > theme defaults.
+
+Slots:
+- RButtonSlots use SlotOverride (Replace/Decorate/Enhance).
+- Prefer Decorate-first to preserve default structure and semantics.
+
+Correct usage:
+- Use via `headless` facade or import this package directly.
+
+Anti-patterns:
+- Importing preset renderer implementations from this component package (keep renderers in preset packages or apps).
+- Adding tap/click handlers in renderers that cause activation (double-invoke risk).
+

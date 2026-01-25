@@ -1,0 +1,85 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Flutter version
+        run: flutter --version
+
+      - name: Install workspace tooling (melos)
+        run: |
+          dart pub get
+          dart run melos --version
+
+      - name: Bootstrap
+        run: dart run melos bootstrap
+
+      - name: Format check
+        run: dart run melos run format
+
+      - name: Analyze
+        run: dart run melos run analyze
+
+      - name: Test
+        run: dart run melos run test
+
+      - name: Guardrails base ref
+        run: |
+          set -e
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "HEADLESS_GUARDRAILS_BASE_REF=origin/${{ github.base_ref }}" >> "$GITHUB_ENV"
+          else
+            echo "HEADLESS_GUARDRAILS_BASE_REF=HEAD~1" >> "$GITHUB_ENV"
+          fi
+
+      - name: Guardrails (architecture)
+        run: dart run melos run guardrails
+
+      - name: Architecture checks — domain purity
+        run: |
+          echo "Checking domain layer for Flutter imports..."
+          if grep -r "package:flutter" packages/*/lib/src/domain/ 2>/dev/null; then
+            echo "::error::Flutter imports found in packages/*/lib/src/domain/"
+            exit 1
+          fi
+          if grep -r "package:flutter" packages/components/*/lib/src/domain/ 2>/dev/null; then
+            echo "::error::Flutter imports found in packages/components/*/lib/src/domain/"
+            exit 1
+          fi
+          echo "✓ Domain layer is clean"
+
+      - name: Architecture checks — circular deps (no-dev)
+        run: |
+          set -e
+          echo "Checking for circular dependencies in all packages..."
+          # Get all package paths via melos (no user input, only local melos data)
+          PACKAGES=$(dart run melos list --parsable 2>/dev/null | tr '\n' ' ')
+          for pkg in $PACKAGES; do
+            if [ -d "$pkg" ]; then
+              pkg_name=$(basename "$pkg")
+              echo "Checking $pkg_name..."
+              if (cd "$pkg" && dart pub deps --no-dev 2>&1 | grep -qi circular); then
+                echo "::error::Circular dependency detected in $pkg_name ($pkg)"
+                exit 1
+              fi
+            fi
+          done
+          echo "✓ No circular dependencies detected"
+

@@ -1,0 +1,38 @@
+name: headless
+
+packages:
+  - packages/**
+  - apps/**
+  - tools/**
+
+ignore:
+  - "**/build/**"
+  - "**/.dart_tool/**"
+
+command:
+  bootstrap:
+    runPubGetInParallel: false
+
+scripts:
+  analyze:
+    run: melos exec -- dart analyze .
+
+  test:dart:
+    run: melos exec --fail-fast -- "dart test"
+    packageFilters:
+      flutter: false
+
+  test:flutter:
+    run: melos exec --fail-fast --concurrency=1 -- "flutter test"
+    packageFilters:
+      flutter: true
+
+  test:
+    run: melos run test:dart && melos run test:flutter
+
+  format:
+    run: melos exec -- dart format --output=none --set-exit-if-changed .
+
+  guardrails:
+    run: dart run tools/headless_cli/bin/guardrails.dart
+

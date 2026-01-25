@@ -1,0 +1,20 @@
+Purpose:
+Cupertino preset/theme + renderers package for Headless components.
+
+Non-goals:
+- No component state logic.
+- No dependency on other component packages.
+
+Invariants:
+- Provides capability-based renderers through theme composition.
+- Keeps API Flutter-like and stable (v1 decisions).
+- Overrides priority (v1.1): Cupertino*Overrides > R*Overrides > theme defaults.
+- Popover visuals (blur/shadow/opacity) приходят из tokens; opacity отдельным полем.
+
+Correct usage:
+- Use with HeadlessThemeProvider / presets to render R* components with Cupertino look.
+- Use CupertinoButtonOverrides/CupertinoDropdownOverrides only for Cupertino-specific knobs.
+
+Anti-patterns:
+- Putting overlay/listbox logic here (must stay in headless_foundation).
+

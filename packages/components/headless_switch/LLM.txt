@@ -1,0 +1,41 @@
+Purpose:
+- Headless Switch components for Flutter (RSwitch, RSwitchListTile) with behavior + a11y.
+
+Non-goals:
+- No renderer implementation in this package.
+- No preset-specific visuals or design tokens.
+
+Key types (public API):
+- RSwitch: Controlled switch (value + onChanged).
+- RSwitchListTile: Switch with row layout and slots.
+- RSwitchStyle: Simple style sugar -> overrides.
+- RSwitchListTileStyle: Simple style sugar -> overrides.
+
+Internal types (not exported):
+- RSwitchIndicator: Visual-only indicator for RSwitchListTile.
+
+Style sugar:
+- RSwitchStyle / RSwitchListTileStyle are convenience sugar converted to
+  `RenderOverrides.only(RSwitchOverrides.tokens(...))` and
+  `RenderOverrides.only(RSwitchListTileOverrides.tokens(...))`.
+- Priority (strong -> weak):
+  1) explicit overrides
+  2) thumbIcon parameter (for RSwitch)
+  3) style sugar (RSwitchStyle/RSwitchListTileStyle)
+  4) theme/preset defaults
+
+Slots:
+- RSwitchSlots and RSwitchListTileSlots use SlotOverride (Replace/Decorate/Enhance).
+- Prefer Decorate-first to preserve default structure and semantics.
+
+Invariants:
+- Rendering is delegated to renderer capabilities from HeadlessTheme.
+- Single activation source: component owns pointer/keyboard activation.
+- Semantics are owned by the component; renderers must not duplicate root semantics.
+- Switch uses `toggled` semantics (not `checked` like checkbox).
+
+Correct usage:
+- Provide RSwitchRenderer and RSwitchListTileRenderer through HeadlessTheme.
+
+Anti-patterns:
+- Implementing visuals directly inside component widgets.

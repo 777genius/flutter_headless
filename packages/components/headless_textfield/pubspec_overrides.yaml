@@ -1,0 +1,14 @@
+# melos_managed_dependency_overrides: headless_foundation,headless_theme,headless_tokens,headless_test,headless_contracts,anchored_overlay_engine
+dependency_overrides:
+  anchored_overlay_engine:
+    path: ../../anchored_overlay_engine
+  headless_contracts:
+    path: ../../headless_contracts
+  headless_foundation:
+    path: ../../headless_foundation
+  headless_test:
+    path: ../../headless_test
+  headless_theme:
+    path: ../../headless_theme
+  headless_tokens:
+    path: ../../headless_tokens

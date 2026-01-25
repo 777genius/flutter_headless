@@ -1,0 +1,33 @@
+Purpose:
+- Headless Checkbox components for Flutter (RCheckbox, RCheckboxListTile) with behavior + a11y.
+
+Non-goals:
+- No renderer implementation in this package.
+- No preset-specific visuals or design tokens.
+
+Key types (public API):
+- RCheckbox: Controlled checkbox (value + onChanged).
+- RCheckboxListTile: Checkbox with row layout and slots.
+- RCheckboxStyle: Simple style sugar -> overrides.
+- RCheckboxListTileStyle: Simple style sugar -> overrides.
+
+Style sugar:
+- RCheckboxStyle / RCheckboxListTileStyle are convenience sugar converted to
+  `RenderOverrides.only(RCheckboxOverrides.tokens(...))` and
+  `RenderOverrides.only(RCheckboxListTileOverrides.tokens(...))`.
+- Priority: explicit overrides > style > theme defaults.
+
+Slots:
+- RCheckboxSlots and RCheckboxListTileSlots use SlotOverride (Replace/Decorate/Enhance).
+- Prefer Decorate-first to preserve default structure and semantics.
+
+Invariants:
+- Rendering is delegated to renderer capabilities from HeadlessTheme.
+- Single activation source: component owns pointer/keyboard activation.
+- Semantics are owned by the component; renderers must not duplicate root semantics.
+
+Correct usage:
+- Provide RCheckboxRenderer and RCheckboxListTileRenderer through HeadlessTheme.
+
+Anti-patterns:
+- Implementing visuals directly inside component widgets.

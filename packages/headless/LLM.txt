@@ -1,0 +1,17 @@
+Purpose:
+This package is a facade for the Headless ecosystem.
+It re-exports core contracts and a “reasonable default” set of components.
+
+Non-goals:
+- No reverse dependencies: other packages must not depend on this facade.
+
+Invariants:
+- Facade only re-exports; it must not contain behavior logic.
+- Keep exports stable; changes should be additive in minor.
+
+Correct usage:
+- Apps typically depend on `headless` instead of importing many packages.
+
+Anti-patterns:
+- Making components import the facade.
+

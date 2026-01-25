@@ -1,0 +1,34 @@
+# melos_managed_dependency_overrides: headless,headless_button,headless_dropdown_button,headless_foundation,headless_theme,headless_tokens,headless_cupertino,headless_material,headless_textfield,headless_contracts,anchored_overlay_engine,headless_adaptive,headless_autocomplete,headless_checkbox,headless_switch,liquid_glass_apple
+dependency_overrides:
+  anchored_overlay_engine:
+    path: ../../packages/anchored_overlay_engine
+  headless:
+    path: ../../packages/headless
+  headless_adaptive:
+    path: ../../packages/headless_adaptive
+  headless_autocomplete:
+    path: ../../packages/components/headless_autocomplete
+  headless_button:
+    path: ../../packages/components/headless_button
+  headless_checkbox:
+    path: ../../packages/components/headless_checkbox
+  headless_contracts:
+    path: ../../packages/headless_contracts
+  headless_cupertino:
+    path: ../../packages/headless_cupertino
+  headless_dropdown_button:
+    path: ../../packages/components/headless_dropdown_button
+  headless_foundation:
+    path: ../../packages/headless_foundation
+  headless_material:
+    path: ../../packages/headless_material
+  headless_switch:
+    path: ../../packages/components/headless_switch
+  headless_textfield:
+    path: ../../packages/components/headless_textfield
+  headless_theme:
+    path: ../../packages/headless_theme
+  headless_tokens:
+    path: ../../packages/headless_tokens
+  liquid_glass_apple:
+    path: ../../packages/liquid_glass_apple

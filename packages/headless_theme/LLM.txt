@@ -1,0 +1,47 @@
+Purpose:
+This package defines theme and renderer contracts (capability-based) for Headless.
+Components depend on these contracts but do not depend on concrete renderer implementations.
+
+Non-goals:
+- No default UI rendering in this package (renderer implementations live in preset packages like headless_material/headless_cupertino or in apps).
+- No component-specific logic.
+
+Contracts (v1):
+
+Button:
+- RButtonRenderer: render(RButtonRenderRequest) → Widget
+- RButtonTokenResolver: resolve(context, spec, states, constraints?, overrides?) → RButtonResolvedTokens
+  - Resolved tokens include pressOverlayColor/pressOpacity for visual effects hooks.
+
+Dropdown (non-generic by design):
+- RDropdownButtonRenderer: render(RDropdownButtonRenderRequest) → Widget
+- RDropdownTokenResolver: resolve(context, spec, triggerStates, overlayPhase, constraints?, overrides?) → RDropdownResolvedTokens
+- HeadlessListItemModel: UI item anatomy (no Widget/BuildContext) — NO value field
+- RDropdownButtonState: uses selectedIndex/highlightedIndex — NO selectedValue
+- RDropdownCommands: uses selectIndex(int) — NO onSelect(T)
+  - Menu tokens include visual surface parameters (e.g. backgroundOpacity, blur, shadow).
+    Keep dynamic colors intact; apply opacity at render time.
+
+Invariants:
+- Capabilities must be discoverable without `is FooTheme` checks.
+- Missing required capabilities must fail loudly with a helpful error.
+- Contracts should evolve additively in minor versions.
+- Dropdown contracts are non-generic — component maps value↔index internally.
+- TokenResolver capability is optional at the contract level.
+- Preset app wrappers can enforce tokens-only strictly via HeadlessRendererPolicy(requireResolvedTokens: true).
+
+Token Resolution Policy (v1):
+- P1: Per-instance RenderOverrides (contract-level)
+- P2: Preset-specific overrides (advanced)
+- P3: Theme/preset defaults
+
+Correct usage:
+- Components request capabilities via `HeadlessTheme.capability<T>()`.
+- Simple types: capability<RDropdownButtonRenderer>() — no generics, no workarounds.
+
+Anti-patterns:
+- Putting baseline renderers into this package.
+- Making components depend on concrete theme types.
+- Using generic capability requests for dropdown: capability<RDropdownButtonRenderer<T>>().
+- Using typeName.startsWith() workarounds for capability lookup.
+

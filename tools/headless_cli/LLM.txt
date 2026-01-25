@@ -1,0 +1,16 @@
+Purpose:
+CLI tooling for Headless (token import from W3C + package skeleton generation).
+
+Non-goals:
+- No runtime token parsing for apps; code generation only.
+
+Invariants:
+- Tooling must generate typed Dart code for tokens (no JSON in runtime).
+
+Correct usage:
+- Use CLI to import W3C tokens and generate Dart sources in headless_tokens.
+- Use `renderless generate component <name>` to scaffold a new component package.
+
+Anti-patterns:
+- Adding UI logic into CLI.
+

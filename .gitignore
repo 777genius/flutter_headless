@@ -1,0 +1,43 @@
+.dart_tool/
+.packages
+.pub/
+pubspec.lock
+.metadata
+
+# Flutter
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+**/Flutter/ephemeral/
+
+# Allow lockfiles for runnable app/cli to pin deps.
+!apps/example/pubspec.lock
+!tools/headless_cli/pubspec.lock
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# macOS
+.DS_Store
+
+# Logs
+flutter_*.log
+coverage/
+.coverage
+
+# Melos
+melos_test_output.txt
+
+# Temp
+.tmp/
+
+.clinerules/byterover-rules.md
+.kilocode/rules/byterover-rules.md
+.roo/rules/byterover-rules.md
+.windsurf/rules/byterover-rules.md
+.cursor/rules/byterover-rules.mdc
+.kiro/steering/byterover-rules.md
+.qoder/rules/byterover-rules.md
+.augment/rules/byterover-rules.md

@@ -1,0 +1,20 @@
+Purpose:
+This package provides an overlay engine focused on anchored positioning,
+lifecycle/close contracts, and deterministic policies (dismiss/focus/reposition).
+
+Non-goals:
+- No Material/Cupertino widgets or styling.
+- No headless_* dependencies.
+- No ready-made UI components.
+
+Invariants:
+- Overlay lifecycle must support closing phase and explicit completeClose.
+- Policies must be deterministic and composable.
+- Insertion uses Flutter primitives (OverlayPortal) without Navigator coupling.
+
+Correct usage:
+- Use as a runtime for menu/popover/tooltip/dialog overlays in any design system.
+
+Anti-patterns:
+- Mixing visual components into the engine.
+- Coupling engine to app navigation or theme layers.
