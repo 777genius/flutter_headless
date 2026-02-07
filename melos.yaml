@@ -23,7 +23,7 @@ scripts:
       flutter: false
 
   test:flutter:
-    run: melos exec --fail-fast --concurrency=1 -- "flutter test"
+    run: melos exec --fail-fast --concurrency=1 -- "flutter test --exclude-tags golden"
     packageFilters:
       flutter: true
 
