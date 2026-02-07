@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:headless_contracts/headless_contracts.dart';
-import 'package:headless_material/textfield.dart';
+import 'package:headless_material/headless_material.dart';
 import 'package:headless_textfield/headless_textfield.dart';
 
 import '../../theme_mode_scope.dart';

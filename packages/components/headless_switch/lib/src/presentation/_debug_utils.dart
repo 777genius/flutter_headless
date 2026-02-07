@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:headless_contracts/renderers.dart';
+import 'package:headless_contracts/headless_contracts.dart';
 
 /// Track overrides for debug purposes.
 RenderOverrides? trackSwitchOverrides(RenderOverrides? overrides) {

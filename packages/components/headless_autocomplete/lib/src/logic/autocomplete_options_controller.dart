@@ -100,7 +100,7 @@ final class AutocompleteOptionsController<T> {
     if (!cacheEnabled ||
         _cachedItemsSignature == -1 ||
         _cachedItemsOptionsSignature != optionsSignature) {
-      final items = _buildItems(
+      final items = _mapToItems(
         options: _cachedOptions,
         additionalFeaturesById: const <ListboxItemId, HeadlessItemFeatures?>{},
       );
@@ -133,7 +133,7 @@ final class AutocompleteOptionsController<T> {
       pinSelectedOptions: pinSelectedOptions,
     );
     final finalOptions = processed.map((e) => e.value).toList();
-    final items = _buildItems(
+    final items = _mapToItems(
       options: finalOptions,
       additionalFeaturesById: additionalFeaturesById,
     );
@@ -252,7 +252,7 @@ final class AutocompleteOptionsController<T> {
     return result;
   }
 
-  List<HeadlessListItemModel> _buildItems({
+  List<HeadlessListItemModel> _mapToItems({
     required List<T> options,
     required Map<ListboxItemId, HeadlessItemFeatures?> additionalFeaturesById,
   }) {

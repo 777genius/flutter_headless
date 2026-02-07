@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
-import 'package:headless_contracts/renderers.dart';
+import 'package:headless_contracts/headless_contracts.dart';
 import 'package:headless_foundation/headless_foundation.dart';
 import 'package:headless_theme/headless_theme.dart';
 

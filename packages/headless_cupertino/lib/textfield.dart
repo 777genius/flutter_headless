@@ -1,7 +1,7 @@
 /// Cupertino TextField support for Headless components.
 library;
 
-export 'package:headless_contracts/textfield.dart'
+export 'package:headless_contracts/headless_contracts.dart'
     show RTextFieldOverlayVisibilityMode;
 
 export 'src/overrides/cupertino_text_field_overrides.dart';
