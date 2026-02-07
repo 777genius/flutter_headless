@@ -20,4 +20,3 @@ final class ListboxItemId {
   @override
   String toString() => 'ListboxItemId($value)';
 }
-

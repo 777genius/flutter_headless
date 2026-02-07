@@ -64,4 +64,3 @@ final class RTextFieldStyle {
     );
   }
 }
-

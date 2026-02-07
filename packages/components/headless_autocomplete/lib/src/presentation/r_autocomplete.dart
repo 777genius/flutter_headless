@@ -191,7 +191,8 @@ class _RAutocompleteState<T> extends State<RAutocomplete<T>> {
   final GlobalKey _fieldKey = GlobalKey();
   late AutocompleteCoordinator<T> _coordinator;
   late AutocompleteSelectionMode<T> _selectionMode;
-  final AutocompleteSelectionModeComputer<T> _selectionModeComputer = AutocompleteSelectionModeComputer<T>();
+  final AutocompleteSelectionModeComputer<T> _selectionModeComputer =
+      AutocompleteSelectionModeComputer<T>();
   Rect? _lastAnchorRect;
 
   Iterable<T> Function(TextEditingValue) get _localOptionsBuilder {
@@ -245,12 +246,14 @@ class _RAutocompleteState<T> extends State<RAutocomplete<T>> {
         semanticLabel: widget.semanticLabel,
         menuSlots: widget.menuSlots,
         menuOverrides: _effectiveMenuOverrides(),
-        clearQueryOnSelection: _selectionMode.isMultiple ? widget.clearQueryOnSelection : false,
+        clearQueryOnSelection:
+            _selectionMode.isMultiple ? widget.clearQueryOnSelection : false,
         hideSelectedOptions: widget.hideSelectedOptions,
         pinSelectedOptions: widget.pinSelectedOptions,
         source: widget.source,
       );
-  AutocompleteSelectionMode<T> _computeSelectionMode() => _selectionModeComputer.compute(
+  AutocompleteSelectionMode<T> _computeSelectionMode() =>
+      _selectionModeComputer.compute(
         onSelected: widget.onSelected,
         onSelectionChanged: widget.onSelectionChanged,
         selectedValues: widget.selectedValues,
@@ -271,6 +274,7 @@ class _RAutocompleteState<T> extends State<RAutocomplete<T>> {
       config: _config,
     );
   }
+
   @override
   void didUpdateWidget(RAutocomplete<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -282,6 +286,7 @@ class _RAutocompleteState<T> extends State<RAutocomplete<T>> {
       initialValue: widget.initialValue,
     );
   }
+
   @override
   void dispose() {
     _coordinator.dispose();

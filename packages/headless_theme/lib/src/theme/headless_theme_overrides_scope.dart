@@ -44,7 +44,8 @@ class HeadlessThemeOverridesScope extends StatefulWidget {
       _HeadlessThemeOverridesScopeState();
 }
 
-class _HeadlessThemeOverridesScopeState extends State<HeadlessThemeOverridesScope> {
+class _HeadlessThemeOverridesScopeState
+    extends State<HeadlessThemeOverridesScope> {
   HeadlessTheme? _base;
   CapabilityOverrides? _overrides;
   late HeadlessTheme _effectiveTheme;
@@ -91,4 +92,3 @@ class _HeadlessThemeOverridesScopeState extends State<HeadlessThemeOverridesScop
     );
   }
 }
-

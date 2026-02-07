@@ -308,13 +308,15 @@ void main() {
       await tester.pumpAndSettle();
 
       // Enter text in first field
-      await tester.enterTextInFieldWithoutTap('First', TextFieldTestKeys.textFieldN(1));
+      await tester.enterTextInFieldWithoutTap(
+          'First', TextFieldTestKeys.textFieldN(1));
 
       // Tab to second field
       await tester.pressTab();
 
       // Enter text in second field
-      await tester.enterTextInFieldWithoutTap('Second', TextFieldTestKeys.textFieldN(2));
+      await tester.enterTextInFieldWithoutTap(
+          'Second', TextFieldTestKeys.textFieldN(2));
 
       // Verify values
       expect(

@@ -28,4 +28,3 @@ final class TypeaheadChar extends ListboxNavigation {
 final class SelectHighlighted extends ListboxNavigation {
   const SelectHighlighted();
 }
-

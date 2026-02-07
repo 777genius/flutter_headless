@@ -19,4 +19,3 @@ final class RAutocompleteSelectedValuesOverrides {
 
   final RAutocompleteSelectedValuesPresentation? presentation;
 }
-

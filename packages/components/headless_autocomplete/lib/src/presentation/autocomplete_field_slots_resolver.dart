@@ -36,8 +36,8 @@ RTextFieldSlots? resolveAutocompleteFieldSlots<T>({
       ),
   ];
 
-  final renderer =
-      HeadlessThemeProvider.maybeCapabilityOf<RAutocompleteSelectedValuesRenderer>(
+  final renderer = HeadlessThemeProvider.maybeCapabilityOf<
+      RAutocompleteSelectedValuesRenderer>(
     context,
     componentName: 'RAutocomplete',
   );
@@ -58,9 +58,8 @@ RTextFieldSlots? resolveAutocompleteFieldSlots<T>({
             removeById: (id) {
               setSelectedIdsOptimistic(
                 Set<ListboxItemId>.from(
-                      selectionMode.selectedValues.map(itemAdapter.id),
-                    )
-                  ..remove(id),
+                  selectionMode.selectedValues.map(itemAdapter.id),
+                )..remove(id),
               );
               final next = selectionMode.selectedValues
                   .where((v) => itemAdapter.id(v) != id)
@@ -74,9 +73,8 @@ RTextFieldSlots? resolveAutocompleteFieldSlots<T>({
               final id = selectedItems[index].id;
               setSelectedIdsOptimistic(
                 Set<ListboxItemId>.from(
-                      selectionMode.selectedValues.map(itemAdapter.id),
-                    )
-                  ..remove(id),
+                  selectionMode.selectedValues.map(itemAdapter.id),
+                )..remove(id),
               );
               final next = selectionMode.selectedValues
                   .where((v) => itemAdapter.id(v) != id)
@@ -105,4 +103,3 @@ RTextFieldSlots? resolveAutocompleteFieldSlots<T>({
           suffix: baseSlots.suffix,
         );
 }
-

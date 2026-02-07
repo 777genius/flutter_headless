@@ -36,8 +36,8 @@ class HeadlessAdaptiveTheme extends StatelessWidget {
     final platform = platformOverride ??
         (hasMaterialTheme ? Theme.of(context).platform : defaultTargetPlatform);
 
-    final useCupertino = platform == TargetPlatform.iOS ||
-        platform == TargetPlatform.macOS;
+    final useCupertino =
+        platform == TargetPlatform.iOS || platform == TargetPlatform.macOS;
 
     final theme = useCupertino
         ? (cupertinoTheme ?? CupertinoHeadlessTheme())
@@ -49,4 +49,3 @@ class HeadlessAdaptiveTheme extends StatelessWidget {
     );
   }
 }
-

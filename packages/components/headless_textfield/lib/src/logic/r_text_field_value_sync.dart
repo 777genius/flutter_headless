@@ -72,4 +72,3 @@ final class RTextFieldValueSync {
     _lastNotifiedValue = newText;
   }
 }
-

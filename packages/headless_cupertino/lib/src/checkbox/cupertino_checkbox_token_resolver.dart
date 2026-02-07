@@ -24,9 +24,9 @@ class CupertinoCheckboxTokenResolver implements RCheckboxTokenResolver {
     BoxConstraints? constraints,
     RenderOverrides? overrides,
   }) {
-    final motionTheme = HeadlessThemeProvider.of(context)
-            ?.capability<HeadlessMotionTheme>() ??
-        HeadlessMotionTheme.cupertino;
+    final motionTheme =
+        HeadlessThemeProvider.of(context)?.capability<HeadlessMotionTheme>() ??
+            HeadlessMotionTheme.cupertino;
 
     final q = HeadlessWidgetStateQuery(states);
     final contractOverrides = overrides?.get<RCheckboxOverrides>();
@@ -38,9 +38,8 @@ class CupertinoCheckboxTokenResolver implements RCheckboxTokenResolver {
         brightness ?? CupertinoTheme.of(context).brightness;
     final isDark = resolvedBrightness == Brightness.dark;
 
-    final activeColor = isError
-        ? CupertinoColors.systemRed
-        : CupertinoColors.activeBlue;
+    final activeColor =
+        isError ? CupertinoColors.systemRed : CupertinoColors.activeBlue;
     final checkColor = CupertinoColors.white;
     final borderColor = isError
         ? CupertinoColors.systemRed
@@ -53,8 +52,9 @@ class CupertinoCheckboxTokenResolver implements RCheckboxTokenResolver {
     Color effectiveCheck = checkColor;
 
     if (q.isDisabled) {
-      effectiveBorder = (isDark ? CupertinoColors.systemGrey : CupertinoColors.systemGrey2)
-          .withValues(alpha: 0.6);
+      effectiveBorder =
+          (isDark ? CupertinoColors.systemGrey : CupertinoColors.systemGrey2)
+              .withValues(alpha: 0.6);
       effectiveActive = effectiveBorder;
       effectiveCheck = (isDark ? CupertinoColors.black : CupertinoColors.white)
           .withValues(alpha: 0.9);
@@ -103,4 +103,3 @@ class CupertinoCheckboxTokenResolver implements RCheckboxTokenResolver {
     );
   }
 }
-

@@ -19,4 +19,3 @@ final class RAutocompleteSelectedValuesCommands {
   /// Convenience for simple renderers that keep the request order.
   final void Function(int index) removeAt;
 }
-

@@ -113,12 +113,12 @@ class MaterialDropdownRenderer implements RDropdownButtonRenderer {
             backgroundColor: backgroundColor,
             foregroundColor: foregroundColor,
             border: triggerBorder,
-          borderRadius: borderRadius,
-          padding: padding,
-          textStyle: textStyle,
-          minSize: minSize,
-          displayText: displayText,
-          chevron: chevron,
+            borderRadius: borderRadius,
+            padding: padding,
+            textStyle: textStyle,
+            minSize: minSize,
+            displayText: displayText,
+            chevron: chevron,
             animationDuration: menuMotion.enterDuration,
           ),
         ),
@@ -136,12 +136,12 @@ class MaterialDropdownRenderer implements RDropdownButtonRenderer {
         backgroundColor: backgroundColor,
         foregroundColor: foregroundColor,
         border: triggerBorder,
-      borderRadius: borderRadius,
-      padding: padding,
-      textStyle: textStyle,
-      minSize: minSize,
-      displayText: displayText,
-      chevron: chevron,
+        borderRadius: borderRadius,
+        padding: padding,
+        textStyle: textStyle,
+        minSize: minSize,
+        displayText: displayText,
+        chevron: chevron,
         animationDuration: menuMotion.enterDuration,
       ),
     );
@@ -406,5 +406,4 @@ class MaterialDropdownRenderer implements RDropdownButtonRenderer {
       overrides: request.overrides,
     );
   }
-
 }

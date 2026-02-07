@@ -20,9 +20,9 @@ class CupertinoSwitchTokenResolver implements RSwitchTokenResolver {
     BoxConstraints? constraints,
     RenderOverrides? overrides,
   }) {
-    final motionTheme = HeadlessThemeProvider.of(context)
-            ?.capability<HeadlessMotionTheme>() ??
-        HeadlessMotionTheme.cupertino;
+    final motionTheme =
+        HeadlessThemeProvider.of(context)?.capability<HeadlessMotionTheme>() ??
+            HeadlessMotionTheme.cupertino;
 
     final q = HeadlessWidgetStateQuery(states);
     final contractOverrides = overrides?.get<RSwitchOverrides>();
@@ -73,7 +73,8 @@ class CupertinoSwitchTokenResolver implements RSwitchTokenResolver {
         : CupertinoColors.systemGrey.withValues(alpha: 0.12);
 
     // Cupertino doesn't use state layer, but we provide transparent fallback
-    final stateLayerColor = WidgetStateProperty.all<Color?>(const Color(0x00000000));
+    final stateLayerColor =
+        WidgetStateProperty.all<Color?>(const Color(0x00000000));
 
     final minTapTargetSize = _resolveMinTapTargetSize(
       constraints: constraints,
@@ -87,8 +88,7 @@ class CupertinoSwitchTokenResolver implements RSwitchTokenResolver {
       trackOutlineColor:
           contractOverrides?.trackOutlineColor ?? trackOutlineColor,
       trackOutlineWidth: contractOverrides?.trackOutlineWidth ?? 0.0,
-      activeTrackColor:
-          contractOverrides?.activeTrackColor ?? activeTrackColor,
+      activeTrackColor: contractOverrides?.activeTrackColor ?? activeTrackColor,
       inactiveTrackColor:
           contractOverrides?.inactiveTrackColor ?? inactiveTrackColor,
       // Cupertino: thumb size is fixed (no unselected/selected/pressed differentiation)
@@ -96,12 +96,10 @@ class CupertinoSwitchTokenResolver implements RSwitchTokenResolver {
           contractOverrides?.thumbSizeUnselected ?? defaultThumbSize,
       thumbSizeSelected:
           contractOverrides?.thumbSizeSelected ?? defaultThumbSize,
-      thumbSizePressed:
-          contractOverrides?.thumbSizePressed ?? defaultThumbSize,
+      thumbSizePressed: contractOverrides?.thumbSizePressed ?? defaultThumbSize,
       thumbSizeTransition:
           contractOverrides?.thumbSizeTransition ?? defaultThumbSize,
-      activeThumbColor:
-          contractOverrides?.activeThumbColor ?? activeThumbColor,
+      activeThumbColor: contractOverrides?.activeThumbColor ?? activeThumbColor,
       inactiveThumbColor:
           contractOverrides?.inactiveThumbColor ?? inactiveThumbColor,
       thumbPadding: contractOverrides?.thumbPadding ?? defaultThumbPadding,

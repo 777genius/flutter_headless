@@ -49,10 +49,11 @@ int? findPreviousEnabledIndex(
 
   for (var step = 1; step <= items.length; step++) {
     final idx = fromIndex - step;
-    final wrapped = policy.looping ? ((idx % items.length) + items.length) % items.length : idx;
+    final wrapped = policy.looping
+        ? ((idx % items.length) + items.length) % items.length
+        : idx;
     if (wrapped < 0 || wrapped >= items.length) return null;
     if (!items[wrapped].isDisabled) return wrapped;
   }
   return null;
 }
-

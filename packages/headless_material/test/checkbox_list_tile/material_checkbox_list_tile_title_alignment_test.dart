@@ -65,4 +65,3 @@ void main() {
     expect(listTile.titleAlignment, ListTileTitleAlignment.threeLine);
   });
 }
-

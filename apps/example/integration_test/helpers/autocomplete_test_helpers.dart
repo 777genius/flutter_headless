@@ -157,7 +157,8 @@ extension AutocompleteExpects on WidgetTester {
 
     // Fallback (older renderers / scroll menus).
     expect(
-      find.descendant(of: find.byType(ListView), matching: find.text(expectedText)),
+      find.descendant(
+          of: find.byType(ListView), matching: find.text(expectedText)),
       findsOneWidget,
     );
   }
@@ -173,7 +174,8 @@ extension AutocompleteExpects on WidgetTester {
     }
 
     expect(
-      find.descendant(of: find.byType(ListView), matching: find.text(expectedText)),
+      find.descendant(
+          of: find.byType(ListView), matching: find.text(expectedText)),
       findsNothing,
     );
   }
@@ -186,7 +188,8 @@ extension AutocompleteExpects on WidgetTester {
   void expectMultiSelected(List<String> values) {
     final label = values.join(', ');
     expect(find.text('Selected: $label'), findsOneWidget);
-    expect(find.byKey(AutocompleteTestKeys.multiSelectionLabel), findsOneWidget);
+    expect(
+        find.byKey(AutocompleteTestKeys.multiSelectionLabel), findsOneWidget);
   }
 
   void expectMultiCount(int count) {

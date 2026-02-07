@@ -9,4 +9,3 @@ abstract class HeadlessTheme {
 
   T? capability<T>();
 }
-

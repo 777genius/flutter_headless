@@ -86,4 +86,3 @@ final class RCheckboxListTileSlots {
   /// Optional secondary widget (placed opposite the checkbox).
   final SlotOverride<RCheckboxListTileSecondaryContext>? secondary;
 }
-

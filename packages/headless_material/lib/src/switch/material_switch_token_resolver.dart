@@ -24,9 +24,9 @@ class MaterialSwitchTokenResolver implements RSwitchTokenResolver {
     BoxConstraints? constraints,
     RenderOverrides? overrides,
   }) {
-    final motionTheme = HeadlessThemeProvider.of(context)
-            ?.capability<HeadlessMotionTheme>() ??
-        HeadlessMotionTheme.material;
+    final motionTheme =
+        HeadlessThemeProvider.of(context)?.capability<HeadlessMotionTheme>() ??
+            HeadlessMotionTheme.material;
 
     final scheme = colorScheme ?? Theme.of(context).colorScheme;
     final q = HeadlessWidgetStateQuery(states);
@@ -81,8 +81,10 @@ class MaterialSwitchTokenResolver implements RSwitchTokenResolver {
       // - outline: outline (unselected), transparent (selected) handled in renderer
       activeTrackColor = scheme.primary;
       inactiveTrackColor = scheme.surfaceContainerHighest;
-      activeThumbColor = isInteraction ? scheme.primaryContainer : scheme.onPrimary;
-      inactiveThumbColor = isInteraction ? scheme.onSurfaceVariant : scheme.outline;
+      activeThumbColor =
+          isInteraction ? scheme.primaryContainer : scheme.onPrimary;
+      inactiveThumbColor =
+          isInteraction ? scheme.onSurfaceVariant : scheme.outline;
       trackOutlineColor = scheme.outline;
     }
 
@@ -123,8 +125,7 @@ class MaterialSwitchTokenResolver implements RSwitchTokenResolver {
           contractOverrides?.trackOutlineColor ?? trackOutlineColor,
       trackOutlineWidth:
           contractOverrides?.trackOutlineWidth ?? defaultTrackOutlineWidth,
-      activeTrackColor:
-          contractOverrides?.activeTrackColor ?? activeTrackColor,
+      activeTrackColor: contractOverrides?.activeTrackColor ?? activeTrackColor,
       inactiveTrackColor:
           contractOverrides?.inactiveTrackColor ?? inactiveTrackColor,
       thumbSizeUnselected:
@@ -135,8 +136,7 @@ class MaterialSwitchTokenResolver implements RSwitchTokenResolver {
           contractOverrides?.thumbSizePressed ?? defaultThumbSizePressed,
       thumbSizeTransition:
           contractOverrides?.thumbSizeTransition ?? defaultThumbSizeTransition,
-      activeThumbColor:
-          contractOverrides?.activeThumbColor ?? activeThumbColor,
+      activeThumbColor: contractOverrides?.activeThumbColor ?? activeThumbColor,
       inactiveThumbColor:
           contractOverrides?.inactiveThumbColor ?? inactiveThumbColor,
       thumbPadding: contractOverrides?.thumbPadding ?? defaultThumbPadding,

@@ -10,7 +10,8 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group('Autocomplete E2E (IME / composing)', () {
-    testWidgets('IT-IME-01: ArrowDown ignored while composing (menu stays closed)',
+    testWidgets(
+        'IT-IME-01: ArrowDown ignored while composing (menu stays closed)',
         (tester) async {
       await tester.pumpWidget(
         const AutocompleteTestApp(
@@ -177,4 +178,3 @@ void main() {
     });
   });
 }
-

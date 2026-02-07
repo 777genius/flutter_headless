@@ -14,7 +14,8 @@ final class CapabilityOverrides {
   final Map<Type, Object> _overrides;
 
   /// Empty overrides.
-  static const CapabilityOverrides empty = CapabilityOverrides._(<Type, Object>{});
+  static const CapabilityOverrides empty =
+      CapabilityOverrides._(<Type, Object>{});
 
   /// Convenience helper for the common case: one capability override.
   ///
@@ -27,7 +28,8 @@ final class CapabilityOverrides {
   ///
   /// This avoids exposing a `Map<Type, Object>` constructor, which would make
   /// it easy to accidentally store mismatched types and crash later on cast.
-  static CapabilityOverrides build(void Function(CapabilityOverridesBuilder b) f) {
+  static CapabilityOverrides build(
+      void Function(CapabilityOverridesBuilder b) f) {
     final b = CapabilityOverridesBuilder._();
     f(b);
     return CapabilityOverrides._(Map<Type, Object>.unmodifiable(b._map));
@@ -64,7 +66,8 @@ final class CapabilityOverrides {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is CapabilityOverrides && mapEquals(_overrides, other._overrides);
+    return other is CapabilityOverrides &&
+        mapEquals(_overrides, other._overrides);
   }
 
   @override
@@ -83,4 +86,3 @@ final class CapabilityOverridesBuilder {
     _map[T] = value;
   }
 }
-

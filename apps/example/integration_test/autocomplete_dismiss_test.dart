@@ -37,7 +37,8 @@ void main() {
       tester.expectMenuOpen();
     });
 
-    testWidgets('IT-DIS-02: Escape dismiss + input resets dismissed and reopens',
+    testWidgets(
+        'IT-DIS-02: Escape dismiss + input resets dismissed and reopens',
         (tester) async {
       await tester.pumpWidget(
         const AutocompleteTestApp(
@@ -66,4 +67,3 @@ void main() {
     });
   });
 }
-

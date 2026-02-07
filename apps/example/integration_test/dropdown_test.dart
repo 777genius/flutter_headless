@@ -52,7 +52,8 @@ void main() {
       tester.expectMenuClosed();
     });
 
-    testWidgets('IT-03: Tap on item selects it and closes menu', (tester) async {
+    testWidgets('IT-03: Tap on item selects it and closes menu',
+        (tester) async {
       await pumpDropdown(tester);
 
       tester.expectSelected(null);
@@ -210,7 +211,8 @@ void main() {
       );
     });
 
-    testWidgets('IT-14: Menu surface has no excess empty space', (tester) async {
+    testWidgets('IT-14: Menu surface has no excess empty space',
+        (tester) async {
       await pumpDropdown(tester);
 
       await tester.openDropdown();

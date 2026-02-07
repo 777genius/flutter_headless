@@ -65,6 +65,7 @@ final class AutocompleteConfig<T> {
   /// Whether this config requires a source controller for async operations.
   bool get needsSourceController {
     final s = source;
-    return s is RAutocompleteRemoteSource<T> || s is RAutocompleteHybridSource<T>;
+    return s is RAutocompleteRemoteSource<T> ||
+        s is RAutocompleteHybridSource<T>;
   }
 }

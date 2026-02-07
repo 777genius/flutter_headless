@@ -20,4 +20,3 @@ final class RCheckboxListTileMotionTokens {
   @override
   int get hashCode => stateChangeDuration.hashCode;
 }
-

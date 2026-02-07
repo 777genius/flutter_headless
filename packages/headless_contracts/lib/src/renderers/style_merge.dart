@@ -52,4 +52,3 @@ RenderOverrides? mergeOverridesWithFallbacks({
   if (base == null) return merged;
   return merged.merge(base);
 }
-

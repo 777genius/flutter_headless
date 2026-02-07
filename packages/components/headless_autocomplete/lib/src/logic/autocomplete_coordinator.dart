@@ -128,8 +128,8 @@ final class AutocompleteCoordinator<T> {
     );
     _selection.updateController(_inputOwner.controller);
 
-    final modeChanged =
-        prevConfig.selectionMode.runtimeType != config.selectionMode.runtimeType;
+    final modeChanged = prevConfig.selectionMode.runtimeType !=
+        config.selectionMode.runtimeType;
     if (modeChanged) {
       _selection.dispose();
       _selection = _createSelectionController();
@@ -209,14 +209,16 @@ final class AutocompleteCoordinator<T> {
   AutocompleteSelectionController<T> _createSelectionController() {
     final mode = _config.selectionMode;
     return switch (mode) {
-      AutocompleteSingleSelectionMode<T>() => AutocompleteSingleSelectionController(
+      AutocompleteSingleSelectionMode<T>() =>
+        AutocompleteSingleSelectionController(
           controller: _inputOwner.controller,
           itemAdapter: _config.itemAdapter,
           onSelected: mode.onSelected,
           clearQueryOnSelection: _config.clearQueryOnSelection,
           notifyStateChanged: _notifyStateChanged,
         ),
-      AutocompleteMultipleSelectionMode<T>() => AutocompleteMultipleSelectionController(
+      AutocompleteMultipleSelectionMode<T>() =>
+        AutocompleteMultipleSelectionController(
           controller: _inputOwner.controller,
           itemAdapter: _config.itemAdapter,
           selectedValues: mode.selectedValues,
@@ -329,7 +331,8 @@ final class AutocompleteCoordinator<T> {
       selectIndex: _selectIndex,
       isQueryEmpty: () {
         final value = controller.value;
-        final isComposing = value.composing.isValid && !value.composing.isCollapsed;
+        final isComposing =
+            value.composing.isValid && !value.composing.isCollapsed;
         if (isComposing) return false;
         if (!value.selection.isCollapsed) return false;
         return value.text.isEmpty;
@@ -569,7 +572,8 @@ final class AutocompleteCoordinator<T> {
     }
     // This behavior is primarily for single-select "committed selection"
     // cases (text equals chosen option). Multiple mode typically clears query.
-    if (_config.selectionMode is AutocompleteMultipleSelectionMode<T>) return false;
+    if (_config.selectionMode is AutocompleteMultipleSelectionMode<T>)
+      return false;
     return _selection.selectedIndex != null;
   }
 

@@ -38,7 +38,8 @@ class _SwitchTestScenarioState extends State<SwitchTestScenario> {
             key: SwitchTestKeys.switch_,
             value: _value,
             autofocus: widget.autofocus,
-            onChanged: widget.disabled ? null : (v) => setState(() => _value = v),
+            onChanged:
+                widget.disabled ? null : (v) => setState(() => _value = v),
           ),
           const SizedBox(height: 16),
           Text(
@@ -66,7 +67,8 @@ class SwitchListTileTestScenario extends StatefulWidget {
       _SwitchListTileTestScenarioState();
 }
 
-class _SwitchListTileTestScenarioState extends State<SwitchListTileTestScenario> {
+class _SwitchListTileTestScenarioState
+    extends State<SwitchListTileTestScenario> {
   late bool _value;
 
   @override
@@ -86,7 +88,8 @@ class _SwitchListTileTestScenarioState extends State<SwitchListTileTestScenario>
             child: RSwitchListTile(
               key: SwitchTestKeys.listTile,
               value: _value,
-              onChanged: widget.disabled ? null : (v) => setState(() => _value = v),
+              onChanged:
+                  widget.disabled ? null : (v) => setState(() => _value = v),
               title: const Text('Tile title'),
               subtitle: const Text('Tile subtitle'),
             ),

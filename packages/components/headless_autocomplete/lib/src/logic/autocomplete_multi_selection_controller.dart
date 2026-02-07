@@ -338,4 +338,3 @@ final class AutocompleteMultipleSelectionController<T>
     return null;
   }
 }
-

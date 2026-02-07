@@ -90,9 +90,8 @@ Widget buildNativeMaterialButton({
   FocusNode? focusNode,
 }) {
   final onPressed = enabled ? () {} : null;
-  final style = tapTargetSize != null
-      ? ButtonStyle(tapTargetSize: tapTargetSize)
-      : null;
+  final style =
+      tapTargetSize != null ? ButtonStyle(tapTargetSize: tapTargetSize) : null;
 
   final button = switch (variant) {
     RButtonVariant.filled => FilledButton(
@@ -145,4 +144,3 @@ Widget buildHeadlessButton({
     child: child,
   );
 }
-

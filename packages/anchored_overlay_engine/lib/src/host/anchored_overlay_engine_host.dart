@@ -326,10 +326,12 @@ final class _OutsideTapDismissLayer extends StatefulWidget {
   final Widget child;
 
   @override
-  State<_OutsideTapDismissLayer> createState() => _OutsideTapDismissLayerState();
+  State<_OutsideTapDismissLayer> createState() =>
+      _OutsideTapDismissLayerState();
 }
 
-final class _OutsideTapDismissLayerState extends State<_OutsideTapDismissLayer> {
+final class _OutsideTapDismissLayerState
+    extends State<_OutsideTapDismissLayer> {
   int? _downPointer;
   bool _downOnOverlay = false;
   Offset? _downPosition;
@@ -344,13 +346,15 @@ final class _OutsideTapDismissLayerState extends State<_OutsideTapDismissLayer> 
     GestureBinding.instance.hitTestInView(result, globalPosition, viewId);
     return result.path.any((entry) {
       final target = entry.target;
-      return target is RenderMetaData && identical(target.metaData, overlayHitTestTag);
+      return target is RenderMetaData &&
+          identical(target.metaData, overlayHitTestTag);
     });
   }
 
   void _handlePointerDown(PointerDownEvent e) {
     // Ignore non-primary mouse buttons.
-    if (e.kind == PointerDeviceKind.mouse && e.buttons != kPrimaryButton) return;
+    if (e.kind == PointerDeviceKind.mouse && e.buttons != kPrimaryButton)
+      return;
 
     _downPointer = e.pointer;
     _downOnOverlay = _hitIsOnOverlay(e.position);

@@ -46,4 +46,3 @@ HeadlessItemFeatures? _mergeFeatures(
   if (base == null) return additional;
   return base.merge(additional);
 }
-

@@ -15,8 +15,8 @@ class CupertinoCheckboxListTileRenderer implements RCheckboxListTileRenderer {
     final state = request.state;
     final spec = request.spec;
     final slots = request.slots;
-    final policy =
-        HeadlessThemeProvider.of(request.context)?.capability<HeadlessRendererPolicy>();
+    final policy = HeadlessThemeProvider.of(request.context)
+        ?.capability<HeadlessRendererPolicy>();
     assert(
       policy?.requireResolvedTokens != true || tokens != null,
       'CupertinoCheckboxListTileRenderer requires resolvedTokens when '
@@ -28,7 +28,8 @@ class CupertinoCheckboxListTileRenderer implements RCheckboxListTileRenderer {
 
     final effectiveTokens = tokens ??
         RCheckboxListTileResolvedTokens(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           minHeight: 44,
           horizontalGap: 12,
           verticalGap: 4,
@@ -123,15 +124,14 @@ class CupertinoCheckboxListTileRenderer implements RCheckboxListTileRenderer {
 
     final content = Row(
       textDirection: spec.textDirection,
-      crossAxisAlignment:
-          spec.isThreeLine ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+      crossAxisAlignment: spec.isThreeLine
+          ? CrossAxisAlignment.start
+          : CrossAxisAlignment.center,
       children: [
         if (leading != null) leading,
-        if (leading != null)
-          SizedBox(width: effectiveTokens.horizontalGap),
+        if (leading != null) SizedBox(width: effectiveTokens.horizontalGap),
         Expanded(child: textColumn),
-        if (trailing != null)
-          SizedBox(width: effectiveTokens.horizontalGap),
+        if (trailing != null) SizedBox(width: effectiveTokens.horizontalGap),
         if (trailing != null) trailing,
       ],
     );
@@ -187,4 +187,3 @@ class CupertinoCheckboxListTileRenderer implements RCheckboxListTileRenderer {
     return RCheckboxControlAffinity.leading;
   }
 }
-

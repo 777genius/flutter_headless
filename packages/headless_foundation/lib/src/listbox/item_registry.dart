@@ -68,4 +68,3 @@ final class _RegisteredItem {
   final ListboxItemMeta meta;
   final int order;
 }
-

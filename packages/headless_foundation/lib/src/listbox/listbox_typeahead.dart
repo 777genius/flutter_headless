@@ -42,4 +42,3 @@ final class ListboxTypeaheadBuffer {
     return _buffer;
   }
 }
-

@@ -21,13 +21,22 @@ class MaterialMenuItemTapRegion extends StatelessWidget {
       onTap: isDisabled ? null : onTap,
       overlayColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.pressed)) {
-          return Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.08);
+          return Theme.of(context)
+              .colorScheme
+              .onSurface
+              .withValues(alpha: 0.08);
         }
         if (states.contains(WidgetState.hovered)) {
-          return Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.04);
+          return Theme.of(context)
+              .colorScheme
+              .onSurface
+              .withValues(alpha: 0.04);
         }
         if (states.contains(WidgetState.focused)) {
-          return Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.06);
+          return Theme.of(context)
+              .colorScheme
+              .onSurface
+              .withValues(alpha: 0.06);
         }
         return null;
       }),
@@ -35,4 +44,3 @@ class MaterialMenuItemTapRegion extends StatelessWidget {
     );
   }
 }
-

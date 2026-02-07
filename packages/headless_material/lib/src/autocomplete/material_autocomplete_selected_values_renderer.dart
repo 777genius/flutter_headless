@@ -9,7 +9,8 @@ final class MaterialAutocompleteSelectedValuesRenderer
 
   @override
   Widget render(RAutocompleteSelectedValuesRenderRequest request) {
-    final override = request.overrides?.get<RAutocompleteSelectedValuesOverrides>();
+    final override =
+        request.overrides?.get<RAutocompleteSelectedValuesOverrides>();
     final presentation =
         override?.presentation ?? RAutocompleteSelectedValuesPresentation.chips;
 
@@ -80,4 +81,3 @@ final class _ChipSelectedValues extends StatelessWidget {
     );
   }
 }
-

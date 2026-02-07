@@ -298,10 +298,10 @@ void _reportUnconsumedOverrides(
       ..writeln('Provided: ${provided.join(', ')}')
       ..writeln('Consumed: ${consumed.join(', ')}')
       ..writeln('Unconsumed: ${unconsumed.join(', ')}')
-      ..write('Hint: Your preset may not support these overrides for this component.');
+      ..write(
+          'Hint: Your preset may not support these overrides for this component.');
 
     debugPrint(message.toString());
     return true;
   }());
 }
-

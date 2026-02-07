@@ -14,7 +14,8 @@ typedef HeadlessItemKey<T> = HeadlessFeatureKey<T>;
 final class HeadlessItemFeatures {
   const HeadlessItemFeatures._(this._values);
 
-  static const HeadlessItemFeatures empty = HeadlessItemFeatures._(<Symbol, Object>{});
+  static const HeadlessItemFeatures empty =
+      HeadlessItemFeatures._(<Symbol, Object>{});
 
   final Map<Symbol, Object> _values;
 

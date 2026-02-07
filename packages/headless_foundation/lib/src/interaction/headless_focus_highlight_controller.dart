@@ -11,7 +11,8 @@ import 'headless_focus_highlight_policy.dart';
 /// - Renderers receive `showFocusHighlight` as a plain flag (no global reads).
 final class HeadlessFocusHighlightController extends ChangeNotifier {
   HeadlessFocusHighlightController({
-    HeadlessFocusHighlightPolicy policy = const HeadlessFlutterFocusHighlightPolicy(),
+    HeadlessFocusHighlightPolicy policy =
+        const HeadlessFlutterFocusHighlightPolicy(),
     FocusManager? focusManager,
   })  : _policy = policy,
         _focusManager = focusManager ?? FocusManager.instance,
@@ -40,4 +41,3 @@ final class HeadlessFocusHighlightController extends ChangeNotifier {
     super.dispose();
   }
 }
-

@@ -21,4 +21,3 @@ Color resolveCupertinoSwitchFocusColor({
 
   return CupertinoDynamicColor.resolve(derived, context);
 }
-

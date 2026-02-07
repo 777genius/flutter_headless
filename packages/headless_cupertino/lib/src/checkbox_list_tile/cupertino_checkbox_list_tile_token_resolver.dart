@@ -19,9 +19,9 @@ class CupertinoCheckboxListTileTokenResolver
     BoxConstraints? constraints,
     RenderOverrides? overrides,
   }) {
-    final motionTheme = HeadlessThemeProvider.of(context)
-            ?.capability<HeadlessMotionTheme>() ??
-        HeadlessMotionTheme.cupertino;
+    final motionTheme =
+        HeadlessThemeProvider.of(context)?.capability<HeadlessMotionTheme>() ??
+            HeadlessMotionTheme.cupertino;
 
     final q = HeadlessWidgetStateQuery(states);
     final tileOverrides = overrides?.get<RCheckboxListTileOverrides>();
@@ -31,8 +31,7 @@ class CupertinoCheckboxListTileTokenResolver
 
     final textTheme = CupertinoTheme.of(context).textTheme;
     final baseTitle = textTheme.textStyle;
-    final baseSubtitle =
-        textTheme.textStyle.copyWith(fontSize: 12);
+    final baseSubtitle = textTheme.textStyle.copyWith(fontSize: 12);
 
     Color titleColor = isDark ? CupertinoColors.white : CupertinoColors.black;
     Color subtitleColor = CupertinoColors.secondaryLabel;
@@ -57,8 +56,9 @@ class CupertinoCheckboxListTileTokenResolver
     final defaultPadding = const EdgeInsetsDirectional.only(start: 20, end: 14);
 
     return RCheckboxListTileResolvedTokens(
-      contentPadding:
-          tileOverrides?.contentPadding ?? spec.contentPadding ?? defaultPadding,
+      contentPadding: tileOverrides?.contentPadding ??
+          spec.contentPadding ??
+          defaultPadding,
       minHeight: tileOverrides?.minHeight ?? minHeight,
       horizontalGap: tileOverrides?.horizontalGap ?? 16,
       verticalGap: tileOverrides?.verticalGap ?? 3,
@@ -85,4 +85,3 @@ class CupertinoCheckboxListTileTokenResolver
     return base < minFromConstraints ? minFromConstraints : base;
   }
 }
-

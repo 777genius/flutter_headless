@@ -150,7 +150,8 @@ void main() {
               );
 
               // Pressed should modify background
-              expect(pressedTokens.backgroundColor, isNot(normalTokens.backgroundColor));
+              expect(pressedTokens.backgroundColor,
+                  isNot(normalTokens.backgroundColor));
 
               return const SizedBox.shrink();
             },
@@ -180,7 +181,8 @@ void main() {
               final smallPadding = smallTokens.padding as EdgeInsets;
               final largePadding = largeTokens.padding as EdgeInsets;
 
-              expect(largePadding.horizontal, greaterThan(smallPadding.horizontal));
+              expect(largePadding.horizontal,
+                  greaterThan(smallPadding.horizontal));
 
               return const SizedBox.shrink();
             },
@@ -189,7 +191,8 @@ void main() {
       );
     });
 
-    testWidgets('material overrides win over contract overrides', (tester) async {
+    testWidgets('material overrides win over contract overrides',
+        (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Builder(
@@ -274,7 +277,8 @@ void main() {
       );
     });
 
-    testWidgets('deterministic: same inputs produce same outputs', (tester) async {
+    testWidgets('deterministic: same inputs produce same outputs',
+        (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Builder(

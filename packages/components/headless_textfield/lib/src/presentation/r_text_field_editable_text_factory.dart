@@ -38,15 +38,15 @@ final class RTextFieldEditableTextFactory {
     RTextFieldResolvedTokens? resolvedTokens,
   }) {
     final selectionStyle = DefaultSelectionStyle.of(context);
-    final textStyle = resolvedTokens?.textStyle ??
-        DefaultTextStyle.of(context).style;
+    final textStyle =
+        resolvedTokens?.textStyle ?? DefaultTextStyle.of(context).style;
     final textColor = resolvedTokens?.textColor;
     final cursorColor = resolvedTokens?.cursorColor ??
         selectionStyle.cursorColor ??
         DefaultTextStyle.of(context).style.color ??
         const Color(0xFF000000);
-    final selectionColor = resolvedTokens?.selectionColor ??
-        selectionStyle.selectionColor;
+    final selectionColor =
+        resolvedTokens?.selectionColor ?? selectionStyle.selectionColor;
 
     final effectiveStyle = textStyle.copyWith(color: textColor);
 
@@ -75,8 +75,7 @@ final class RTextFieldEditableTextFactory {
           keyboardAppearance ?? MediaQuery.platformBrightnessOf(context),
       scrollPadding: scrollPadding,
       dragStartBehavior: dragStartBehavior,
-      enableInteractiveSelection:
-          enableInteractiveSelection ?? !obscureText,
+      enableInteractiveSelection: enableInteractiveSelection ?? !obscureText,
       inputFormatters: inputFormatters,
       onChanged: onChanged,
       onSubmitted: onSubmitted,

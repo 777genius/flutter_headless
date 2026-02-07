@@ -22,4 +22,3 @@ final class RCheckboxMotionTokens {
   @override
   int get hashCode => stateChangeDuration.hashCode;
 }
-

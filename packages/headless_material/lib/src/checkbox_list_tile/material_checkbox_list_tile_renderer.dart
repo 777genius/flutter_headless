@@ -94,7 +94,8 @@ class MaterialCheckboxListTileRenderer implements RCheckboxListTileRenderer {
         ? secondary
         : checkboxBox;
 
-    final materialOverrides = request.overrides?.get<MaterialListTileOverrides>();
+    final materialOverrides =
+        request.overrides?.get<MaterialListTileOverrides>();
     final titleAlignment =
         materialOverrides?.titleAlignment ?? defaults?.titleAlignment;
 
@@ -194,4 +195,3 @@ class MaterialCheckboxListTileRenderer implements RCheckboxListTileRenderer {
     return RCheckboxControlAffinity.leading;
   }
 }
-

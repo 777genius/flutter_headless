@@ -273,7 +273,8 @@ class _RSwitchListTileState extends State<RSwitchListTile> {
     final switchTokenResolver = theme.capability<RSwitchTokenResolver>();
     final switchTokens = switchTokenResolver?.resolve(
       context: context,
-      spec: RSwitchSpec(value: widget.value, semanticLabel: widget.semanticLabel),
+      spec:
+          RSwitchSpec(value: widget.value, semanticLabel: widget.semanticLabel),
       states: switchState.toWidgetStates(),
       constraints: BoxConstraints(
         minWidth: WcagConstants.kMinTouchTargetSize.width,
@@ -303,10 +304,11 @@ class _RSwitchListTileState extends State<RSwitchListTile> {
         if (mounted) setState(() => _switchHovered = true);
       },
       onExit: (_) {
-        if (mounted) setState(() {
-          _switchHovered = false;
-          _switchPressed = false;
-        });
+        if (mounted)
+          setState(() {
+            _switchHovered = false;
+            _switchPressed = false;
+          });
       },
       cursor: widget.isDisabled
           ? SystemMouseCursors.forbidden

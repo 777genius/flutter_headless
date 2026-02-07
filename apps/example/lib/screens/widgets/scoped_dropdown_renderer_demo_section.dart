@@ -81,9 +81,8 @@ final class DemoScopedDropdownRenderer implements RDropdownButtonRenderer {
       children: [
         DecoratedBox(
           decoration: BoxDecoration(
-            borderRadius:
-                request.resolvedTokens?.trigger.borderRadius ??
-                    BorderRadius.circular(12),
+            borderRadius: request.resolvedTokens?.trigger.borderRadius ??
+                BorderRadius.circular(12),
             border: Border.all(
               color: Colors.teal,
               width: 2,
@@ -116,4 +115,3 @@ final class DemoScopedDropdownRenderer implements RDropdownButtonRenderer {
     );
   }
 }
-

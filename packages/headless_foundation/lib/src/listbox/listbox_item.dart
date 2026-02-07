@@ -14,4 +14,3 @@ final class ListboxItem {
   final String label;
   final bool isDisabled;
 }
-

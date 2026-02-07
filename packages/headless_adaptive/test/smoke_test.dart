@@ -17,4 +17,3 @@ void main() {
     expect(find.byType(HeadlessAdaptiveApp), findsOneWidget);
   });
 }
-

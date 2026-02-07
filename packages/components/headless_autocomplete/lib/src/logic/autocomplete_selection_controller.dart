@@ -104,8 +104,9 @@ final class AutocompleteSingleSelectionController<T>
   int? get highlightedIndex => _indexById[_listbox.highlightedId];
 
   @override
-  Iterable<ListboxItemId> get selectedIds =>
-      _selectedId == null ? const <ListboxItemId>[] : <ListboxItemId>[_selectedId!];
+  Iterable<ListboxItemId> get selectedIds => _selectedId == null
+      ? const <ListboxItemId>[]
+      : <ListboxItemId>[_selectedId!];
 
   @override
   void setSelectedIdsOptimistic(Set<ListboxItemId> ids) {}
@@ -161,7 +162,8 @@ final class AutocompleteSingleSelectionController<T>
         // Material-like behavior for editable combobox:
         // keep the committed selection while the user is narrowing by prefix.
         // This prevents "checkmark disappears on first character" regressions.
-        final keepSelected = committed.toLowerCase().startsWith(text.toLowerCase());
+        final keepSelected =
+            committed.toLowerCase().startsWith(text.toLowerCase());
         if (!keepSelected) {
           _selectedId = null;
           _lastSelectedText = null;

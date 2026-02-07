@@ -76,4 +76,3 @@ class _CupertinoPressableOpacityState extends State<CupertinoPressableOpacity> {
     );
   }
 }
-

@@ -81,7 +81,8 @@ void main() {
                 RDropdownMenuRenderRequest(
                   context: context,
                   spec: const RDropdownButtonSpec(),
-                  state: const RDropdownButtonState(overlayPhase: ROverlayPhase.open),
+                  state: const RDropdownButtonState(
+                      overlayPhase: ROverlayPhase.open),
                   items: items,
                   commands: RDropdownCommands(
                     open: () {},
@@ -104,7 +105,8 @@ void main() {
     expect(selectCount, 1);
   });
 
-  testWidgets('SafeDropdownRenderer does not select disabled items', (tester) async {
+  testWidgets('SafeDropdownRenderer does not select disabled items',
+      (tester) async {
     var selectCount = 0;
     final items = [
       HeadlessListItemModel(
@@ -131,7 +133,8 @@ void main() {
                 RDropdownMenuRenderRequest(
                   context: context,
                   spec: const RDropdownButtonSpec(),
-                  state: const RDropdownButtonState(overlayPhase: ROverlayPhase.open),
+                  state: const RDropdownButtonState(
+                      overlayPhase: ROverlayPhase.open),
                   items: items,
                   commands: RDropdownCommands(
                     open: () {},

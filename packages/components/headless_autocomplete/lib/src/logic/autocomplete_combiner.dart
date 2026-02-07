@@ -63,10 +63,10 @@ final class AutocompleteCombiner<T> {
     final localSection = showSections ? RAutocompleteSectionId.local : null;
     final remoteSection = showSections ? RAutocompleteSectionId.remote : null;
 
-    HeadlessItemFeatures localFeatures() =>
-        createItemFeatures(source: RAutocompleteItemSource.local, sectionId: localSection);
-    HeadlessItemFeatures remoteFeatures() =>
-        createItemFeatures(source: RAutocompleteItemSource.remote, sectionId: remoteSection);
+    HeadlessItemFeatures localFeatures() => createItemFeatures(
+        source: RAutocompleteItemSource.local, sectionId: localSection);
+    HeadlessItemFeatures remoteFeatures() => createItemFeatures(
+        source: RAutocompleteItemSource.remote, sectionId: remoteSection);
 
     if (_policy.remoteOnlyWhenLocalEmpty && local.isNotEmpty) {
       final lf = localFeatures();
@@ -122,9 +122,8 @@ final class AutocompleteCombiner<T> {
       }
     }
 
-    final (localCount, remoteCount) = preferLocal
-        ? (firstCount, secondCount)
-        : (secondCount, firstCount);
+    final (localCount, remoteCount) =
+        preferLocal ? (firstCount, secondCount) : (secondCount, firstCount);
 
     return AutocompleteCombineResult(
       combined: withFeatures.map((r) => r.$1).toList(),

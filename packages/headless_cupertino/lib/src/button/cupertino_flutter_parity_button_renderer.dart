@@ -164,8 +164,8 @@ class _CupertinoParityButtonShellState
                     context,
                   )));
 
-    final BorderRadius borderRadius =
-        overrides?.borderRadius ?? BorderRadius.circular(_borderRadius(sizeStyle));
+    final BorderRadius borderRadius = overrides?.borderRadius ??
+        BorderRadius.circular(_borderRadius(sizeStyle));
 
     final Color outlinedBorderColor = overrides?.borderColor ??
         (enabled
@@ -179,32 +179,34 @@ class _CupertinoParityButtonShellState
       (backgroundColor ?? CupertinoColors.activeBlue).withValues(
         alpha: kCupertinoFocusColorOpacity,
       ),
-    ).withLightness(kCupertinoFocusColorBrightness)
+    )
+        .withLightness(kCupertinoFocusColorBrightness)
         .withSaturation(kCupertinoFocusColorSaturation)
         .toColor();
 
     final ShapeBorder shape = RoundedSuperellipseBorder(
-      side: enabled && request.state.isFocused && request.state.showFocusHighlight
-          ? BorderSide(
-              color: effectiveFocusOutlineColor,
-              width: 3.5,
-              strokeAlign: BorderSide.strokeAlignOutside,
-            )
-          : isOutlined
+      side:
+          enabled && request.state.isFocused && request.state.showFocusHighlight
               ? BorderSide(
-                  color: outlinedBorderColor,
-                  width: 1.0,
-                  strokeAlign: BorderSide.strokeAlignInside,
+                  color: effectiveFocusOutlineColor,
+                  width: 3.5,
+                  strokeAlign: BorderSide.strokeAlignOutside,
                 )
-              : BorderSide.none,
+              : isOutlined
+                  ? BorderSide(
+                      color: outlinedBorderColor,
+                      width: 1.0,
+                      strokeAlign: BorderSide.strokeAlignInside,
+                    )
+                  : BorderSide.none,
       borderRadius: borderRadius,
     );
 
     final TextStyle baseTextStyle = sizeStyle == CupertinoButtonSize.small
         ? themeData.textTheme.actionSmallTextStyle
         : themeData.textTheme.actionTextStyle;
-    final TextStyle textStyle =
-        (overrides?.textStyle ?? baseTextStyle).copyWith(color: foregroundColor);
+    final TextStyle textStyle = (overrides?.textStyle ?? baseTextStyle)
+        .copyWith(color: foregroundColor);
 
     final IconThemeData iconTheme = IconTheme.of(context).copyWith(
       color: foregroundColor,

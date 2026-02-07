@@ -55,7 +55,9 @@ final class RTextFieldRequestComposer {
   }) {
     if (widget.obscureText) return null;
     if (widget.errorText == null || widget.errorText!.isEmpty) return text;
-    return text.isEmpty ? 'Error: ${widget.errorText}' : '$text, Error: ${widget.errorText}';
+    return text.isEmpty
+        ? 'Error: ${widget.errorText}'
+        : '$text, Error: ${widget.errorText}';
   }
 
   Widget wrapWithInteraction({
@@ -96,4 +98,3 @@ final class RTextFieldRequestComposer {
     return content;
   }
 }
-

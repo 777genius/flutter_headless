@@ -86,10 +86,7 @@ void main() {
       await tester.pumpWidget(
         const Directionality(
           textDirection: TextDirection.ltr,
-          child: GlassContainer(
-            borderRadius: customRadius,
-            child: SizedBox(),
-          ),
+          child: GlassContainer(borderRadius: customRadius, child: SizedBox()),
         ),
       );
 
@@ -103,10 +100,7 @@ void main() {
       await tester.pumpWidget(
         const Directionality(
           textDirection: TextDirection.ltr,
-          child: GlassContainer(
-            blurSigma: customSigma,
-            child: SizedBox(),
-          ),
+          child: GlassContainer(blurSigma: customSigma, child: SizedBox()),
         ),
       );
 

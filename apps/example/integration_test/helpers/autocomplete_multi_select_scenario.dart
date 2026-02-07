@@ -97,4 +97,3 @@ class _AutocompleteMultiSelectScenarioState
     return items.where((item) => item.toLowerCase().contains(query));
   }
 }
-

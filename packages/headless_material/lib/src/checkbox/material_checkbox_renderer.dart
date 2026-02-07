@@ -86,8 +86,10 @@ class MaterialCheckboxRenderer implements RCheckboxRenderer {
 
     Widget result = ConstrainedBox(
       constraints: BoxConstraints(
-        minWidth: request.constraints?.minWidth ?? tokens.minTapTargetSize.width,
-        minHeight: request.constraints?.minHeight ?? tokens.minTapTargetSize.height,
+        minWidth:
+            request.constraints?.minWidth ?? tokens.minTapTargetSize.width,
+        minHeight:
+            request.constraints?.minHeight ?? tokens.minTapTargetSize.height,
       ),
       child: Center(child: box),
     );
@@ -177,4 +179,3 @@ class _IndeterminateMark extends StatelessWidget {
     );
   }
 }
-

@@ -16,4 +16,3 @@ abstract interface class RCheckboxTokenResolver {
     RenderOverrides? overrides,
   });
 }
-

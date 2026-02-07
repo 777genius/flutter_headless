@@ -6,4 +6,3 @@ export 'package:headless_contracts/headless_contracts.dart'
         RTextFieldSlots;
 
 export 'src/presentation/r_text_field.dart';
-

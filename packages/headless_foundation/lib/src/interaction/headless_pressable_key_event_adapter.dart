@@ -44,4 +44,3 @@ HeadlessPressableKeyIntent? _toIntent(KeyEvent event) {
 
   return null;
 }
-

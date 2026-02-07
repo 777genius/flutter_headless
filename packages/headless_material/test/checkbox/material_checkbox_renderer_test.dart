@@ -20,7 +20,8 @@ void main() {
       pressOverlayColor: Color(0x1F000000),
       pressOpacity: 1.0,
       minTapTargetSize: Size(48, 48),
-      motion: RCheckboxMotionTokens(stateChangeDuration: Duration(milliseconds: 120)),
+      motion: RCheckboxMotionTokens(
+          stateChangeDuration: Duration(milliseconds: 120)),
     );
 
     await tester.pumpWidget(
@@ -54,4 +55,3 @@ void main() {
     expect(find.byIcon(Icons.check), findsOneWidget);
   });
 }
-

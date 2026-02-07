@@ -37,57 +37,59 @@ class ThemeModeSwitch extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-        // Material/Cupertino switch
-        Text(
-          'Material',
-          style: TextStyle(
-            fontWeight: scope.isCupertino ? FontWeight.normal : FontWeight.bold,
-            fontSize: 12,
+          // Material/Cupertino switch
+          Text(
+            'Material',
+            style: TextStyle(
+              fontWeight:
+                  scope.isCupertino ? FontWeight.normal : FontWeight.bold,
+              fontSize: 12,
+            ),
           ),
-        ),
-        const SizedBox(width: 4),
-        Listener(
-          behavior: HitTestBehavior.translucent,
-          onPointerDown: (_) => _closeActiveTextInputSession(),
-          child: RSwitch(
-            value: scope.isCupertino,
-            onChanged: (_) {
-              _closeActiveTextInputSession();
-              // Give the engine a frame to fully close the editing session
-              // before rebuilding the app with a different preset.
-              _schedule(scope.toggleMode);
-            },
-            semanticLabel: 'Switch between Material and Cupertino theme',
+          const SizedBox(width: 4),
+          Listener(
+            behavior: HitTestBehavior.translucent,
+            onPointerDown: (_) => _closeActiveTextInputSession(),
+            child: RSwitch(
+              value: scope.isCupertino,
+              onChanged: (_) {
+                _closeActiveTextInputSession();
+                // Give the engine a frame to fully close the editing session
+                // before rebuilding the app with a different preset.
+                _schedule(scope.toggleMode);
+              },
+              semanticLabel: 'Switch between Material and Cupertino theme',
+            ),
           ),
-        ),
-        const SizedBox(width: 4),
-        Text(
-          'Cupertino',
-          style: TextStyle(
-            fontWeight: scope.isCupertino ? FontWeight.bold : FontWeight.normal,
-            fontSize: 12,
+          const SizedBox(width: 4),
+          Text(
+            'Cupertino',
+            style: TextStyle(
+              fontWeight:
+                  scope.isCupertino ? FontWeight.bold : FontWeight.normal,
+              fontSize: 12,
+            ),
           ),
-        ),
-        const SizedBox(width: 24),
-        // Light/Dark switch with thumbIcon
-        Listener(
-          behavior: HitTestBehavior.translucent,
-          onPointerDown: (_) => _closeActiveTextInputSession(),
-          child: RSwitch(
-            value: scope.isDark,
-            onChanged: (_) {
-              _closeActiveTextInputSession();
-              _schedule(scope.toggleBrightness);
-            },
-            semanticLabel: 'Switch between light and dark theme',
-            thumbIcon: WidgetStateProperty.resolveWith((states) {
-              if (states.contains(WidgetState.selected)) {
-                return const Icon(Icons.dark_mode, size: 16);
-              }
-              return const Icon(Icons.light_mode, size: 16);
-            }),
+          const SizedBox(width: 24),
+          // Light/Dark switch with thumbIcon
+          Listener(
+            behavior: HitTestBehavior.translucent,
+            onPointerDown: (_) => _closeActiveTextInputSession(),
+            child: RSwitch(
+              value: scope.isDark,
+              onChanged: (_) {
+                _closeActiveTextInputSession();
+                _schedule(scope.toggleBrightness);
+              },
+              semanticLabel: 'Switch between light and dark theme',
+              thumbIcon: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.selected)) {
+                  return const Icon(Icons.dark_mode, size: 16);
+                }
+                return const Icon(Icons.light_mode, size: 16);
+              }),
+            ),
           ),
-        ),
         ],
       ),
     );

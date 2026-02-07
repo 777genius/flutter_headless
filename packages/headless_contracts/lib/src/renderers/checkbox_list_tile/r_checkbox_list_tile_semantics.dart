@@ -31,4 +31,3 @@ final class RCheckboxListTileSemantics {
   @override
   int get hashCode => Object.hash(label, isEnabled, value, isTristate);
 }
-

@@ -99,7 +99,8 @@ class _TestCheckboxTokenResolver implements RCheckboxTokenResolver {
       pressOverlayColor: Color(0x1F000000),
       pressOpacity: 1.0,
       minTapTargetSize: Size(48, 48),
-      motion: RCheckboxMotionTokens(stateChangeDuration: Duration(milliseconds: 120)),
+      motion: RCheckboxMotionTokens(
+          stateChangeDuration: Duration(milliseconds: 120)),
     );
   }
 }
@@ -148,7 +149,8 @@ Widget _buildTestWidget({
 
 void main() {
   group('RCheckboxListTile', () {
-    testWidgets('throws MissingCapabilityException when no renderer is provided',
+    testWidgets(
+        'throws MissingCapabilityException when no renderer is provided',
         (tester) async {
       await tester.pumpWidget(
         _buildTestWidget(
@@ -254,7 +256,8 @@ void main() {
       expect(find.byKey(const ValueKey('checkbox-indicator')), findsOneWidget);
     });
 
-    testWidgets('token resolver receives WidgetState.selected/error', (tester) async {
+    testWidgets('token resolver receives WidgetState.selected/error',
+        (tester) async {
       final checkboxRenderer = _TestCheckboxRenderer();
       final listTileRenderer = _TestListTileRenderer();
       final checkboxResolver = _TestCheckboxTokenResolver();
@@ -279,11 +282,13 @@ void main() {
       );
 
       expect(listTileResolver.lastStates, isNotNull);
-      expect(listTileResolver.lastStates!.contains(WidgetState.selected), isTrue);
+      expect(
+          listTileResolver.lastStates!.contains(WidgetState.selected), isTrue);
       expect(listTileResolver.lastStates!.contains(WidgetState.error), isTrue);
 
       expect(checkboxResolver.lastStates, isNotNull);
-      expect(checkboxResolver.lastStates!.contains(WidgetState.selected), isTrue);
+      expect(
+          checkboxResolver.lastStates!.contains(WidgetState.selected), isTrue);
       expect(checkboxResolver.lastStates!.contains(WidgetState.error), isTrue);
     });
 
@@ -317,7 +322,8 @@ void main() {
       );
     });
 
-    testWidgets('explicit overrides win over style sugar (POLA)', (tester) async {
+    testWidgets('explicit overrides win over style sugar (POLA)',
+        (tester) async {
       final checkboxRenderer = _TestCheckboxRenderer();
       final listTileRenderer = _TestListTileRenderer();
       final listTileResolver = _TestListTileTokenResolver();
@@ -352,4 +358,3 @@ void main() {
     });
   });
 }
-

@@ -23,7 +23,8 @@ void main() {
               );
 
               // Filled uses active blue background.
-              expect(tokens.backgroundColor, isNot(CupertinoColors.transparent));
+              expect(
+                  tokens.backgroundColor, isNot(CupertinoColors.transparent));
               expect(tokens.borderColor, CupertinoColors.transparent);
               expect(tokens.padding, isNotNull);
               expect(tokens.borderRadius, isNotNull);
@@ -49,7 +50,8 @@ void main() {
               );
 
               // Tonal uses translucent primary background (alpha < 1.0).
-              expect(tokens.backgroundColor, isNot(CupertinoColors.transparent));
+              expect(
+                  tokens.backgroundColor, isNot(CupertinoColors.transparent));
               expect(tokens.backgroundColor.a, lessThan(1.0));
               expect(tokens.borderColor, CupertinoColors.transparent);
               expect(tokens.foregroundColor, isNot(CupertinoColors.white));
@@ -75,7 +77,8 @@ void main() {
               // Text uses transparent bg, transparent border, primary foreground.
               expect(tokens.backgroundColor, CupertinoColors.transparent);
               expect(tokens.borderColor, CupertinoColors.transparent);
-              expect(tokens.foregroundColor, isNot(CupertinoColors.transparent));
+              expect(
+                  tokens.foregroundColor, isNot(CupertinoColors.transparent));
 
               return const SizedBox.shrink();
             },
@@ -188,7 +191,8 @@ void main() {
       );
     });
 
-    testWidgets('cupertino overrides win over contract overrides', (tester) async {
+    testWidgets('cupertino overrides win over contract overrides',
+        (tester) async {
       await tester.pumpWidget(
         CupertinoApp(
           home: Builder(

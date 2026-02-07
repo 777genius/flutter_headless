@@ -33,4 +33,3 @@ final class RDropdownCommands {
   /// Complete close after exit animation (removes overlay).
   final VoidCallback completeClose;
 }
-

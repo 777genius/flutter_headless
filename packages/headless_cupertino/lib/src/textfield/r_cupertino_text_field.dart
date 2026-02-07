@@ -257,9 +257,8 @@ class RCupertinoTextField extends StatelessWidget {
 
     // Merge overrides
     final baseOverrides = RenderOverrides.only(cupertinoOverrides);
-    final effectiveOverrides = overrides != null
-        ? baseOverrides.merge(overrides!)
-        : baseOverrides;
+    final effectiveOverrides =
+        overrides != null ? baseOverrides.merge(overrides!) : baseOverrides;
 
     // Build slots
     final slots = (prefix != null || suffix != null)

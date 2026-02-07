@@ -101,7 +101,8 @@ class MaterialSwitchListTileRenderer implements RSwitchListTileRenderer {
         ? secondary
         : switchBox;
 
-    final materialOverrides = request.overrides?.get<MaterialListTileOverrides>();
+    final materialOverrides =
+        request.overrides?.get<MaterialListTileOverrides>();
     final titleAlignment =
         materialOverrides?.titleAlignment ?? defaults?.titleAlignment;
 

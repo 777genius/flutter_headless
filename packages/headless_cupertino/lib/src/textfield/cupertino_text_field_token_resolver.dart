@@ -81,12 +81,11 @@ class CupertinoTextFieldTokenResolver implements RTextFieldTokenResolver {
 
     return RTextFieldResolvedTokens(
       containerPadding: padding,
-      containerBackgroundColor:
-          textFieldOverrides?.containerBackgroundColor ??
-              _resolveBackgroundColor(
-                isBorderless: isBorderless,
-                fallback: colors.background,
-              ),
+      containerBackgroundColor: textFieldOverrides?.containerBackgroundColor ??
+          _resolveBackgroundColor(
+            isBorderless: isBorderless,
+            fallback: colors.background,
+          ),
       containerBorderColor:
           textFieldOverrides?.containerBorderColor ?? colors.border,
       containerBorderRadius: borderRadius,
@@ -138,9 +137,8 @@ class CupertinoTextFieldTokenResolver implements RTextFieldTokenResolver {
     required bool isBorderless,
   }) {
     // Background
-    final background = isDark
-        ? CupertinoColors.darkBackgroundGray
-        : CupertinoColors.white;
+    final background =
+        isDark ? CupertinoColors.darkBackgroundGray : CupertinoColors.white;
 
     // Border
     Color border;
@@ -149,9 +147,7 @@ class CupertinoTextFieldTokenResolver implements RTextFieldTokenResolver {
     } else if (isError) {
       border = CupertinoColors.systemRed;
     } else if (isFocused) {
-      border = isDark
-          ? CupertinoColors.systemBlue
-          : CupertinoColors.activeBlue;
+      border = isDark ? CupertinoColors.systemBlue : CupertinoColors.activeBlue;
     } else {
       border = isDark
           ? const Color(0xFF3D3D3D) // systemGrey4 dark
@@ -159,19 +155,14 @@ class CupertinoTextFieldTokenResolver implements RTextFieldTokenResolver {
     }
 
     // Text colors
-    final text = isDark
-        ? CupertinoColors.white
-        : CupertinoColors.black;
-    final placeholder = isDark
-        ? CupertinoColors.systemGrey
-        : CupertinoColors.placeholderText;
-    final label = isDark
-        ? CupertinoColors.systemGrey
-        : CupertinoColors.secondaryLabel;
+    final text = isDark ? CupertinoColors.white : CupertinoColors.black;
+    final placeholder =
+        isDark ? CupertinoColors.systemGrey : CupertinoColors.placeholderText;
+    final label =
+        isDark ? CupertinoColors.systemGrey : CupertinoColors.secondaryLabel;
     final helper = label;
-    final icon = isDark
-        ? CupertinoColors.systemGrey
-        : CupertinoColors.secondaryLabel;
+    final icon =
+        isDark ? CupertinoColors.systemGrey : CupertinoColors.secondaryLabel;
 
     return _TextFieldColors(
       background: background,

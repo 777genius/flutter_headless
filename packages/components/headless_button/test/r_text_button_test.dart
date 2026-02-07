@@ -193,7 +193,8 @@ void main() {
       final semantics = tester.getSemantics(find.byType(RTextButton));
       expect(SemanticsUtils.hasFlag(semantics, SemanticsFlag.isButton), isTrue);
       // Disabled buttons don't have "enabled" flag
-      expect(SemanticsUtils.hasFlag(semantics, SemanticsFlag.isEnabled), isFalse);
+      expect(
+          SemanticsUtils.hasFlag(semantics, SemanticsFlag.isEnabled), isFalse);
     });
 
     testWidgets('semantic label is applied when provided', (tester) async {
@@ -230,7 +231,8 @@ void main() {
         await tester.pumpAndSettle();
 
         final semanticsFinder = find
-            .descendant(of: find.byType(RTextButton), matching: find.byType(Semantics))
+            .descendant(
+                of: find.byType(RTextButton), matching: find.byType(Semantics))
             .first;
         final node = tester.getSemantics(semanticsFinder);
         expect(SemanticsUtils.hasAction(node, SemanticsAction.tap), isTrue);
@@ -571,7 +573,8 @@ void main() {
       addTearDown(gesture.removePointer);
 
       // Move to the button center
-      await gesture.addPointer(location: tester.getCenter(find.byType(RTextButton)));
+      await gesture.addPointer(
+          location: tester.getCenter(find.byType(RTextButton)));
       await tester.pumpAndSettle();
 
       expect(renderer.lastRequest?.state.isHovered, isTrue);
@@ -704,7 +707,8 @@ void main() {
   });
 
   group('Token resolution (I08 flow)', () {
-    testWidgets('resolvedTokens are passed to renderer when token resolver is provided',
+    testWidgets(
+        'resolvedTokens are passed to renderer when token resolver is provided',
         (tester) async {
       final renderer = _TestButtonRenderer();
       final resolver = _TestButtonTokenResolver(
@@ -723,7 +727,8 @@ void main() {
       expect(renderer.lastRequest?.resolvedTokens, isNotNull);
     });
 
-    testWidgets('per-instance overrides flow into resolver and affect resolvedTokens',
+    testWidgets(
+        'per-instance overrides flow into resolver and affect resolvedTokens',
         (tester) async {
       final renderer = _TestButtonRenderer();
       final resolver = _TestButtonTokenResolver(
@@ -823,7 +828,8 @@ void main() {
 
       final before = renderer.lastRequest?.resolvedTokens?.backgroundColor;
 
-      final gesture = await tester.startGesture(tester.getCenter(find.byType(RTextButton)));
+      final gesture =
+          await tester.startGesture(tester.getCenter(find.byType(RTextButton)));
       await tester.pump();
 
       final during = renderer.lastRequest?.resolvedTokens?.backgroundColor;

@@ -38,7 +38,8 @@ class _ThemeWithCapability extends HeadlessTheme {
 
 void main() {
   group('T1 — Missing capability throws standardized error', () {
-    test('requireCapability throws MissingCapabilityException when capability is null',
+    test(
+        'requireCapability throws MissingCapabilityException when capability is null',
         () {
       const theme = _EmptyTheme();
 

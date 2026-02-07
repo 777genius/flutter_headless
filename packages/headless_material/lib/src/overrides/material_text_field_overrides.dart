@@ -55,4 +55,3 @@ final class MaterialTextFieldOverrides {
       errorBorder != null ||
       focusedErrorBorder != null;
 }
-

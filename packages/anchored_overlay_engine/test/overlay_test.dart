@@ -1125,11 +1125,13 @@ void main() {
       await tester.pump();
       await tester.pump();
 
-      expect(handle.phase.value, anyOf(OverlayPhase.opening, OverlayPhase.open));
+      expect(
+          handle.phase.value, anyOf(OverlayPhase.opening, OverlayPhase.open));
 
       // One more pump to ensure we didn't close immediately on the same click.
       await tester.pump();
-      expect(handle.phase.value, anyOf(OverlayPhase.opening, OverlayPhase.open));
+      expect(
+          handle.phase.value, anyOf(OverlayPhase.opening, OverlayPhase.open));
 
       handle.close();
       handle.completeClose();

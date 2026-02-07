@@ -19,4 +19,3 @@ final class MaterialHeadlessDefaults {
   final MaterialDropdownOverrides? dropdown;
   final MaterialListTileOverrides? listTile;
 }
-

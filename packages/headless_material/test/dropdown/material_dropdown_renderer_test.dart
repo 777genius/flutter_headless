@@ -81,7 +81,8 @@ void main() {
                 return renderer.render(
                   RDropdownTriggerRenderRequest(
                     context: context,
-                    spec: const RDropdownButtonSpec(placeholder: 'Select option'),
+                    spec:
+                        const RDropdownButtonSpec(placeholder: 'Select option'),
                     state: const RDropdownButtonState(
                       overlayPhase: ROverlayPhase.closed,
                     ),
@@ -118,7 +119,8 @@ void main() {
                 return renderer.render(
                   RDropdownTriggerRenderRequest(
                     context: context,
-                    spec: const RDropdownButtonSpec(placeholder: 'Select option'),
+                    spec:
+                        const RDropdownButtonSpec(placeholder: 'Select option'),
                     state: const RDropdownButtonState(
                       overlayPhase: ROverlayPhase.closed,
                       selectedIndex: 0,
@@ -398,7 +400,8 @@ void main() {
         expect(find.byKey(const Key('item_content_slot')), findsWidgets);
       });
 
-      testWidgets('emptyState slot renders when items are empty', (tester) async {
+      testWidgets('emptyState slot renders when items are empty',
+          (tester) async {
         await tester.pumpWidget(
           MaterialApp(
             home: Builder(

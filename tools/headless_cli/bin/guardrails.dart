@@ -130,7 +130,8 @@ Future<void> main(List<String> args) async {
         if (componentNames.contains(dep) && dep != p.name) {
           issues.add(GuardrailIssue(
             packageName: p.name,
-            message: 'MUST: component package depends on another component: $dep',
+            message:
+                'MUST: component package depends on another component: $dep',
           ));
         }
       }
@@ -320,8 +321,7 @@ void _checkEntrypointsDoNotExportSrc({
     final entrypoint = File(_join(p.dirPath, _join('lib', '${p.name}.dart')));
     if (!entrypoint.existsSync()) continue;
 
-    final rePackage =
-        RegExp(r'''^\s*export\s+['"]package:${p.name}/src/''');
+    final rePackage = RegExp(r'''^\s*export\s+['"]package:${p.name}/src/''');
 
     for (final line in entrypoint.readAsLinesSync()) {
       if (!line.contains('export')) continue;
@@ -421,9 +421,8 @@ void _checkVersionBumpDiscipline({
   final changedFiles = _gitChangedFiles(baseSha);
   if (changedFiles.isEmpty) return;
 
-  final changedPublicApiFiles = changedFiles
-      .where(_isPublicApiDartFilePath)
-      .toList(growable: false);
+  final changedPublicApiFiles =
+      changedFiles.where(_isPublicApiDartFilePath).toList(growable: false);
   if (changedPublicApiFiles.isEmpty) return;
 
   final currentLockstep = _currentLockstepVersion(packageInfos);
@@ -507,7 +506,8 @@ String? _currentLockstepVersion(List<_PackageInfo> packageInfos) {
 String? _canonicalPubspecPathForLockstep(List<_PackageInfo> packageInfos) {
   // Prefer the facade package if present (stable path), otherwise use first.
   final headless = packageInfos.where((p) => p.name == 'headless').toList();
-  final chosen = headless.isNotEmpty ? headless.first : packageInfos.firstOrNull;
+  final chosen =
+      headless.isNotEmpty ? headless.first : packageInfos.firstOrNull;
   if (chosen == null) return null;
   return _relativePath(chosen.pubspecPath);
 }
@@ -542,7 +542,10 @@ List<String> _gitChangedFiles(String baseSha) {
   if (result.exitCode != 0) return const [];
   final out = (result.stdout as String).trim();
   if (out.isEmpty) return const [];
-  return const LineSplitter().convert(out).where((e) => e.trim().isNotEmpty).toList();
+  return const LineSplitter()
+      .convert(out)
+      .where((e) => e.trim().isNotEmpty)
+      .toList();
 }
 
 String? _gitShowText(String rev, String relPath) {
@@ -676,7 +679,8 @@ void _checkDartFiles({
     if (lineCount > fileLineLimit) {
       issues.add(GuardrailIssue(
         packageName: packageName,
-        message: 'MUST: file exceeds $fileLineLimit lines ($lineCount): ${_relativePath(f.path)}',
+        message:
+            'MUST: file exceeds $fileLineLimit lines ($lineCount): ${_relativePath(f.path)}',
       ));
     }
 
@@ -685,7 +689,8 @@ void _checkDartFiles({
       if (match != null) {
         issues.add(GuardrailIssue(
           packageName: packageName,
-          message: 'MUST: no `_build*` methods in lib code: ${_relativePath(f.path)} (match: $match)',
+          message:
+              'MUST: no `_build*` methods in lib code: ${_relativePath(f.path)} (match: $match)',
         ));
       }
     }

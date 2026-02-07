@@ -38,7 +38,8 @@ void main() {
         'Portugal',
         'Canada',
       ]) {
-        await tester.tap(find.descendant(of: surface, matching: find.text(name)));
+        await tester
+            .tap(find.descendant(of: surface, matching: find.text(name)));
         await tester.pumpAndSettle();
         tester.expectMenuOpen(expectedText: 'Argentina');
       }
@@ -49,4 +50,3 @@ void main() {
     },
   );
 }
-

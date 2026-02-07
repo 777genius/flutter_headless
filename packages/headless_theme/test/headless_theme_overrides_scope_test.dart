@@ -57,7 +57,8 @@ void main() {
   testWidgets('wrapper theme instance stays stable when inputs are stable',
       (tester) async {
     final base = _BaseTheme(_TestCapability(1));
-    final overrides = CapabilityOverrides.only<TestCapability>(_TestCapability(2));
+    final overrides =
+        CapabilityOverrides.only<TestCapability>(_TestCapability(2));
 
     HeadlessTheme? firstTheme;
     HeadlessTheme? secondTheme;
@@ -130,4 +131,3 @@ class _HarnessState extends State<_Harness> {
     );
   }
 }
-

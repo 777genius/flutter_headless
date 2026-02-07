@@ -44,7 +44,6 @@ final class RDropdownMenuMotionTokens {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(enterDuration, exitDuration, enterCurve, exitCurve, scaleBegin);
+  int get hashCode => Object.hash(
+      enterDuration, exitDuration, enterCurve, exitCurve, scaleBegin);
 }
-

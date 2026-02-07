@@ -13,7 +13,8 @@ void dropdownRendererCloseContractConformance({
   }) createCommands,
 }) {
   group('$presetName dropdown close contract conformance', () {
-    testWidgets('calls onCompleteClose after closing animation', (tester) async {
+    testWidgets('calls onCompleteClose after closing animation',
+        (tester) async {
       final phase = ValueNotifier<ROverlayPhase>(ROverlayPhase.open);
       var completeCloseCalls = 0;
 
@@ -55,7 +56,8 @@ void dropdownRendererCloseContractConformance({
       expect(completeCloseCalls, 1);
     });
 
-    testWidgets('does not call onCompleteClose when close is cancelled by reopen',
+    testWidgets(
+        'does not call onCompleteClose when close is cancelled by reopen',
         (tester) async {
       final phase = ValueNotifier<ROverlayPhase>(ROverlayPhase.open);
       var completeCloseCalls = 0;
@@ -102,7 +104,8 @@ void dropdownRendererCloseContractConformance({
       expect(completeCloseCalls, 0);
     });
 
-    testWidgets('calls onCompleteClose if disposed while closing', (tester) async {
+    testWidgets('calls onCompleteClose if disposed while closing',
+        (tester) async {
       final phase = ValueNotifier<ROverlayPhase>(ROverlayPhase.open);
       var completeCloseCalls = 0;
 
@@ -148,4 +151,3 @@ void dropdownRendererCloseContractConformance({
     });
   });
 }
-

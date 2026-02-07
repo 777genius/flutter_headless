@@ -20,7 +20,8 @@ void main() {
       pressOverlayColor: Color(0x1F000000),
       pressOpacity: 0.4,
       minTapTargetSize: Size(44, 44),
-      motion: RCheckboxMotionTokens(stateChangeDuration: Duration(milliseconds: 120)),
+      motion: RCheckboxMotionTokens(
+          stateChangeDuration: Duration(milliseconds: 120)),
     );
 
     await tester.pumpWidget(
@@ -54,4 +55,3 @@ void main() {
     expect(find.byIcon(CupertinoIcons.checkmark), findsOneWidget);
   });
 }
-

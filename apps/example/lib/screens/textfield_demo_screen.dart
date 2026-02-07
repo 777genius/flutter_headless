@@ -184,7 +184,8 @@ class _TextFieldDemoScreenState extends State<TextFieldDemoScreen> {
                     label: 'Search',
                     placeholder: 'Type to search...',
                     onChanged: (_) => setState(() {}),
-                    clearButtonMode: RTextFieldOverlayVisibilityMode.whileEditing,
+                    clearButtonMode:
+                        RTextFieldOverlayVisibilityMode.whileEditing,
                     slots: const RTextFieldSlots(
                       leading: Icon(Icons.search),
                       trailing: Icon(Icons.mic),

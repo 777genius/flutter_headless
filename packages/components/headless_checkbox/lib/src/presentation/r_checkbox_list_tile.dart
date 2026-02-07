@@ -35,11 +35,11 @@ class RCheckboxListTile extends StatefulWidget {
     this.style,
     this.slots,
     this.overrides,
-  }) : assert(
+  })  : assert(
           tristate || value != null,
           'If tristate is false, value must be non-null.',
         ),
-       assert(
+        assert(
           !isThreeLine || subtitle != null,
           'If isThreeLine is true, subtitle must be provided.',
         );
@@ -271,8 +271,7 @@ class _RCheckboxListTileState extends State<RCheckboxListTile> {
 
   RCheckboxListTileState _createState({required RCheckboxListTileSpec spec}) {
     final p = _pressable.state;
-    final isSelected =
-        spec.selected;
+    final isSelected = spec.selected;
     return RCheckboxListTileState(
       isPressed: p.isPressed,
       isHovered: p.isHovered,
@@ -324,10 +323,10 @@ void _reportUnconsumedOverrides(
       ..writeln('Provided: ${provided.join(', ')}')
       ..writeln('Consumed: ${consumed.join(', ')}')
       ..writeln('Unconsumed: ${unconsumed.join(', ')}')
-      ..write('Hint: Your preset may not support these overrides for this component.');
+      ..write(
+          'Hint: Your preset may not support these overrides for this component.');
 
     debugPrint(message.toString());
     return true;
   }());
 }
-

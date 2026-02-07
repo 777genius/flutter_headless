@@ -49,4 +49,3 @@ void main() {
     expect(find.text('France'), findsWidgets);
   });
 }
-

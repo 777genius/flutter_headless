@@ -31,4 +31,3 @@ class CheckboxTestApp extends StatelessWidget {
     );
   }
 }
-

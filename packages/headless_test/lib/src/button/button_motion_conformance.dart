@@ -38,4 +38,3 @@ void buttonRendererMotionConformance({
     });
   });
 }
-

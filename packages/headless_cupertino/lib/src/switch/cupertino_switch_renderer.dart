@@ -55,7 +55,8 @@ class CupertinoSwitchRenderer implements RSwitchRenderer {
           inactiveThumbColor: CupertinoColors.white,
           thumbPadding: 2.0,
           disabledOpacity: 0.5,
-          pressOverlayColor: CupertinoColors.systemGreen.withValues(alpha: 0.12),
+          pressOverlayColor:
+              CupertinoColors.systemGreen.withValues(alpha: 0.12),
           pressOpacity: 1.0,
           minTapTargetSize: const Size(59, 39),
           stateLayerRadius: 0.0,
@@ -75,8 +76,7 @@ class CupertinoSwitchRenderer implements RSwitchRenderer {
     final isDragging = state.isDragging;
     final dragT = state.dragT;
     final isOn = spec.value;
-    final isRtl =
-        Directionality.of(request.context) == TextDirection.rtl;
+    final isRtl = Directionality.of(request.context) == TextDirection.rtl;
 
     final Color trackColor;
     final Color thumbColor;
@@ -95,10 +95,12 @@ class CupertinoSwitchRenderer implements RSwitchRenderer {
       )!;
       positionT = dragT;
     } else {
-      trackColor =
-          isOn ? effectiveTokens.activeTrackColor : effectiveTokens.inactiveTrackColor;
-      thumbColor =
-          isOn ? effectiveTokens.activeThumbColor : effectiveTokens.inactiveThumbColor;
+      trackColor = isOn
+          ? effectiveTokens.activeTrackColor
+          : effectiveTokens.inactiveTrackColor;
+      thumbColor = isOn
+          ? effectiveTokens.activeThumbColor
+          : effectiveTokens.inactiveThumbColor;
       positionT = isOn ? 1.0 : 0.0;
     }
 

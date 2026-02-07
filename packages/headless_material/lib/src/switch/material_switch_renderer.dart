@@ -34,8 +34,7 @@ class MaterialSwitchRenderer implements RSwitchRenderer {
     final isDragging = state.isDragging;
     final dragT = state.dragT;
     final isOn = spec.value;
-    final isRtl =
-        Directionality.of(request.context) == TextDirection.rtl;
+    final isRtl = Directionality.of(request.context) == TextDirection.rtl;
 
     final Color trackColor;
     final Color thumbColor;
@@ -83,10 +82,8 @@ class MaterialSwitchRenderer implements RSwitchRenderer {
 
     final stateLayerStates = state.toWidgetStates();
     final stateLayerColor = tokens.stateLayerColor.resolve(stateLayerStates);
-    final showStateLayer = state.isPressed ||
-        state.isHovered ||
-        state.isFocused ||
-        isDragging;
+    final showStateLayer =
+        state.isPressed || state.isHovered || state.isFocused || isDragging;
 
     Widget result = MaterialSwitchTrackAndThumb(
       tokens: tokens,
@@ -113,8 +110,10 @@ class MaterialSwitchRenderer implements RSwitchRenderer {
 
     final minWidth = request.constraints?.minWidth ?? 0;
     final minHeight = request.constraints?.minHeight ?? 0;
-    final desiredWidth = math.max(tokens.trackSize.width, tokens.minTapTargetSize.width);
-    final desiredHeight = math.max(tokens.trackSize.height, tokens.minTapTargetSize.height);
+    final desiredWidth =
+        math.max(tokens.trackSize.width, tokens.minTapTargetSize.width);
+    final desiredHeight =
+        math.max(tokens.trackSize.height, tokens.minTapTargetSize.height);
     result = SizedBox(
       width: math.max(desiredWidth, minWidth),
       height: math.max(desiredHeight, minHeight),
@@ -161,4 +160,3 @@ class MaterialSwitchRenderer implements RSwitchRenderer {
     );
   }
 }
-

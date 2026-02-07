@@ -16,7 +16,8 @@ import 'autocomplete_remote_state_machine.dart';
 /// - Local: Synchronous filtering.
 /// - Remote: Async with state machine.
 /// - Hybrid: Combines local and remote results.
-final class AutocompleteSourceController<T> implements RAutocompleteRemoteCommands {
+final class AutocompleteSourceController<T>
+    implements RAutocompleteRemoteCommands {
   AutocompleteSourceController({
     required RAutocompleteSource<T> source,
     required HeadlessItemAdapter<T> itemAdapter,
@@ -47,7 +48,8 @@ final class AutocompleteSourceController<T> implements RAutocompleteRemoteComman
   ///
   /// Each tuple contains (item, features) where features includes
   /// [rAutocompleteItemSourceKey] to identify the item's origin.
-  List<(T, HeadlessItemFeatures?)> get resultsWithFeatures => _resultsWithFeatures;
+  List<(T, HeadlessItemFeatures?)> get resultsWithFeatures =>
+      _resultsWithFeatures;
 
   /// Whether currently loading remote data.
   bool get isLoading {
@@ -91,7 +93,8 @@ final class AutocompleteSourceController<T> implements RAutocompleteRemoteComman
           options: options,
         );
         _combinedResults = _localResults;
-        _resultsWithFeatures = _markItems(_localResults, RAutocompleteItemSource.local);
+        _resultsWithFeatures =
+            _markItems(_localResults, RAutocompleteItemSource.local);
         _onStateChanged();
 
       case RAutocompleteRemoteSource<T>():
@@ -106,7 +109,8 @@ final class AutocompleteSourceController<T> implements RAutocompleteRemoteComman
           options: local.options,
         );
         _combinedResults = _localResults;
-        _resultsWithFeatures = _markItems(_localResults, RAutocompleteItemSource.local);
+        _resultsWithFeatures =
+            _markItems(_localResults, RAutocompleteItemSource.local);
         _onStateChanged();
 
         // Remote is async
@@ -171,7 +175,8 @@ final class AutocompleteSourceController<T> implements RAutocompleteRemoteComman
       case RAutocompleteRemoteSource<T>():
         _combinedResults = machine.results;
         // Mark all items as remote source
-        _resultsWithFeatures = _markItems(machine.results, RAutocompleteItemSource.remote);
+        _resultsWithFeatures =
+            _markItems(machine.results, RAutocompleteItemSource.remote);
         _onStateChanged();
 
       case RAutocompleteHybridSource<T>():
@@ -259,10 +264,12 @@ final class AutocompleteSourceController<T> implements RAutocompleteRemoteComman
     };
     if (remotePolicy == null) return;
 
-    if (trigger == RAutocompleteRemoteTrigger.focus && !remotePolicy.loadOnFocus) {
+    if (trigger == RAutocompleteRemoteTrigger.focus &&
+        !remotePolicy.loadOnFocus) {
       return;
     }
-    if (trigger == RAutocompleteRemoteTrigger.input && !remotePolicy.loadOnInput) {
+    if (trigger == RAutocompleteRemoteTrigger.input &&
+        !remotePolicy.loadOnInput) {
       return;
     }
 

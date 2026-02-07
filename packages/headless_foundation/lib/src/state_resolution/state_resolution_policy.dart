@@ -38,7 +38,10 @@ class StateResolutionPolicy {
 
   List<WidgetStateSet> _combinations(List<WidgetState> states, int size) {
     if (size == 0) return [<WidgetState>{}];
-    if (size == states.length) return [{...states}];
+    if (size == states.length)
+      return [
+        {...states}
+      ];
 
     final result = <WidgetStateSet>[];
 
@@ -58,4 +61,3 @@ class StateResolutionPolicy {
     return result;
   }
 }
-

@@ -34,4 +34,3 @@ final class AutocompleteCombinedPrefix extends StatelessWidget {
     );
   }
 }
-

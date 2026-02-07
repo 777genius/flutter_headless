@@ -90,7 +90,8 @@ Size resolveMaterialSwitchBaseThumbSize({
 }) {
   if (isDragging && dragT != null) {
     return Size.lerp(
-      resolveMaterialSwitchUnselectedThumbSize(tokens: tokens, hasIcon: hasIcon),
+      resolveMaterialSwitchUnselectedThumbSize(
+          tokens: tokens, hasIcon: hasIcon),
       tokens.thumbSizeSelected,
       positionValue,
     )!;
@@ -107,6 +108,6 @@ Size resolveMaterialSwitchBaseThumbSize({
 
   return visualValue
       ? tokens.thumbSizeSelected
-      : resolveMaterialSwitchUnselectedThumbSize(tokens: tokens, hasIcon: hasIcon);
+      : resolveMaterialSwitchUnselectedThumbSize(
+          tokens: tokens, hasIcon: hasIcon);
 }
-

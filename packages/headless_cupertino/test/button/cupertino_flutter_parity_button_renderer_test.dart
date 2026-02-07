@@ -275,7 +275,8 @@ void main() {
       );
       final hasFocusBorder = decoratedBoxes.any((box) {
         final decoration = box.decoration;
-        if (decoration is ShapeDecoration && decoration.shape is RoundedSuperellipseBorder) {
+        if (decoration is ShapeDecoration &&
+            decoration.shape is RoundedSuperellipseBorder) {
           final rse = decoration.shape as RoundedSuperellipseBorder;
           return rse.side != BorderSide.none;
         }

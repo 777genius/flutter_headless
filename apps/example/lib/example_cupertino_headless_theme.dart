@@ -33,4 +33,3 @@ class ExampleCupertinoHeadlessTheme extends HeadlessTheme {
     return _cupertino.capability<T>() ?? _materialFallback.capability<T>();
   }
 }
-

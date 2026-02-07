@@ -55,7 +55,8 @@ class _AutocompleteDemoMultiSelectSectionState
               _ToggleChip(
                 label: 'Hide selected',
                 selected: _hideSelected,
-                onSelected: () => setState(() => _hideSelected = !_hideSelected),
+                onSelected: () =>
+                    setState(() => _hideSelected = !_hideSelected),
               ),
               _ToggleChip(
                 label: 'Pin selected',
@@ -115,4 +116,3 @@ class _ToggleChip extends StatelessWidget {
     );
   }
 }
-

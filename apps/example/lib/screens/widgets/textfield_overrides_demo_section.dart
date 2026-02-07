@@ -15,8 +15,7 @@ final class TextFieldOverridesDemoSection extends StatelessWidget {
 
     return DemoSection(
       title: 'Per-Instance Overrides',
-      description:
-          'Cupertino: container tokens affect visuals.\n'
+      description: 'Cupertino: container tokens affect visuals.\n'
           'Material: strict M3 parity uses InputDecorator, so container tokens are ignored.\n'
           'This demo uses preset-specific MaterialTextFieldOverrides to show container changes.',
       child: Column(
@@ -103,15 +102,19 @@ final class TextFieldOverridesDemoSection extends StatelessWidget {
             cupertinoOverrides: RenderOverrides.only(
               RTextFieldOverrides.tokens(
                 cursorColor: Theme.of(context).colorScheme.tertiary,
-                selectionColor:
-                    Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.3),
+                selectionColor: Theme.of(context)
+                    .colorScheme
+                    .tertiary
+                    .withValues(alpha: 0.3),
               ),
             ),
             materialOverrides: RenderOverrides.only(
               RTextFieldOverrides.tokens(
                 cursorColor: Theme.of(context).colorScheme.tertiary,
-                selectionColor:
-                    Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.3),
+                selectionColor: Theme.of(context)
+                    .colorScheme
+                    .tertiary
+                    .withValues(alpha: 0.3),
               ),
             ),
             isCupertino: isCupertino,
@@ -122,12 +125,14 @@ final class TextFieldOverridesDemoSection extends StatelessWidget {
             variant: RTextFieldVariant.filled,
             cupertinoOverrides: RenderOverrides.only(
               const RTextFieldOverrides.tokens(
-                containerPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                containerPadding:
+                    EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               ),
             ),
             materialOverrides: RenderOverrides.only(
               const MaterialTextFieldOverrides(
-                contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               ),
             ),
             isCupertino: isCupertino,
@@ -166,4 +171,3 @@ final class _DemoOverrideField extends StatelessWidget {
 }
 
 void _noop(String _) {}
-

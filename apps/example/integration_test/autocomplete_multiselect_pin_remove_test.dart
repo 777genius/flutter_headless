@@ -11,7 +11,8 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group('Autocomplete E2E (multi-select pin + remove)', () {
-    testWidgets('IT-PIN-01: pinSelectedOptions pins and unpins after chip delete',
+    testWidgets(
+        'IT-PIN-01: pinSelectedOptions pins and unpins after chip delete',
         (tester) async {
       await tester.pumpWidget(
         const AutocompleteTestApp(
@@ -63,4 +64,3 @@ void main() {
     });
   });
 }
-

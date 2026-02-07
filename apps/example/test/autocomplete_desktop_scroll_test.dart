@@ -77,7 +77,8 @@ void main() {
       );
       expect(pageList, findsOneWidget);
       final listRect = tester.getRect(pageList);
-      final outsideMenuPosition = Offset(listRect.left + 8, listRect.bottom - 8);
+      final outsideMenuPosition =
+          Offset(listRect.left + 8, listRect.bottom - 8);
       await tester.sendEventToBinding(
         PointerScrollEvent(
           position: outsideMenuPosition,
@@ -92,4 +93,3 @@ void main() {
     }
   });
 }
-

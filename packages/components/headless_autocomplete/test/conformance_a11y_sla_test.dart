@@ -85,7 +85,8 @@ void main() {
       ));
 
       final rootNode = tester.getSemantics(find.byType(RAutocomplete<String>));
-      SemanticsSla.expectTextField(node: rootNode, enabled: true, readOnly: false);
+      SemanticsSla.expectTextField(
+          node: rootNode, enabled: true, readOnly: false);
 
       await tester.pumpWidget(_createTestWidget(
         child: RAutocomplete<String>(
@@ -144,4 +145,3 @@ void main() {
     });
   });
 }
-

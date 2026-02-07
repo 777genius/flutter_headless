@@ -58,8 +58,7 @@ final class AutocompleteRemoteStateMachine<T> {
     required RAutocompleteRemoteTrigger trigger,
   }) {
     final queryPolicy = _policy.query;
-    final trimmedText =
-        queryPolicy.trimWhitespace ? rawText.trim() : rawText;
+    final trimmedText = queryPolicy.trimWhitespace ? rawText.trim() : rawText;
 
     if (trimmedText.length < queryPolicy.minQueryLength) {
       _cancelPending();
@@ -93,10 +92,12 @@ final class AutocompleteRemoteStateMachine<T> {
     final debounce = _policy.debounce;
     if (debounce != null && debounce > Duration.zero) {
       _debounceTimer = Timer(debounce, () {
-        _executeLoad(rawText: rawText, trimmedText: trimmedText, trigger: trigger);
+        _executeLoad(
+            rawText: rawText, trimmedText: trimmedText, trigger: trigger);
       });
     } else {
-      _executeLoad(rawText: rawText, trimmedText: trimmedText, trigger: trigger);
+      _executeLoad(
+          rawText: rawText, trimmedText: trimmedText, trigger: trigger);
     }
   }
 
@@ -166,7 +167,8 @@ final class AutocompleteRemoteStateMachine<T> {
 
     // Transition to loading
     // Keep previous results if policy says so
-    final isStale = _policy.keepPreviousResultsWhileLoading && _results.isNotEmpty;
+    final isStale =
+        _policy.keepPreviousResultsWhileLoading && _results.isNotEmpty;
     _state = RAutocompleteRemoteState(
       status: RAutocompleteRemoteStatus.loading,
       queryText: trimmedText,

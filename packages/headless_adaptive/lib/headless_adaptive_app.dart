@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:headless_foundation/headless_foundation.dart' show OverlayController;
+import 'package:headless_foundation/headless_foundation.dart'
+    show OverlayController;
 import 'package:headless_cupertino/headless_cupertino.dart';
 import 'package:headless_material/headless_material.dart';
 import 'package:headless_theme/headless_theme.dart';
-
 
 /// Adaptive App bootstrap for Headless.
 ///
@@ -158,4 +158,3 @@ class _HeadlessAdaptiveAppState extends State<HeadlessAdaptiveApp> {
     return platform == TargetPlatform.iOS || platform == TargetPlatform.macOS;
   }
 }
-

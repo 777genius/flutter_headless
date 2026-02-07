@@ -6,4 +6,3 @@ void main() {
     expect(OverlayPhase.open, OverlayPhase.open);
   });
 }
-

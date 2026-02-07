@@ -42,8 +42,7 @@ extension TextFieldTesterExtensions on WidgetTester {
   }
 
   /// Clears the TextField content.
-  Future<void> clearTextField(
-      [Key key = const Key('test_textfield')]) async {
+  Future<void> clearTextField([Key key = const Key('test_textfield')]) async {
     await enterTextInField('', key);
   }
 

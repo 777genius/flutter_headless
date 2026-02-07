@@ -144,8 +144,9 @@ class _SwitchDemoScreenState extends State<SwitchDemoScreen> {
               children: [
                 RSwitch(
                   value: _defaultValue,
-                  onChanged:
-                      _isDisabled ? null : (v) => setState(() => _defaultValue = v),
+                  onChanged: _isDisabled
+                      ? null
+                      : (v) => setState(() => _defaultValue = v),
                 ),
                 const SizedBox(width: 16),
                 Text(_defaultValue ? 'ON' : 'OFF'),

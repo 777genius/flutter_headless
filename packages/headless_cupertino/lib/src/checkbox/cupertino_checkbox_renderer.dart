@@ -20,8 +20,8 @@ class CupertinoCheckboxRenderer implements RCheckboxRenderer {
     final state = request.state;
     final spec = request.spec;
     final slots = request.slots;
-    final policy =
-        HeadlessThemeProvider.of(request.context)?.capability<HeadlessRendererPolicy>();
+    final policy = HeadlessThemeProvider.of(request.context)
+        ?.capability<HeadlessRendererPolicy>();
     assert(
       policy?.requireResolvedTokens != true || tokens != null,
       'CupertinoCheckboxRenderer requires resolvedTokens when '
@@ -57,8 +57,10 @@ class CupertinoCheckboxRenderer implements RCheckboxRenderer {
     final isIndeterminate = spec.isIndeterminate;
     final showMark = isChecked || isIndeterminate;
 
-    final fillColor = showMark ? effectiveTokens.activeColor : effectiveTokens.inactiveColor;
-    final borderColor = showMark ? effectiveTokens.activeColor : effectiveTokens.borderColor;
+    final fillColor =
+        showMark ? effectiveTokens.activeColor : effectiveTokens.inactiveColor;
+    final borderColor =
+        showMark ? effectiveTokens.activeColor : effectiveTokens.borderColor;
 
     final defaultMark = isIndeterminate
         ? _IndeterminateMark(
@@ -111,8 +113,10 @@ class CupertinoCheckboxRenderer implements RCheckboxRenderer {
 
     Widget result = ConstrainedBox(
       constraints: BoxConstraints(
-        minWidth: request.constraints?.minWidth ?? effectiveTokens.minTapTargetSize.width,
-        minHeight: request.constraints?.minHeight ?? effectiveTokens.minTapTargetSize.height,
+        minWidth: request.constraints?.minWidth ??
+            effectiveTokens.minTapTargetSize.width,
+        minHeight: request.constraints?.minHeight ??
+            effectiveTokens.minTapTargetSize.height,
       ),
       child: Center(child: box),
     );
@@ -171,4 +175,3 @@ class _IndeterminateMark extends StatelessWidget {
     );
   }
 }
-

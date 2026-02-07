@@ -117,9 +117,8 @@ class MaterialTextFieldTokenResolver implements RTextFieldTokenResolver {
           _resolveBorderRadius(variant: variant),
       containerBorderWidth: fieldOverrides?.containerBorderWidth ?? 1.0,
       containerElevation: fieldOverrides?.containerElevation ?? 0.0,
-      containerAnimationDuration:
-          fieldOverrides?.containerAnimationDuration ??
-              const Duration(milliseconds: 200),
+      containerAnimationDuration: fieldOverrides?.containerAnimationDuration ??
+          const Duration(milliseconds: 200),
       // Label / Helper / Error
       labelStyle: fieldOverrides?.labelStyle ?? labelStyle,
       labelColor: labelColor,

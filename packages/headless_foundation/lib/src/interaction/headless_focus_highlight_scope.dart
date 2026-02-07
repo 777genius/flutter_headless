@@ -42,4 +42,3 @@ final class HeadlessFocusHighlightScope
         (FocusManager.instance.highlightMode == FocusHighlightMode.traditional);
   }
 }
-

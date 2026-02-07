@@ -102,9 +102,8 @@ class _MaterialParityButtonShellState
     final baseStyle = const ButtonStyle(
       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
     ).merge(sizeStyle);
-    final effectiveStyle = overrideStyle != null
-        ? baseStyle.merge(overrideStyle)
-        : baseStyle;
+    final effectiveStyle =
+        overrideStyle != null ? baseStyle.merge(overrideStyle) : baseStyle;
 
     final onPressed = request.state.isDisabled ? null : () {};
 

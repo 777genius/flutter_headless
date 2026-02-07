@@ -37,9 +37,9 @@ class CupertinoButtonTokenResolver implements RButtonTokenResolver {
     BoxConstraints? constraints,
     RenderOverrides? overrides,
   }) {
-    final motionTheme = HeadlessThemeProvider.of(context)
-            ?.capability<HeadlessMotionTheme>() ??
-        HeadlessMotionTheme.cupertino;
+    final motionTheme =
+        HeadlessThemeProvider.of(context)?.capability<HeadlessMotionTheme>() ??
+            HeadlessMotionTheme.cupertino;
 
     // Get brightness from context or use override
     final effectiveBrightness =
@@ -80,7 +80,8 @@ class CupertinoButtonTokenResolver implements RButtonTokenResolver {
             buttonOverrides?.borderRadius ??
             const BorderRadius.all(Radius.circular(8));
 
-    final resolvedTextStyle = buttonOverrides?.textStyle ?? sizeTokens.textStyle;
+    final resolvedTextStyle =
+        buttonOverrides?.textStyle ?? sizeTokens.textStyle;
     final resolvedForeground =
         buttonOverrides?.foregroundColor ?? stateColors.foreground;
     final resolvedBackground =
@@ -108,7 +109,8 @@ class CupertinoButtonTokenResolver implements RButtonTokenResolver {
 
   /// Resolve base colors based on variant.
   _ColorSet _resolveBaseColors(RButtonVariant variant, bool isDark) {
-    final primary = isDark ? CupertinoColors.systemBlue : CupertinoColors.activeBlue;
+    final primary =
+        isDark ? CupertinoColors.systemBlue : CupertinoColors.activeBlue;
     switch (variant) {
       case RButtonVariant.filled:
         return _ColorSet(
@@ -147,9 +149,8 @@ class CupertinoButtonTokenResolver implements RButtonTokenResolver {
   ) {
     switch (q.interactionVisualState) {
       case HeadlessInteractionVisualState.disabled:
-        final disabledColor = isDark
-            ? CupertinoColors.systemGrey
-            : CupertinoColors.inactiveGray;
+        final disabledColor =
+            isDark ? CupertinoColors.systemGrey : CupertinoColors.inactiveGray;
         return _ColorSet(
           foreground: disabledColor,
           background: base.background == CupertinoColors.transparent

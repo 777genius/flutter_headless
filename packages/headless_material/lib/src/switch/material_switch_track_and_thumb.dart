@@ -65,8 +65,7 @@ final class MaterialSwitchTrackAndThumb extends StatefulWidget {
 }
 
 final class _MaterialSwitchTrackAndThumbState
-    extends State<MaterialSwitchTrackAndThumb>
-    with TickerProviderStateMixin {
+    extends State<MaterialSwitchTrackAndThumb> with TickerProviderStateMixin {
   late final AnimationController _pressController;
   late final AnimationController _toggleController;
 
@@ -165,7 +164,8 @@ final class _MaterialSwitchTrackAndThumbState
             Size.lerp(baseSize, pressedSize, _pressController.value)!;
 
         final trackRadius = widget.tokens.trackSize.height / 2.0;
-        final trackInnerLength = widget.tokens.trackSize.width - trackRadius * 2;
+        final trackInnerLength =
+            widget.tokens.trackSize.width - trackRadius * 2;
 
         final trackCenterX = trackRadius + trackInnerLength * effectivePosition;
         final thumbLeft = trackCenterX - thumbSize.width / 2;
@@ -277,4 +277,3 @@ final class _MaterialSwitchTrackAndThumbState
     );
   }
 }
-

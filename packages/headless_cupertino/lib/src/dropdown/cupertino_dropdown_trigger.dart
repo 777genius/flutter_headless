@@ -64,4 +64,3 @@ class CupertinoDropdownTrigger extends StatelessWidget {
     );
   }
 }
-

@@ -35,7 +35,8 @@ class _TestCheckboxTokenResolver implements RCheckboxTokenResolver {
       pressOverlayColor: Color(0x1F000000),
       pressOpacity: 1.0,
       minTapTargetSize: Size(48, 48),
-      motion: RCheckboxMotionTokens(stateChangeDuration: Duration(milliseconds: 120)),
+      motion: RCheckboxMotionTokens(
+          stateChangeDuration: Duration(milliseconds: 120)),
     );
   }
 }
@@ -96,7 +97,8 @@ Widget _buildTestWidget({
 
 void main() {
   group('RCheckbox', () {
-    testWidgets('throws MissingCapabilityException when no renderer is provided',
+    testWidgets(
+        'throws MissingCapabilityException when no renderer is provided',
         (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
@@ -215,7 +217,8 @@ void main() {
       expect(value, isFalse);
     });
 
-    testWidgets('does nothing when disabled (onChanged == null)', (tester) async {
+    testWidgets('does nothing when disabled (onChanged == null)',
+        (tester) async {
       final renderer = _TestCheckboxRenderer();
       var called = false;
 
@@ -246,7 +249,8 @@ void main() {
       expect(called, isFalse);
     });
 
-    testWidgets('token resolver receives WidgetState.selected/error', (tester) async {
+    testWidgets('token resolver receives WidgetState.selected/error',
+        (tester) async {
       final renderer = _TestCheckboxRenderer();
       final resolver = _TestCheckboxTokenResolver();
 
@@ -292,7 +296,8 @@ void main() {
       expect(renderer.lastRequest?.resolvedTokens?.activeColor, styleColor);
     });
 
-    testWidgets('explicit overrides win over style sugar (POLA)', (tester) async {
+    testWidgets('explicit overrides win over style sugar (POLA)',
+        (tester) async {
       final renderer = _TestCheckboxRenderer();
       final resolver = _TestCheckboxTokenResolver();
 
@@ -322,4 +327,3 @@ void main() {
     });
   });
 }
-

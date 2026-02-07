@@ -65,8 +65,7 @@ void main() {
 
         await tester.pumpAndSettle();
 
-        final expectedMinSize =
-            MaterialTapTargetPolicy.computeMinTapTargetSize(
+        final expectedMinSize = MaterialTapTargetPolicy.computeMinTapTargetSize(
           tapTargetSize: MaterialTapTargetSize.padded,
         );
 

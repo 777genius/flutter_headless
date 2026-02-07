@@ -45,7 +45,8 @@ void main() {
       final base = _ThemeWithCapability(_TestCapabilityA('base'));
       final theme = HeadlessThemeWithOverrides(
         base: base,
-        overrides: CapabilityOverrides.only<TestCapability>(_TestCapabilityA('override')),
+        overrides: CapabilityOverrides.only<TestCapability>(
+            _TestCapabilityA('override')),
       );
 
       final c = theme.capability<TestCapability>();
@@ -68,4 +69,3 @@ void main() {
     });
   });
 }
-

@@ -71,8 +71,7 @@ void main() {
 
         // Find the ShapeDecoration DecoratedBox (the visual shell from parity renderer)
         final shapeFinder = find.byWidgetPredicate(
-          (w) =>
-              w is DecoratedBox && w.decoration is ShapeDecoration,
+          (w) => w is DecoratedBox && w.decoration is ShapeDecoration,
         );
         expect(shapeFinder, findsOneWidget);
 
@@ -115,8 +114,7 @@ void main() {
         await tester.pumpAndSettle();
 
         final shapeFinder = find.byWidgetPredicate(
-          (w) =>
-              w is DecoratedBox && w.decoration is ShapeDecoration,
+          (w) => w is DecoratedBox && w.decoration is ShapeDecoration,
         );
         expect(shapeFinder, findsOneWidget);
 

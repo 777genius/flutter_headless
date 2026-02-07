@@ -126,7 +126,8 @@ final class ListboxController extends ChangeNotifier {
     final fromIndex = fromId == null ? -1 : enabled.indexOf(fromId);
     final start = fromIndex < 0 ? -1 : fromIndex;
 
-    final nextIndex = _nextIndex(enabledLength: enabled.length, fromIndex: start);
+    final nextIndex =
+        _nextIndex(enabledLength: enabled.length, fromIndex: start);
     if (nextIndex == null) return;
     setHighlightedId(enabled[nextIndex]);
   }
@@ -241,8 +242,7 @@ final class ListboxController extends ChangeNotifier {
         assert(false, 'ListboxController: duplicate id ${meta.id}.');
         return false;
       }
-      final normalized =
-          HeadlessTypeaheadLabel.normalize(meta.typeaheadLabel);
+      final normalized = HeadlessTypeaheadLabel.normalize(meta.typeaheadLabel);
       if (normalized != meta.typeaheadLabel) {
         assert(
           false,
@@ -254,4 +254,3 @@ final class ListboxController extends ChangeNotifier {
     return true;
   }
 }
-

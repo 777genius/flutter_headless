@@ -46,8 +46,7 @@ final class _EqByIdOption {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is _EqByIdOption && other.id == id);
+      identical(this, other) || (other is _EqByIdOption && other.id == id);
 
   @override
   int get hashCode => id.hashCode;
@@ -184,7 +183,8 @@ void main() {
         menuRenderer: menuRenderer,
         child: RAutocomplete<String>(
           controller: controller,
-          source: RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
+          source:
+              RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
           itemAdapter: _adapter,
           onSelected: (v) => selected = v,
           openOnTap: true,
@@ -216,7 +216,8 @@ void main() {
         menuRenderer: menuRenderer,
         child: RAutocomplete<String>(
           controller: controller,
-          source: RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta', 'Gamma']),
+          source: RAutocompleteLocalSource(
+              options: (_) => const ['Alpha', 'Beta', 'Gamma']),
           itemAdapter: _adapter,
           onSelected: (_) {},
           openOnTap: true,
@@ -237,7 +238,8 @@ void main() {
       controller.dispose();
     });
 
-    testWidgets('reopen after selection shows all options (filter starts on input)',
+    testWidgets(
+        'reopen after selection shows all options (filter starts on input)',
         (tester) async {
       final fieldRenderer = _TestTextFieldRenderer();
       final menuRenderer = _TestDropdownRenderer();
@@ -291,7 +293,8 @@ void main() {
         fieldRenderer: fieldRenderer,
         menuRenderer: menuRenderer,
         child: RAutocomplete<String>(
-          source: RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
+          source:
+              RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
           itemAdapter: _adapter,
           onSelected: (_) {},
           openOnTap: true,
@@ -375,7 +378,8 @@ void main() {
         menuRenderer: menuRenderer,
         child: RAutocomplete<String>(
           focusNode: focusNode,
-          source: RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta', 'Gamma']),
+          source: RAutocompleteLocalSource(
+              options: (_) => const ['Alpha', 'Beta', 'Gamma']),
           itemAdapter: _adapter,
           onSelected: (_) {},
           openOnTap: false,
@@ -444,10 +448,10 @@ void main() {
         child: RAutocomplete<String>(
           source: RAutocompleteLocalSource(
             options: (value) {
-            callCount++;
-            if (value.text.isEmpty) return const ['Alpha'];
-            return const ['Beta'];
-          },
+              callCount++;
+              if (value.text.isEmpty) return const ['Alpha'];
+              return const ['Beta'];
+            },
           ),
           itemAdapter: _adapter,
           onSelected: (_) {},
@@ -466,7 +470,8 @@ void main() {
       expect(callCount, 2);
     });
 
-    testWidgets('openOnFocus opens menu even when options are empty', (tester) async {
+    testWidgets('openOnFocus opens menu even when options are empty',
+        (tester) async {
       final fieldRenderer = _TestTextFieldRenderer();
       final menuRenderer = _TestDropdownRenderer();
       final focusNode = FocusNode();
@@ -494,7 +499,8 @@ void main() {
       focusNode.dispose();
     });
 
-    testWidgets('ArrowDown opens menu even when options are empty', (tester) async {
+    testWidgets('ArrowDown opens menu even when options are empty',
+        (tester) async {
       final fieldRenderer = _TestTextFieldRenderer();
       final menuRenderer = _TestDropdownRenderer();
       final focusNode = FocusNode();
@@ -538,7 +544,8 @@ void main() {
         menuRenderer: menuRenderer,
         child: RAutocomplete<String>(
           focusNode: focusNode,
-          source: RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
+          source:
+              RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
           itemAdapter: _adapter,
           onSelected: (_) {},
           openOnTap: false,
@@ -576,7 +583,8 @@ void main() {
         menuRenderer: menuRenderer,
         child: RAutocomplete<String>(
           focusNode: focusNode,
-          source: RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
+          source:
+              RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
           itemAdapter: _adapter,
           onSelected: (_) {},
           openOnTap: false,
@@ -622,7 +630,8 @@ void main() {
         menuRenderer: menuRenderer,
         child: RAutocomplete<String>(
           focusNode: focusNode,
-          source: RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
+          source:
+              RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
           itemAdapter: _adapter,
           onSelected: (_) {},
           openOnTap: false,
@@ -738,7 +747,8 @@ void main() {
   });
 
   group('Multiple selection', () {
-    testWidgets('select toggles value, clears query, and keeps menu open by default',
+    testWidgets(
+        'select toggles value, clears query, and keeps menu open by default',
         (tester) async {
       final fieldRenderer = _TestTextFieldRenderer();
       final menuRenderer = _TestDropdownRenderer();
@@ -1011,9 +1021,9 @@ void main() {
               focusNode: focusNode,
               source: RAutocompleteLocalSource(
                 options: (_) => const [
-                _Option('a', 'A'),
-                _Option('c', 'C'),
-              ],
+                  _Option('a', 'A'),
+                  _Option('c', 'C'),
+                ],
               ),
               itemAdapter: _optionAdapter,
               selectedValues: selected,
@@ -1031,12 +1041,14 @@ void main() {
       // Menu shows only A/C, no checked indices (b isn't in options).
       expect(menuRenderer.lastRequest?.items.map((i) => i.primaryText).toList(),
           ['A', 'C']);
-      expect(menuRenderer.lastRequest?.state.selectedItemsIndices ?? const <int>{},
+      expect(
+          menuRenderer.lastRequest?.state.selectedItemsIndices ?? const <int>{},
           isEmpty);
 
       final req = _TestSelectedValuesRenderer.lastRequest;
       expect(req, isNotNull);
-      expect(req!.selectedItems.map((e) => e.primaryText).toList(), ['B-selected']);
+      expect(req!.selectedItems.map((e) => e.primaryText).toList(),
+          ['B-selected']);
 
       req.commands.removeById(const ListboxItemId('b'));
       await tester.pumpAndSettle();
@@ -1068,10 +1080,10 @@ void main() {
             return RAutocomplete<_Option>.multiple(
               source: RAutocompleteLocalSource(
                 options: (_) => const [
-                _Option('a', 'A'),
-                _Option('b', 'B'),
-                _Option('c', 'C'),
-              ],
+                  _Option('a', 'A'),
+                  _Option('b', 'B'),
+                  _Option('c', 'C'),
+                ],
               ),
               itemAdapter: _optionAdapter,
               selectedValues: selected,
@@ -1264,7 +1276,8 @@ void main() {
       maxOptions.value = 1;
       await tester.pumpAndSettle();
 
-      final items = menuRenderer.lastRequest?.items.map((i) => i.primaryText).toList();
+      final items =
+          menuRenderer.lastRequest?.items.map((i) => i.primaryText).toList();
       expect(items, ['Georgia']);
 
       final indices = menuRenderer.lastRequest?.state.selectedItemsIndices;
@@ -1272,7 +1285,8 @@ void main() {
       maxOptions.dispose();
     });
 
-    testWidgets('Backspace on empty query removes last selected', (tester) async {
+    testWidgets('Backspace on empty query removes last selected',
+        (tester) async {
       final fieldRenderer = _TestTextFieldRenderer();
       final menuRenderer = _TestDropdownRenderer();
 
@@ -1313,7 +1327,8 @@ void main() {
       expect(selected, ['Georgia']);
     });
 
-    testWidgets('hideSelectedOptions filters selected out of menu', (tester) async {
+    testWidgets('hideSelectedOptions filters selected out of menu',
+        (tester) async {
       final fieldRenderer = _TestTextFieldRenderer();
       final menuRenderer = _TestDropdownRenderer();
 
@@ -1341,7 +1356,8 @@ void main() {
       await tester.tap(find.byKey(const Key('autocomplete-field')));
       await tester.pumpAndSettle();
 
-      final items = menuRenderer.lastRequest?.items.map((i) => i.primaryText).toList();
+      final items =
+          menuRenderer.lastRequest?.items.map((i) => i.primaryText).toList();
       expect(items, ['Georgia', 'California']);
     });
 
@@ -1421,7 +1437,8 @@ void main() {
   });
 
   group('Duplicate id safety', () {
-    testWidgets('options with duplicate ids are de-duped (no crash)', (tester) async {
+    testWidgets('options with duplicate ids are de-duped (no crash)',
+        (tester) async {
       final fieldRenderer = _TestTextFieldRenderer();
       final menuRenderer = _TestDropdownRenderer();
 
@@ -1429,7 +1446,8 @@ void main() {
         fieldRenderer: fieldRenderer,
         menuRenderer: menuRenderer,
         child: RAutocomplete<String>(
-          source: RAutocompleteLocalSource(options: (_) => const ['A', 'B', 'C']),
+          source:
+              RAutocompleteLocalSource(options: (_) => const ['A', 'B', 'C']),
           itemAdapter: _dupIdAdapter,
           onSelected: (_) {},
           openOnTap: true,
@@ -1442,7 +1460,8 @@ void main() {
       await tester.tap(find.byKey(const Key('autocomplete-field')));
       await tester.pumpAndSettle();
 
-      final items = menuRenderer.lastRequest?.items.map((i) => i.primaryText).toList();
+      final items =
+          menuRenderer.lastRequest?.items.map((i) => i.primaryText).toList();
       expect(items, ['A']);
     });
   });
@@ -1478,7 +1497,8 @@ void main() {
               children: [
                 RAutocomplete<_Option>.multiple(
                   controller: controller,
-                  source: RAutocompleteLocalSource(options: (_) => buildOptions()),
+                  source:
+                      RAutocompleteLocalSource(options: (_) => buildOptions()),
                   itemAdapter: _optionAdapter,
                   selectedValues: selected,
                   onSelectionChanged: (next) => setState(() => selected = next),
@@ -1515,7 +1535,8 @@ void main() {
       await tester.pump();
       await tester.pumpAndSettle();
 
-      final items = menuRenderer.lastRequest?.items.map((i) => i.primaryText).toList();
+      final items =
+          menuRenderer.lastRequest?.items.map((i) => i.primaryText).toList();
       // B is hidden, even though options are new instances.
       expect(items, ['A-$revision', 'C-$revision']);
     });
@@ -1535,7 +1556,8 @@ void main() {
         child: RAutocomplete<String>(
           controller: controller,
           focusNode: focusNode,
-          source: RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
+          source:
+              RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
           itemAdapter: _adapter,
           onSelected: (v) => selected = v,
           openOnTap: false,
@@ -1581,7 +1603,8 @@ void main() {
         child: RAutocomplete<String>(
           controller: controller,
           focusNode: focusNode,
-          source: RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
+          source:
+              RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
           itemAdapter: _adapter,
           onSelected: (_) {},
           openOnTap: false,
@@ -1623,7 +1646,8 @@ void main() {
         child: RAutocomplete<String>(
           controller: controller,
           focusNode: focusNode,
-          source: RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
+          source:
+              RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
           itemAdapter: _adapter,
           onSelected: (_) {},
           openOnTap: false,
@@ -1659,7 +1683,8 @@ void main() {
       controller.dispose();
     });
 
-    testWidgets('openOnInput does not open menu while composing', (tester) async {
+    testWidgets('openOnInput does not open menu while composing',
+        (tester) async {
       final fieldRenderer = _TestTextFieldRenderer();
       final menuRenderer = _TestDropdownRenderer();
       final focusNode = FocusNode();
@@ -1671,7 +1696,8 @@ void main() {
         child: RAutocomplete<String>(
           controller: controller,
           focusNode: focusNode,
-          source: RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
+          source:
+              RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
           itemAdapter: _adapter,
           onSelected: (_) {},
           openOnTap: false,
@@ -1709,7 +1735,8 @@ void main() {
         child: RAutocomplete<String>(
           controller: controller,
           focusNode: focusNode,
-          source: RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
+          source:
+              RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
           itemAdapter: _adapter,
           onSelected: (_) {},
           openOnTap: false,
@@ -1743,7 +1770,8 @@ void main() {
   });
 
   group('Dismissed policy (Escape/Tab)', () {
-    testWidgets('Escape dismiss prevents openOnFocus on refocus', (tester) async {
+    testWidgets('Escape dismiss prevents openOnFocus on refocus',
+        (tester) async {
       final fieldRenderer = _TestTextFieldRenderer();
       final menuRenderer = _TestDropdownRenderer();
       final focusNode = FocusNode();
@@ -1753,7 +1781,8 @@ void main() {
         menuRenderer: menuRenderer,
         child: RAutocomplete<String>(
           focusNode: focusNode,
-          source: RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
+          source:
+              RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
           itemAdapter: _adapter,
           onSelected: (_) {},
           openOnFocus: true,
@@ -1793,7 +1822,8 @@ void main() {
         menuRenderer: menuRenderer,
         child: RAutocomplete<String>(
           focusNode: focusNode,
-          source: RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
+          source:
+              RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
           itemAdapter: _adapter,
           onSelected: (_) {},
           openOnFocus: true,
@@ -1822,7 +1852,8 @@ void main() {
       focusNode.dispose();
     });
 
-    testWidgets('focus loss dismiss prevents openOnFocus on refocus', (tester) async {
+    testWidgets('focus loss dismiss prevents openOnFocus on refocus',
+        (tester) async {
       final fieldRenderer = _TestTextFieldRenderer();
       final menuRenderer = _TestDropdownRenderer();
       final focusNode = FocusNode();
@@ -1832,7 +1863,8 @@ void main() {
         menuRenderer: menuRenderer,
         child: RAutocomplete<String>(
           focusNode: focusNode,
-          source: RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
+          source:
+              RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
           itemAdapter: _adapter,
           onSelected: (_) {},
           openOnTap: false,
@@ -1872,7 +1904,8 @@ void main() {
         menuRenderer: menuRenderer,
         child: RAutocomplete<String>(
           focusNode: focusNode,
-          source: RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
+          source:
+              RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
           itemAdapter: _adapter,
           onSelected: (_) {},
           openOnFocus: false,
@@ -1914,7 +1947,8 @@ void main() {
         child: RAutocomplete<String>(
           controller: controller,
           focusNode: focusNode,
-          source: RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
+          source:
+              RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
           itemAdapter: _adapter,
           onSelected: (_) {},
           openOnFocus: false,
@@ -1948,7 +1982,8 @@ void main() {
   });
 
   group('Focus traversal / blur', () {
-    testWidgets('menu closes when widget becomes disabled while open', (tester) async {
+    testWidgets('menu closes when widget becomes disabled while open',
+        (tester) async {
       final fieldRenderer = _TestTextFieldRenderer();
       final menuRenderer = _TestDropdownRenderer();
       final focusNode = FocusNode();
@@ -1965,7 +2000,8 @@ void main() {
               children: [
                 RAutocomplete<String>(
                   focusNode: focusNode,
-                  source: RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
+                  source: RAutocompleteLocalSource(
+                      options: (_) => const ['Alpha', 'Beta']),
                   itemAdapter: _adapter,
                   onSelected: (_) {},
                   openOnTap: false,
@@ -2007,7 +2043,8 @@ void main() {
         menuRenderer: menuRenderer,
         child: RAutocomplete<String>(
           focusNode: focusNode,
-          source: RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
+          source:
+              RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
           itemAdapter: _adapter,
           onSelected: (_) {},
           openOnTap: false,
@@ -2052,7 +2089,8 @@ void main() {
         menuRenderer: menuRenderer,
         child: RAutocomplete<String>(
           focusNode: focusNode,
-          source: RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta', 'Gamma']),
+          source: RAutocompleteLocalSource(
+              options: (_) => const ['Alpha', 'Beta', 'Gamma']),
           itemAdapter: _adapter,
           onSelected: (_) {},
           openOnTap: false,
@@ -2089,7 +2127,8 @@ void main() {
         menuRenderer: menuRenderer,
         child: RAutocomplete<String>(
           focusNode: focusNode,
-          source: RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta', 'Gamma']),
+          source: RAutocompleteLocalSource(
+              options: (_) => const ['Alpha', 'Beta', 'Gamma']),
           itemAdapter: _adapter,
           onSelected: (_) {},
           openOnTap: false,
@@ -2129,7 +2168,8 @@ void main() {
         menuRenderer: menuRenderer,
         child: RAutocomplete<String>(
           focusNode: focusNode,
-          source: RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
+          source:
+              RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
           itemAdapter: _alwaysDisabledAdapter,
           onSelected: (v) => selected = v,
           openOnTap: false,
@@ -2166,7 +2206,8 @@ void main() {
         fieldRenderer: fieldRenderer,
         menuRenderer: menuRenderer,
         child: RAutocomplete<String>(
-          source: RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
+          source:
+              RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta']),
           itemAdapter: _adapter,
           onSelected: (_) {},
           openOnTap: true,
@@ -2178,7 +2219,8 @@ void main() {
 
       expect(menuRenderer.lastRequest?.state.isOpen ?? false, isFalse);
 
-      await tester.drag(find.byKey(const Key('autocomplete-field')), const Offset(80, 0));
+      await tester.drag(
+          find.byKey(const Key('autocomplete-field')), const Offset(80, 0));
       await tester.pumpAndSettle();
 
       expect(menuRenderer.lastRequest?.state.isOpen ?? false, isFalse);

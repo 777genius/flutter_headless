@@ -130,8 +130,6 @@ final class RCheckboxState {
   }
 }
 
-
-
 /// Context for checkbox box slot.
 @immutable
 final class RCheckboxBoxContext {

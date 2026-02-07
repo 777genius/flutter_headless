@@ -24,4 +24,3 @@ final class RButtonCallbacks {
   @override
   int get hashCode => onPressed.hashCode;
 }
-

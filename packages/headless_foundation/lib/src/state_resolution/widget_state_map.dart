@@ -58,4 +58,3 @@ String _keyFor(WidgetStateSet states) {
   final indices = states.map((s) => s.index).toList(growable: false)..sort();
   return indices.join(',');
 }
-

@@ -9,4 +9,3 @@ final class StateResolutionError extends Error {
   @override
   String toString() => 'StateResolutionError: $message';
 }
-

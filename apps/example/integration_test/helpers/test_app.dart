@@ -115,7 +115,8 @@ class ScrollableDropdownScenario extends StatefulWidget {
       _ScrollableDropdownScenarioState();
 }
 
-class _ScrollableDropdownScenarioState extends State<ScrollableDropdownScenario> {
+class _ScrollableDropdownScenarioState
+    extends State<ScrollableDropdownScenario> {
   String? _selectedValue;
   final _scrollController = ScrollController();
 

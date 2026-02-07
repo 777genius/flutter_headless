@@ -19,4 +19,3 @@ class ListboxScope extends InheritedNotifier<ListboxController> {
     return context.dependOnInheritedWidgetOfExactType<ListboxScope>()?.notifier;
   }
 }
-

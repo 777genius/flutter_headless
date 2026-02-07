@@ -23,8 +23,8 @@ Widget buildRendererField(
 }) {
   final effectiveController = controller ?? TextEditingController();
   final effectiveFocusNode = focusNode ?? FocusNode();
-  final style = Theme.of(context).textTheme.bodyLarge ??
-      const TextStyle(fontSize: 16);
+  final style =
+      Theme.of(context).textTheme.bodyLarge ?? const TextStyle(fontSize: 16);
 
   final input = EditableText(
     controller: effectiveController,

@@ -167,7 +167,8 @@ void main() {
       expect(clearCalled, isTrue);
     });
 
-    testWidgets('has 6px horizontal padding (matching Flutter)', (tester) async {
+    testWidgets('has 6px horizontal padding (matching Flutter)',
+        (tester) async {
       await tester.pumpWidget(
         const CupertinoApp(
           home: CupertinoTextFieldClearButton(

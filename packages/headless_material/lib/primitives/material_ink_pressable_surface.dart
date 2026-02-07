@@ -128,16 +128,15 @@ class _MaterialInkPressableSurfaceWidgetState
             theme.colorScheme.primary.withValues(alpha: 0.12);
     final fallbackHighlightColor = theme.highlightColor;
 
-    final splashColor = effectiveOverlayColor
-            .resolve({WidgetState.pressed}) ??
+    final splashColor = effectiveOverlayColor.resolve({WidgetState.pressed}) ??
         fallbackSplashColor;
-    final highlightColor = effectiveOverlayColor
-            .resolve({WidgetState.hovered}) ??
-        fallbackHighlightColor;
-    final focusColor =
-        effectiveOverlayColor.resolve({WidgetState.focused}) ?? theme.focusColor;
-    final hoverColor =
-        effectiveOverlayColor.resolve({WidgetState.hovered}) ?? theme.hoverColor;
+    final highlightColor =
+        effectiveOverlayColor.resolve({WidgetState.hovered}) ??
+            fallbackHighlightColor;
+    final focusColor = effectiveOverlayColor.resolve({WidgetState.focused}) ??
+        theme.focusColor;
+    final hoverColor = effectiveOverlayColor.resolve({WidgetState.hovered}) ??
+        theme.hoverColor;
 
     BorderRadius? borderRadius;
     final rippleShape = switchListTileOverrides?.rippleShape;
@@ -168,7 +167,8 @@ class _MaterialInkPressableSurfaceWidgetState
         hoverColor: hoverColor,
         splashFactory: theme.splashFactory,
         radius: switchListTileOverrides?.splashRadius,
-        mouseCursor: widget.enabled ? effectiveCursorEnabled : effectiveCursorDisabled,
+        mouseCursor:
+            widget.enabled ? effectiveCursorEnabled : effectiveCursorDisabled,
         containedInkWell: true,
         highlightShape: BoxShape.rectangle,
         borderRadius: borderRadius,

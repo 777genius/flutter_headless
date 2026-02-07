@@ -24,4 +24,3 @@ HeadlessDropdownItemVisualState resolveDropdownItemVisualState({
   if (isSelected) return HeadlessDropdownItemVisualState.selected;
   return HeadlessDropdownItemVisualState.none;
 }
-

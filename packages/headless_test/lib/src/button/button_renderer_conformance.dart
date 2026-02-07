@@ -56,7 +56,8 @@ void buttonRendererSingleActivationSourceConformanceV2({
   required Widget Function(Widget child) wrapApp,
 }) {
   group('$presetName button renderer conformance v2 (inert guard)', () {
-    testWidgets('renderer output is wrapped in ExcludeSemantics + AbsorbPointer',
+    testWidgets(
+        'renderer output is wrapped in ExcludeSemantics + AbsorbPointer',
         (tester) async {
       await tester.pumpWidget(
         wrapApp(
@@ -154,4 +155,3 @@ void buttonRendererSingleActivationSourceConformanceV2({
     });
   });
 }
-

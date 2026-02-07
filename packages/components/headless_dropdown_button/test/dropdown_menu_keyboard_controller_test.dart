@@ -69,4 +69,3 @@ class _Host implements DropdownMenuKeyboardHost {
   @override
   void handleTypeahead(String char) => calls.add('type:$char');
 }
-

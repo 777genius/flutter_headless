@@ -8,4 +8,3 @@ export 'src/textfield/material_text_field_input_decorator.dart';
 export 'src/textfield/material_text_field_renderer.dart';
 export 'src/textfield/material_text_field_state_adapter.dart';
 export 'src/textfield/material_text_field_token_resolver.dart';
-

@@ -19,8 +19,7 @@ import 'package:flutter/foundation.dart';
 /// See `docs/FLEXIBLE_PRESETS_AND_PER_INSTANCE_OVERRIDES.md`.
 @immutable
 final class RenderOverrides {
-  const RenderOverrides([this._overrides = const {}])
-      : _debugTracker = null;
+  const RenderOverrides([this._overrides = const {}]) : _debugTracker = null;
 
   RenderOverrides._(
     this._overrides, {
@@ -115,8 +114,7 @@ final class RenderOverrides {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is RenderOverrides &&
-        mapEquals(_overrides, other._overrides);
+    return other is RenderOverrides && mapEquals(_overrides, other._overrides);
   }
 
   @override

@@ -17,7 +17,8 @@ void main() {
       disabledOpacity: 1.0,
       pressOverlayColor: Color(0x1F000000),
       pressOpacity: 1.0,
-      motion: RCheckboxListTileMotionTokens(stateChangeDuration: Duration(milliseconds: 120)),
+      motion: RCheckboxListTileMotionTokens(
+          stateChangeDuration: Duration(milliseconds: 120)),
     );
 
     await tester.pumpWidget(
@@ -64,4 +65,3 @@ void main() {
     expect(find.byType(ListTile), findsOneWidget);
   });
 }
-

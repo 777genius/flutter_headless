@@ -35,8 +35,7 @@ void main() {
       expect(find.text('Finland'), findsOneWidget);
     });
 
-    testWidgets('IT-KBD-02: PageUp/PageDown map to first/last',
-        (tester) async {
+    testWidgets('IT-KBD-02: PageUp/PageDown map to first/last', (tester) async {
       await tester.pumpWidget(
         const AutocompleteTestApp(
           child: AutocompleteTestScenario(
@@ -87,4 +86,3 @@ void main() {
     });
   });
 }
-

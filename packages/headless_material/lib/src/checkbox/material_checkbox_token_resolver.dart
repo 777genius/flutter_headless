@@ -24,9 +24,9 @@ class MaterialCheckboxTokenResolver implements RCheckboxTokenResolver {
     BoxConstraints? constraints,
     RenderOverrides? overrides,
   }) {
-    final motionTheme = HeadlessThemeProvider.of(context)
-            ?.capability<HeadlessMotionTheme>() ??
-        HeadlessMotionTheme.material;
+    final motionTheme =
+        HeadlessThemeProvider.of(context)?.capability<HeadlessMotionTheme>() ??
+            HeadlessMotionTheme.material;
 
     final scheme = colorScheme ?? Theme.of(context).colorScheme;
     final q = HeadlessWidgetStateQuery(states);
@@ -61,8 +61,7 @@ class MaterialCheckboxTokenResolver implements RCheckboxTokenResolver {
       override: contractOverrides?.minTapTargetSize,
     );
 
-    final resolvedForeground =
-        contractOverrides?.checkColor ?? checkColor;
+    final resolvedForeground = contractOverrides?.checkColor ?? checkColor;
     final resolvedIndeterminate =
         contractOverrides?.indeterminateColor ?? resolvedForeground;
 
@@ -76,9 +75,8 @@ class MaterialCheckboxTokenResolver implements RCheckboxTokenResolver {
       checkColor: resolvedForeground,
       indeterminateColor: resolvedIndeterminate,
       disabledOpacity: contractOverrides?.disabledOpacity ?? 0.38,
-      pressOverlayColor:
-          contractOverrides?.pressOverlayColor ??
-              scheme.primary.withValues(alpha: 0.12),
+      pressOverlayColor: contractOverrides?.pressOverlayColor ??
+          scheme.primary.withValues(alpha: 0.12),
       pressOpacity: contractOverrides?.pressOpacity ?? 1.0,
       minTapTargetSize: minTapTargetSize,
       motion: contractOverrides?.motion ??
@@ -101,4 +99,3 @@ class MaterialCheckboxTokenResolver implements RCheckboxTokenResolver {
     );
   }
 }
-

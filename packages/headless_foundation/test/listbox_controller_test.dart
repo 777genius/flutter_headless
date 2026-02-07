@@ -72,4 +72,3 @@ void main() {
     expect(c.state.highlightedId, const ListboxItemId('b'));
   });
 }
-

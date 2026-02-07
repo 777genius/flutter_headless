@@ -32,4 +32,3 @@ final class HeadlessThemeWithOverrides extends HeadlessTheme {
     return 'HeadlessThemeWithOverrides(base: ${base.runtimeType})';
   }
 }
-

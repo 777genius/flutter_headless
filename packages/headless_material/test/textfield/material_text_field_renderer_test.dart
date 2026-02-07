@@ -416,8 +416,7 @@ void main() {
       expect(find.byType(InputDecorator), findsOneWidget);
     });
 
-    testWidgets('does not forward baseStyle to InputDecorator',
-        (tester) async {
+    testWidgets('does not forward baseStyle to InputDecorator', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(useMaterial3: true),
@@ -714,8 +713,7 @@ void main() {
                     input: const SizedBox.shrink(),
                     spec: const RTextFieldSpec(
                       label: 'Amount',
-                      prefixMode:
-                          RTextFieldOverlayVisibilityMode.whileEditing,
+                      prefixMode: RTextFieldOverlayVisibilityMode.whileEditing,
                     ),
                     state: const RTextFieldState(isFocused: false),
                     slots: const RTextFieldSlots(prefix: prefix),

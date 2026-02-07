@@ -52,9 +52,9 @@ class MaterialDropdownTokenResolver implements RDropdownTokenResolver {
     BoxConstraints? constraints,
     RenderOverrides? overrides,
   }) {
-    final motionTheme = HeadlessThemeProvider.of(context)
-            ?.capability<HeadlessMotionTheme>() ??
-        HeadlessMotionTheme.material;
+    final motionTheme =
+        HeadlessThemeProvider.of(context)?.capability<HeadlessMotionTheme>() ??
+            HeadlessMotionTheme.material;
 
     // Get theme from context or use overrides
     final scheme = colorScheme ?? Theme.of(context).colorScheme;
@@ -124,7 +124,8 @@ class MaterialDropdownTokenResolver implements RDropdownTokenResolver {
       q: q,
       overlayPhase: overlayPhase,
     );
-    final isDisabled = visualState == HeadlessDropdownTriggerVisualState.disabled;
+    final isDisabled =
+        visualState == HeadlessDropdownTriggerVisualState.disabled;
     final isOpen = visualState == HeadlessDropdownTriggerVisualState.open;
     final isFocused = visualState == HeadlessDropdownTriggerVisualState.focused;
     final isHovered = visualState == HeadlessDropdownTriggerVisualState.hovered;
@@ -170,10 +171,9 @@ class MaterialDropdownTokenResolver implements RDropdownTokenResolver {
     final triggerPadding = density == null
         ? overrides?.triggerPadding ?? sizeTokens.padding
         : _applyDensityToPadding(sizeTokens.padding, density);
-    final triggerBorderRadius =
-        _resolveCornerRadius(cornerStyle) ??
-            overrides?.triggerBorderRadius ??
-            const BorderRadius.all(Radius.circular(4));
+    final triggerBorderRadius = _resolveCornerRadius(cornerStyle) ??
+        overrides?.triggerBorderRadius ??
+        const BorderRadius.all(Radius.circular(4));
 
     return RDropdownTriggerTokens(
       textStyle: overrides?.triggerTextStyle ?? sizeTokens.textStyle,
@@ -225,13 +225,13 @@ class MaterialDropdownTokenResolver implements RDropdownTokenResolver {
             const EdgeInsets.symmetric(vertical: 8),
             density,
           );
-    final menuBorderRadius =
-        _resolveCornerRadius(cornerStyle) ??
-            overrides?.menuBorderRadius ??
-            const BorderRadius.all(Radius.circular(4));
+    final menuBorderRadius = _resolveCornerRadius(cornerStyle) ??
+        overrides?.menuBorderRadius ??
+        const BorderRadius.all(Radius.circular(4));
 
     return RDropdownMenuTokens(
-      backgroundColor: overrides?.menuBackgroundColor ?? scheme.surfaceContainer,
+      backgroundColor:
+          overrides?.menuBackgroundColor ?? scheme.surfaceContainer,
       backgroundOpacity: 1.0,
       borderColor: overrides?.menuBorderColor ?? scheme.outlineVariant,
       borderRadius: menuBorderRadius,
@@ -261,8 +261,9 @@ class MaterialDropdownTokenResolver implements RDropdownTokenResolver {
             const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             density,
           );
-    final itemMinHeight =
-        density == null ? overrides?.itemMinHeight ?? 48 : _densityMinHeight(density);
+    final itemMinHeight = density == null
+        ? overrides?.itemMinHeight ?? 48
+        : _densityMinHeight(density);
 
     return RDropdownItemTokens(
       textStyle: overrides?.itemTextStyle ??

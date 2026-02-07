@@ -62,9 +62,7 @@ final class EffectFailed<T> extends EffectResult<T> {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is EffectFailed<T> &&
-        other.key == key &&
-        other.error == error;
+    return other is EffectFailed<T> && other.key == key && other.error == error;
   }
 
   @override

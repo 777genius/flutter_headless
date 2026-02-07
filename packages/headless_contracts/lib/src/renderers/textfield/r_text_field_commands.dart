@@ -30,4 +30,3 @@ final class RTextFieldCommands {
   /// Clears text while preserving focus.
   final VoidCallback? clearText;
 }
-

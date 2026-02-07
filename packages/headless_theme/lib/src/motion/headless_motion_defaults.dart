@@ -16,4 +16,3 @@ final class HeadlessMotionDefaults {
   /// stable API name for users who expect `HeadlessMotionDefaults`.
   static const HeadlessMotionTheme standard = HeadlessMotionTheme.standard();
 }
-

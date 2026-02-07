@@ -16,7 +16,8 @@ class _SingleSelectReopenScenario extends StatefulWidget {
       _SingleSelectReopenScenarioState();
 }
 
-class _SingleSelectReopenScenarioState extends State<_SingleSelectReopenScenario> {
+class _SingleSelectReopenScenarioState
+    extends State<_SingleSelectReopenScenario> {
   String? _selected;
 
   @override
@@ -53,7 +54,8 @@ class _SingleSelectReopenScenarioState extends State<_SingleSelectReopenScenario
 }
 
 void main() {
-  testWidgets('Single-select: selecting closes menu and does not reopen', (tester) async {
+  testWidgets('Single-select: selecting closes menu and does not reopen',
+      (tester) async {
     await tester.pumpWidget(
       const AutocompleteTestApp(
         child: _SingleSelectReopenScenario(),
@@ -81,4 +83,3 @@ void main() {
     expect(find.text('Selected: Alpha'), findsOneWidget);
   });
 }
-

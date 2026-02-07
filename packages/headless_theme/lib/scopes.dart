@@ -57,7 +57,8 @@ class HeadlessDropdownScope extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _buildTwoCapabilitiesScope<RDropdownButtonRenderer, RDropdownTokenResolver>(
+    return _buildTwoCapabilitiesScope<RDropdownButtonRenderer,
+        RDropdownTokenResolver>(
       child: child,
       capabilityA: renderer,
       capabilityB: tokenResolver,
@@ -80,7 +81,8 @@ class HeadlessTextFieldScope extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _buildTwoCapabilitiesScope<RTextFieldRenderer, RTextFieldTokenResolver>(
+    return _buildTwoCapabilitiesScope<RTextFieldRenderer,
+        RTextFieldTokenResolver>(
       child: child,
       capabilityA: renderer,
       capabilityB: tokenResolver,
@@ -103,7 +105,8 @@ class HeadlessCheckboxScope extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _buildTwoCapabilitiesScope<RCheckboxRenderer, RCheckboxTokenResolver>(
+    return _buildTwoCapabilitiesScope<RCheckboxRenderer,
+        RCheckboxTokenResolver>(
       child: child,
       capabilityA: renderer,
       capabilityB: tokenResolver,
@@ -126,8 +129,7 @@ class HeadlessCheckboxListTileScope extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _buildTwoCapabilitiesScope<
-        RCheckboxListTileRenderer,
+    return _buildTwoCapabilitiesScope<RCheckboxListTileRenderer,
         RCheckboxListTileTokenResolver>(
       child: child,
       capabilityA: renderer,
@@ -135,4 +137,3 @@ class HeadlessCheckboxListTileScope extends StatelessWidget {
     );
   }
 }
-

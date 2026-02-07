@@ -62,13 +62,15 @@ final class HeadlessRequestFeatures {
     final b = HeadlessRequestFeaturesBuilder._();
     build(b);
     if (b._values.isEmpty) return empty;
-    return HeadlessRequestFeatures._(Map<Symbol, Object>.unmodifiable(b._values));
+    return HeadlessRequestFeatures._(
+        Map<Symbol, Object>.unmodifiable(b._values));
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is HeadlessRequestFeatures && mapEquals(other._values, _values);
+    return other is HeadlessRequestFeatures &&
+        mapEquals(other._values, _values);
   }
 
   @override

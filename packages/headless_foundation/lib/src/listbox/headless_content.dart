@@ -15,7 +15,8 @@ final class HeadlessTextContent extends HeadlessContent {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is HeadlessTextContent && other.text == text;
+      identical(this, other) ||
+      other is HeadlessTextContent && other.text == text;
 
   @override
   int get hashCode => text.hashCode;
@@ -28,7 +29,8 @@ final class HeadlessEmojiContent extends HeadlessContent {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is HeadlessEmojiContent && other.emoji == emoji;
+      identical(this, other) ||
+      other is HeadlessEmojiContent && other.emoji == emoji;
 
   @override
   int get hashCode => emoji.hashCode;
@@ -41,7 +43,8 @@ final class HeadlessIconContent extends HeadlessContent {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is HeadlessIconContent && other.icon == icon;
+      identical(this, other) ||
+      other is HeadlessIconContent && other.icon == icon;
 
   @override
   int get hashCode => icon.hashCode;

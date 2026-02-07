@@ -57,7 +57,8 @@ final class _CupertinoSwitchFocusRingPainter extends CustomPainter {
     final trackRRect =
         RRect.fromRectAndRadius(trackRect, Radius.circular(trackRadius));
 
-    final focusedOutline = trackRRect.inflate(CupertinoSwitchFocusRing._inflate);
+    final focusedOutline =
+        trackRRect.inflate(CupertinoSwitchFocusRing._inflate);
     final paint = Paint()
       ..style = PaintingStyle.stroke
       ..color = focusColor
@@ -71,4 +72,3 @@ final class _CupertinoSwitchFocusRingPainter extends CustomPainter {
         oldDelegate.focusColor != focusColor;
   }
 }
-

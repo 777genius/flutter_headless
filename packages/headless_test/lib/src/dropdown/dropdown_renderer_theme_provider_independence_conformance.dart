@@ -60,7 +60,8 @@ void dropdownRendererMustNotRequireThemeProviderConformance({
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('menu does not throw without HeadlessThemeProvider', (tester) async {
+    testWidgets('menu does not throw without HeadlessThemeProvider',
+        (tester) async {
       await tester.pumpWidget(
         wrapApp(
           Builder(
@@ -138,4 +139,3 @@ RDropdownResolvedTokens _defaultTokens() {
     ),
   );
 }
-

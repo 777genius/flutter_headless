@@ -56,4 +56,3 @@ class CupertinoPopoverSurface extends StatelessWidget {
     );
   }
 }
-

@@ -44,7 +44,8 @@ final class RAutocompleteField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final renderer = HeadlessThemeProvider.maybeCapabilityOf<RTextFieldRenderer>(
+    final renderer =
+        HeadlessThemeProvider.maybeCapabilityOf<RTextFieldRenderer>(
       context,
       componentName: 'RAutocomplete',
     );

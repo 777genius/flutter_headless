@@ -6,8 +6,10 @@ import 'package:headless_autocomplete/src/sources/r_autocomplete_source.dart';
 import 'package:headless_foundation/headless_foundation.dart';
 
 void main() {
-  group('AutocompleteSourceController: keyboard trigger ignores loadOnInput', () {
-    test('remote load is not called for input when loadOnInput=false', () async {
+  group('AutocompleteSourceController: keyboard trigger ignores loadOnInput',
+      () {
+    test('remote load is not called for input when loadOnInput=false',
+        () async {
       var loadCount = 0;
       RAutocompleteRemoteQuery? capturedQuery;
 
@@ -45,7 +47,8 @@ void main() {
       expect(capturedQuery, isNull);
     });
 
-    test('remote load is called for keyboard even when loadOnInput=false', () async {
+    test('remote load is called for keyboard even when loadOnInput=false',
+        () async {
       var loadCount = 0;
       RAutocompleteRemoteQuery? capturedQuery;
 
@@ -85,4 +88,3 @@ void main() {
     });
   });
 }
-

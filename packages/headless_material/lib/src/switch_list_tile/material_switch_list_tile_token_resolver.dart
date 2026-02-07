@@ -21,9 +21,9 @@ class MaterialSwitchListTileTokenResolver
     BoxConstraints? constraints,
     RenderOverrides? overrides,
   }) {
-    final motionTheme = HeadlessThemeProvider.of(context)
-            ?.capability<HeadlessMotionTheme>() ??
-        HeadlessMotionTheme.material;
+    final motionTheme =
+        HeadlessThemeProvider.of(context)?.capability<HeadlessMotionTheme>() ??
+            HeadlessMotionTheme.material;
 
     final theme = Theme.of(context);
     final scheme = colorScheme ?? theme.colorScheme;
@@ -38,8 +38,7 @@ class MaterialSwitchListTileTokenResolver
         : (text.titleMedium ?? const TextStyle(fontSize: 16));
     final baseSubtitle = useMaterial3
         ? (text.bodyMedium ?? const TextStyle(fontSize: 14))
-        : (text.bodyMedium ??
-                const TextStyle(fontSize: 14))
+        : (text.bodyMedium ?? const TextStyle(fontSize: 14))
             .copyWith(color: text.bodySmall?.color);
 
     Color? titleColor = useMaterial3 ? scheme.onSurface : null;

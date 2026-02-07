@@ -25,4 +25,3 @@ final class AutocompleteSelectedValuesFallback extends StatelessWidget {
     );
   }
 }
-

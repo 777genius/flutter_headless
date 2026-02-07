@@ -64,7 +64,8 @@ void main() {
       expect(activated, 0);
     });
 
-    test('Enter: down activates once; repeat down ignored; up clears guard', () {
+    test('Enter: down activates once; repeat down ignored; up clears guard',
+        () {
       final c = HeadlessPressableController();
 
       var activated = 0;
@@ -153,4 +154,3 @@ void main() {
     });
   });
 }
-

@@ -127,19 +127,25 @@ void main() {
         await Future.microtask(() {});
 
         // Should have both local and remote
-        expect(controller.results, containsAll(['local1', 'local2', 'remote1', 'remote2']));
+        expect(controller.results,
+            containsAll(['local1', 'local2', 'remote1', 'remote2']));
         expect(controller.resultsWithFeatures.length, 4);
 
         // Verify source marking
         final localItems = controller.resultsWithFeatures.where(
-          (r) => r.$2?.get(rAutocompleteItemSourceKey) == RAutocompleteItemSource.local,
+          (r) =>
+              r.$2?.get(rAutocompleteItemSourceKey) ==
+              RAutocompleteItemSource.local,
         );
         final remoteItems = controller.resultsWithFeatures.where(
-          (r) => r.$2?.get(rAutocompleteItemSourceKey) == RAutocompleteItemSource.remote,
+          (r) =>
+              r.$2?.get(rAutocompleteItemSourceKey) ==
+              RAutocompleteItemSource.remote,
         );
 
         expect(localItems.map((r) => r.$1), containsAll(['local1', 'local2']));
-        expect(remoteItems.map((r) => r.$1), containsAll(['remote1', 'remote2']));
+        expect(
+            remoteItems.map((r) => r.$1), containsAll(['remote1', 'remote2']));
 
         controller.dispose();
       });

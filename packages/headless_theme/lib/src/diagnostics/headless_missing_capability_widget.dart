@@ -40,4 +40,3 @@ final class HeadlessMissingCapabilityWidget extends StatelessWidget {
     );
   }
 }
-

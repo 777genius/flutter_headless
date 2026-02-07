@@ -55,4 +55,3 @@ final class RCheckboxListTileOverrides {
       pressOpacity != null ||
       motion != null;
 }
-

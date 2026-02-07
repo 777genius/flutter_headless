@@ -32,4 +32,3 @@ extension CheckboxTesterExtensions on WidgetTester {
     expect(find.text('Selected: $value'), findsOneWidget);
   }
 }
-

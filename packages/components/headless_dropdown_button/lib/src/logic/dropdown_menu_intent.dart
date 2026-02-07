@@ -33,4 +33,3 @@ final class TypeaheadIntent extends DropdownMenuIntent {
   const TypeaheadIntent(this.char);
   final String char;
 }
-

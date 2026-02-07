@@ -13,4 +13,3 @@ enum HeadlessInteractionVisualState {
   focused,
   none,
 }
-

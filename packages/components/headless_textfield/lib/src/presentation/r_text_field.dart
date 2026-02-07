@@ -302,7 +302,8 @@ class _RTextFieldState extends State<RTextField> {
 
   @override
   Widget build(BuildContext context) {
-    final renderer = HeadlessThemeProvider.maybeCapabilityOf<RTextFieldRenderer>(
+    final renderer =
+        HeadlessThemeProvider.maybeCapabilityOf<RTextFieldRenderer>(
       context,
       componentName: 'RTextField',
     );
@@ -359,7 +360,8 @@ class _RTextFieldState extends State<RTextField> {
 
     final request = RTextFieldRenderRequest(
       context: context,
-      input: _createEditableText(context: context, resolvedTokens: resolvedTokens),
+      input:
+          _createEditableText(context: context, resolvedTokens: resolvedTokens),
       spec: spec,
       state: state,
       semantics: semantics,
@@ -442,4 +444,3 @@ class _RTextFieldState extends State<RTextField> {
     );
   }
 }
-

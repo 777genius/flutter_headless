@@ -195,8 +195,7 @@ void main() {
       final executor = EffectExecutor(onResult: results.add);
       addTearDown(executor.dispose);
 
-      const key =
-          EffectKey(category: 'fetch', targetId: 'users', opId: 'op-1');
+      const key = EffectKey(category: 'fetch', targetId: 'users', opId: 'op-1');
 
       executor.execute([
         TestAsyncEffect(key, 42, delay: const Duration(milliseconds: 50)),
@@ -406,7 +405,8 @@ void main() {
       const key = EffectKey(category: 'test', targetId: 'A');
 
       final succeeded = EffectResult<int>.succeeded(key, 42);
-      final failed = EffectResult<int>.failed(key, Exception('err'), StackTrace.current);
+      final failed =
+          EffectResult<int>.failed(key, Exception('err'), StackTrace.current);
       final cancelled = EffectResult<int>.cancelled(key);
 
       String describe(EffectResult<int> result) {

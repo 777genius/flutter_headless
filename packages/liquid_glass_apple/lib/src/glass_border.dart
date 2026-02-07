@@ -43,12 +43,7 @@ class GlassBorderPainter extends CustomPainter {
       center: Alignment.center,
       startAngle: 0.75 * pi,
       endAngle: 2.75 * pi,
-      colors: [
-        highlightColor,
-        shadowColor,
-        shadowColor,
-        highlightColor,
-      ],
+      colors: [highlightColor, shadowColor, shadowColor, highlightColor],
       stops: const [0.0, 0.25, 0.75, 1.0],
     );
 

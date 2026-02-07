@@ -32,7 +32,9 @@ void main() {
       expect(q.isError, isTrue);
     });
 
-    test('interactionVisualState precedence: pressed > hovered > focused > none', () {
+    test(
+        'interactionVisualState precedence: pressed > hovered > focused > none',
+        () {
       expect(
         HeadlessWidgetStateQuery({
           WidgetState.focused,
@@ -144,4 +146,3 @@ void main() {
     });
   });
 }
-

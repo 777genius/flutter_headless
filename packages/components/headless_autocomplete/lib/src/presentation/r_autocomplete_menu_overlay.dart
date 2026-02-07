@@ -41,7 +41,8 @@ final class RAutocompleteMenuOverlay extends StatelessWidget {
               exception: exception,
               stack: StackTrace.current,
               library: 'headless_autocomplete',
-              context: ErrorDescription('while building RAutocompleteMenuOverlay'),
+              context:
+                  ErrorDescription('while building RAutocompleteMenuOverlay'),
             ),
           );
           return HeadlessMissingCapabilityWidget(

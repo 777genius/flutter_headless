@@ -16,4 +16,3 @@ final class MaterialListTileOverrides {
 
   bool get hasOverrides => titleAlignment != null;
 }
-

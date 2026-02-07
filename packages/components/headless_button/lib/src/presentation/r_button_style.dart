@@ -46,9 +46,7 @@ final class RButtonStyle {
 
   RButtonOverrides toOverrides() {
     final resolvedBorderRadius = borderRadius ??
-        (radius == null
-            ? null
-            : BorderRadius.all(Radius.circular(radius!)));
+        (radius == null ? null : BorderRadius.all(Radius.circular(radius!)));
 
     return RButtonOverrides.tokens(
       textStyle: textStyle,
@@ -62,4 +60,3 @@ final class RButtonStyle {
     );
   }
 }
-

@@ -54,8 +54,7 @@ final class CupertinoSwitchTrackAndThumb extends StatefulWidget {
 }
 
 final class _CupertinoSwitchTrackAndThumbState
-    extends State<CupertinoSwitchTrackAndThumb>
-    with TickerProviderStateMixin {
+    extends State<CupertinoSwitchTrackAndThumb> with TickerProviderStateMixin {
   static const _thumbExtensionFactor = 7.0; // Flutter: _kThumbExtensionFactor
 
   late final AnimationController _reactionController;
@@ -260,4 +259,3 @@ final class _CupertinoThumb extends StatelessWidget {
     );
   }
 }
-

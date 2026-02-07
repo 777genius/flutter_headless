@@ -31,4 +31,3 @@ final class RAutocompleteHighlightLiveRegion extends StatelessWidget {
     );
   }
 }
-

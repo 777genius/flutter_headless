@@ -52,10 +52,12 @@ void main() {
         options: (text) => fruits.where((f) => f.startsWith(text.text)),
       );
 
-      final aResults = source.options(const TextEditingValue(text: 'a')).toList();
+      final aResults =
+          source.options(const TextEditingValue(text: 'a')).toList();
       expect(aResults, ['apple', 'apricot']);
 
-      final bResults = source.options(const TextEditingValue(text: 'b')).toList();
+      final bResults =
+          source.options(const TextEditingValue(text: 'b')).toList();
       expect(bResults, ['banana', 'blueberry']);
     });
   });

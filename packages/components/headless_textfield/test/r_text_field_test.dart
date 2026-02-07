@@ -199,7 +199,8 @@ void main() {
       controller.dispose();
     });
 
-    testWidgets('controller changes are reflected automatically', (tester) async {
+    testWidgets('controller changes are reflected automatically',
+        (tester) async {
       final renderer = _TestTextFieldRenderer();
       final controller = TextEditingController();
 
@@ -564,7 +565,8 @@ void main() {
       ));
 
       final semantics = tester.getSemantics(find.byType(RTextField));
-      expect(SemanticsUtils.hasFlag(semantics, SemanticsFlag.isTextField), isTrue);
+      expect(
+          SemanticsUtils.hasFlag(semantics, SemanticsFlag.isTextField), isTrue);
     });
 
     testWidgets('label in semantics', (tester) async {

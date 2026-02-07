@@ -190,7 +190,8 @@ void main() {
       ));
 
       // Set some selection
-      controller.selection = const TextSelection(baseOffset: 0, extentOffset: 5);
+      controller.selection =
+          const TextSelection(baseOffset: 0, extentOffset: 5);
       await tester.pump();
 
       // Clear text
@@ -239,7 +240,8 @@ void main() {
           value: '',
           maxLength: 10, // This should be ignored
           inputFormatters: [
-            LengthLimitingTextInputFormatter(3), // User's limiter takes priority
+            LengthLimitingTextInputFormatter(
+                3), // User's limiter takes priority
           ],
           onChanged: (v) => lastValue = v,
         ),
@@ -264,7 +266,8 @@ void main() {
         ),
       ));
 
-      await tester.enterText(find.byType(EditableText), 'HelloWorldThisIsALongText');
+      await tester.enterText(
+          find.byType(EditableText), 'HelloWorldThisIsALongText');
       await tester.pump();
 
       // No truncation
@@ -381,7 +384,8 @@ void main() {
         ),
       ));
 
-      final editableText = tester.widget<EditableText>(find.byType(EditableText));
+      final editableText =
+          tester.widget<EditableText>(find.byType(EditableText));
       expect(editableText.textCapitalization, TextCapitalization.words);
     });
 
@@ -395,7 +399,8 @@ void main() {
         ),
       ));
 
-      final editableText = tester.widget<EditableText>(find.byType(EditableText));
+      final editableText =
+          tester.widget<EditableText>(find.byType(EditableText));
       expect(editableText.autocorrect, false);
     });
 
@@ -409,7 +414,8 @@ void main() {
         ),
       ));
 
-      final editableText = tester.widget<EditableText>(find.byType(EditableText));
+      final editableText =
+          tester.widget<EditableText>(find.byType(EditableText));
       expect(editableText.enableSuggestions, false);
     });
 
@@ -423,7 +429,8 @@ void main() {
         ),
       ));
 
-      final editableText = tester.widget<EditableText>(find.byType(EditableText));
+      final editableText =
+          tester.widget<EditableText>(find.byType(EditableText));
       expect(editableText.showCursor, false);
     });
 
@@ -437,7 +444,8 @@ void main() {
         ),
       ));
 
-      final editableText = tester.widget<EditableText>(find.byType(EditableText));
+      final editableText =
+          tester.widget<EditableText>(find.byType(EditableText));
       expect(editableText.keyboardAppearance, Brightness.dark);
     });
 

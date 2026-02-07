@@ -162,7 +162,8 @@ void main() {
   _runDragTests();
 
   group('RSwitchListTile', () {
-    testWidgets('throws MissingCapabilityException when no renderer is provided',
+    testWidgets(
+        'throws MissingCapabilityException when no renderer is provided',
         (tester) async {
       await tester.pumpWidget(
         _buildTestWidget(
@@ -217,7 +218,8 @@ void main() {
       expect(spec.controlAffinity, RSwitchControlAffinity.trailing);
     });
 
-    testWidgets('autofocus requests focus and list tile resolver receives focused',
+    testWidgets(
+        'autofocus requests focus and list tile resolver receives focused',
         (tester) async {
       final switchRenderer = _TestSwitchRenderer();
       final listTileRenderer = _TestListTileRenderer();
@@ -244,7 +246,8 @@ void main() {
 
       expect(focusNode.hasFocus, isTrue);
       expect(listTileResolver.lastStates, isNotNull);
-      expect(listTileResolver.lastStates!.contains(WidgetState.focused), isTrue);
+      expect(
+          listTileResolver.lastStates!.contains(WidgetState.focused), isTrue);
     });
 
     testWidgets('Tab traversal requests focus when enabled', (tester) async {
@@ -275,7 +278,8 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(focusNode.hasFocus, isTrue);
-      expect(listTileResolver.lastStates!.contains(WidgetState.focused), isTrue);
+      expect(
+          listTileResolver.lastStates!.contains(WidgetState.focused), isTrue);
     });
 
     testWidgets('Tab traversal skips tile when disabled', (tester) async {
@@ -375,7 +379,8 @@ void main() {
       );
 
       expect(listTileResolver.lastStates, isNotNull);
-      expect(listTileResolver.lastStates!.contains(WidgetState.selected), isTrue);
+      expect(
+          listTileResolver.lastStates!.contains(WidgetState.selected), isTrue);
 
       expect(switchResolver.lastStates, isNotNull);
       expect(switchResolver.lastStates!.contains(WidgetState.selected), isTrue);
@@ -411,7 +416,8 @@ void main() {
       );
     });
 
-    testWidgets('explicit overrides win over style sugar (POLA)', (tester) async {
+    testWidgets('explicit overrides win over style sugar (POLA)',
+        (tester) async {
       final switchRenderer = _TestSwitchRenderer();
       final listTileRenderer = _TestListTileRenderer();
       final listTileResolver = _TestListTileTokenResolver();
@@ -465,7 +471,8 @@ void main() {
       );
 
       final semantics = tester.getSemantics(find.byType(RSwitchListTile));
-      expect(SemanticsUtils.hasFlag(semantics, SemanticsFlag.isToggled), isTrue);
+      expect(
+          SemanticsUtils.hasFlag(semantics, SemanticsFlag.isToggled), isTrue);
     });
 
     testWidgets('passes slots to renderer', (tester) async {
@@ -597,11 +604,13 @@ void main() {
 
         // With capability, HeadlessPressableRegion should NOT be used directly
         // Our custom wrapper widget should be present
-        expect(find.byKey(const ValueKey('custom-pressable-wrapper')), findsOneWidget);
+        expect(find.byKey(const ValueKey('custom-pressable-wrapper')),
+            findsOneWidget);
         expect(pressableSurfaceFactory.wrapCalled, isTrue);
       });
 
-      testWidgets('capability wrapper receives correct parameters', (tester) async {
+      testWidgets('capability wrapper receives correct parameters',
+          (tester) async {
         final switchRenderer = _TestSwitchRenderer();
         final listTileRenderer = _TestListTileRenderer();
         final pressableSurfaceFactory = _TestPressableSurfaceFactory();
@@ -672,7 +681,8 @@ void main() {
         );
 
         // Tap the wrapper
-        await tester.tap(find.byKey(const ValueKey('custom-pressable-wrapper')));
+        await tester
+            .tap(find.byKey(const ValueKey('custom-pressable-wrapper')));
         await tester.pump();
 
         expect(changedTo, isTrue);
@@ -729,7 +739,8 @@ class _TestThemeWithPressableSurface extends HeadlessTheme {
   T? capability<T>() {
     if (T == RSwitchRenderer) return switchRenderer as T;
     if (T == RSwitchListTileRenderer) return listTileRenderer as T;
-    if (T == HeadlessPressableSurfaceFactory) return pressableSurfaceFactory as T;
+    if (T == HeadlessPressableSurfaceFactory)
+      return pressableSurfaceFactory as T;
     return null;
   }
 }
@@ -759,7 +770,8 @@ class _TestThemeWithResolvers extends HeadlessTheme {
 
 void _runDragTests() {
   group('drag behavior', () {
-    testWidgets('T30: drag thumb from OFF to ON toggles switch', (tester) async {
+    testWidgets('T30: drag thumb from OFF to ON toggles switch',
+        (tester) async {
       final switchRenderer = _TestSwitchRenderer();
       final listTileRenderer = _TestListTileRenderer();
       final switchResolver = _TestSwitchTokenResolver();
@@ -797,7 +809,8 @@ void _runDragTests() {
       expect(value, isTrue);
     });
 
-    testWidgets('T31: drag thumb from ON to OFF toggles switch', (tester) async {
+    testWidgets('T31: drag thumb from ON to OFF toggles switch',
+        (tester) async {
       final switchRenderer = _TestSwitchRenderer();
       final listTileRenderer = _TestListTileRenderer();
       final switchResolver = _TestSwitchTokenResolver();
@@ -835,7 +848,8 @@ void _runDragTests() {
       expect(value, isFalse);
     });
 
-    testWidgets('T32: fling with velocity > 300 toggles switch', (tester) async {
+    testWidgets('T32: fling with velocity > 300 toggles switch',
+        (tester) async {
       final switchRenderer = _TestSwitchRenderer();
       final listTileRenderer = _TestListTileRenderer();
       final switchResolver = _TestSwitchTokenResolver();

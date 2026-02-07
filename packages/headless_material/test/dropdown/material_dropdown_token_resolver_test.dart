@@ -18,7 +18,8 @@ void main() {
             builder: (context) {
               final tokens = resolver.resolve(
                 context: context,
-                spec: const RDropdownButtonSpec(variant: RDropdownVariant.outlined),
+                spec: const RDropdownButtonSpec(
+                    variant: RDropdownVariant.outlined),
                 triggerStates: {},
                 overlayPhase: ROverlayPhase.closed,
               );
@@ -42,7 +43,8 @@ void main() {
             builder: (context) {
               final tokens = resolver.resolve(
                 context: context,
-                spec: const RDropdownButtonSpec(variant: RDropdownVariant.filled),
+                spec:
+                    const RDropdownButtonSpec(variant: RDropdownVariant.filled),
                 triggerStates: {},
                 overlayPhase: ROverlayPhase.closed,
               );
@@ -57,27 +59,31 @@ void main() {
       );
     });
 
-    testWidgets('overlay phase affects trigger border (open state)', (tester) async {
+    testWidgets('overlay phase affects trigger border (open state)',
+        (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Builder(
             builder: (context) {
               final closedTokens = resolver.resolve(
                 context: context,
-                spec: const RDropdownButtonSpec(variant: RDropdownVariant.outlined),
+                spec: const RDropdownButtonSpec(
+                    variant: RDropdownVariant.outlined),
                 triggerStates: {},
                 overlayPhase: ROverlayPhase.closed,
               );
 
               final openTokens = resolver.resolve(
                 context: context,
-                spec: const RDropdownButtonSpec(variant: RDropdownVariant.outlined),
+                spec: const RDropdownButtonSpec(
+                    variant: RDropdownVariant.outlined),
                 triggerStates: {},
                 overlayPhase: ROverlayPhase.open,
               );
 
               // Open state should have primary border
-              expect(openTokens.trigger.borderColor, isNot(closedTokens.trigger.borderColor));
+              expect(openTokens.trigger.borderColor,
+                  isNot(closedTokens.trigger.borderColor));
 
               return const SizedBox.shrink();
             },
@@ -140,7 +146,8 @@ void main() {
               final smallPadding = smallTokens.trigger.padding as EdgeInsets;
               final largePadding = largeTokens.trigger.padding as EdgeInsets;
 
-              expect(largePadding.horizontal, greaterThan(smallPadding.horizontal));
+              expect(largePadding.horizontal,
+                  greaterThan(smallPadding.horizontal));
 
               return const SizedBox.shrink();
             },
@@ -178,7 +185,8 @@ void main() {
       );
     });
 
-    testWidgets('material overrides win over contract overrides', (tester) async {
+    testWidgets('material overrides win over contract overrides',
+        (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Builder(
@@ -232,8 +240,10 @@ void main() {
 
               expect(tokens.item.foregroundColor, isNotNull);
               expect(tokens.item.backgroundColor, Colors.transparent);
-              expect(tokens.item.highlightBackgroundColor, isNot(Colors.transparent));
-              expect(tokens.item.selectedBackgroundColor, isNot(Colors.transparent));
+              expect(tokens.item.highlightBackgroundColor,
+                  isNot(Colors.transparent));
+              expect(tokens.item.selectedBackgroundColor,
+                  isNot(Colors.transparent));
               expect(tokens.item.disabledForegroundColor, isNotNull);
               expect(tokens.item.selectedMarkerColor, isNotNull);
 
@@ -244,7 +254,8 @@ void main() {
       );
     });
 
-    testWidgets('deterministic: same inputs produce same outputs', (tester) async {
+    testWidgets('deterministic: same inputs produce same outputs',
+        (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Builder(

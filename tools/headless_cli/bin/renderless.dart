@@ -96,11 +96,13 @@ void _generateComponent(ArgResults args) {
       content: _pubspecTemplate(spec),
     ),
     _FileSpec(
-      path: _joinPath(<String>[basePath, 'lib', 'headless_${spec.componentName}.dart']),
+      path: _joinPath(
+          <String>[basePath, 'lib', 'headless_${spec.componentName}.dart']),
       content: _libraryTemplate(spec),
     ),
     _FileSpec(
-      path: _joinPath(<String>[basePath, 'lib', 'r_${spec.componentName}.dart']),
+      path:
+          _joinPath(<String>[basePath, 'lib', 'r_${spec.componentName}.dart']),
       content: _facadeTemplate(spec),
     ),
     _FileSpec(
@@ -181,9 +183,8 @@ ComponentSpec _componentSpec(String raw) {
   if (componentName.isEmpty) {
     throw ArgumentError('Component name is empty.');
   }
-  final packageName = normalized.startsWith('headless_')
-      ? normalized
-      : 'headless_$normalized';
+  final packageName =
+      normalized.startsWith('headless_') ? normalized : 'headless_$normalized';
   final className = 'R${_toPascalCase(componentName)}';
   final titleName = _toTitleCase(componentName);
   return ComponentSpec(
@@ -227,9 +228,8 @@ String _joinPath(List<String> parts) {
     if (buffer.isNotEmpty && !buffer.toString().endsWith(sep)) {
       buffer.write(sep);
     }
-    final cleaned = part.startsWith(sep) && buffer.isNotEmpty
-        ? part.substring(1)
-        : part;
+    final cleaned =
+        part.startsWith(sep) && buffer.isNotEmpty ? part.substring(1) : part;
     buffer.write(cleaned);
   }
   return buffer.toString();
@@ -272,9 +272,12 @@ void _printNextSteps(
   stdout.writeln('  $basePath');
   stdout.writeln();
   stdout.writeln('Next steps:');
-  stdout.writeln('  - Add contracts in headless_contracts (renderer, resolver, overrides).');
-  stdout.writeln('  - Implement behavior + a11y in packages/components/${spec.packageName}.');
-  stdout.writeln('  - Implement presets in headless_material/headless_cupertino.');
+  stdout.writeln(
+      '  - Add contracts in headless_contracts (renderer, resolver, overrides).');
+  stdout.writeln(
+      '  - Implement behavior + a11y in packages/components/${spec.packageName}.');
+  stdout.writeln(
+      '  - Implement presets in headless_material/headless_cupertino.');
   stdout.writeln('  - Update docs and LLM.txt.');
   stdout.writeln('  - Run tests (flutter test) for the new package.');
   if (dryRun) {
@@ -459,4 +462,3 @@ final class _FileSpec {
   final String path;
   final String content;
 }
-

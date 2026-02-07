@@ -112,8 +112,7 @@ extension DropdownTesterExtensions on WidgetTester {
   }
 
   /// Gets screen dimensions.
-  Size get screenSize =>
-      view.physicalSize / view.devicePixelRatio;
+  Size get screenSize => view.physicalSize / view.devicePixelRatio;
 }
 
 /// Matchers for dropdown menu assertions.

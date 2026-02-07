@@ -68,4 +68,3 @@ final class _RTextFieldSelectionGestureWrapperState
     );
   }
 }
-

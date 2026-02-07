@@ -17,4 +17,3 @@ final class ListboxItemMeta {
   /// Строка для typeahead matching (обычно label в lower-case).
   final String typeaheadLabel;
 }
-

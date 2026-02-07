@@ -59,8 +59,7 @@ void main() {
   group('Autocomplete E2E (single toxic flags)', () {
     testWidgets(
         'IT-TOXIC-S-01: openOnFocus+openOnInput true, selection closes and does not flicker reopen, '
-        'typing reopens',
-        (tester) async {
+        'typing reopens', (tester) async {
       await tester.pumpWidget(
         const AutocompleteTestApp(
           child: _SingleToxicScenario(),
@@ -98,4 +97,3 @@ void main() {
     });
   });
 }
-

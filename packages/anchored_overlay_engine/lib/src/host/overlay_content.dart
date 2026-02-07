@@ -51,7 +51,8 @@ class _OverlayContentState extends State<OverlayContent> {
       NonModalFocusPolicy() => false,
     };
     final isModal = widget.focusPolicy is ModalFocusPolicy;
-    final shouldAutofocus = isModal || (!isModal && widget.restoreFocus == null);
+    final shouldAutofocus =
+        isModal || (!isModal && widget.restoreFocus == null);
 
     final focusTraversalWrapped = trapped
         ? FocusTraversalGroup(
@@ -149,7 +150,8 @@ class _OverlayContentState extends State<OverlayContent> {
       );
     }
 
-    final useNonModalPassThroughBarrier = widget.focusPolicy is NonModalFocusPolicy;
+    final useNonModalPassThroughBarrier =
+        widget.focusPolicy is NonModalFocusPolicy;
 
     return Stack(
       fit: StackFit.loose,

@@ -10,7 +10,8 @@ sealed class AutocompleteSelectionMode<T> {
 }
 
 @immutable
-final class AutocompleteSingleSelectionMode<T> extends AutocompleteSelectionMode<T> {
+final class AutocompleteSingleSelectionMode<T>
+    extends AutocompleteSelectionMode<T> {
   const AutocompleteSingleSelectionMode({
     required this.onSelected,
   });
@@ -41,4 +42,3 @@ final class AutocompleteMultipleSelectionMode<T>
   @override
   bool get isMultiple => true;
 }
-

@@ -24,4 +24,3 @@ class RAutocompleteRemoteMessageTile extends StatelessWidget {
     );
   }
 }
-

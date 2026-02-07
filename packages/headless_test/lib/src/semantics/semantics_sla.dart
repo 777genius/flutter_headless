@@ -23,7 +23,9 @@ class SemanticsSla {
     expect(
       SemanticsUtils.hasFlag(node, SemanticsFlag.isEnabled),
       enabled ? isTrue : isFalse,
-      reason: enabled ? 'Expected enabled semantics' : 'Expected disabled semantics',
+      reason: enabled
+          ? 'Expected enabled semantics'
+          : 'Expected disabled semantics',
     );
 
     if (labelContains != null) {
@@ -43,7 +45,9 @@ class SemanticsSla {
     expect(
       SemanticsUtils.hasFlag(node, SemanticsFlag.isExpanded),
       expanded ? isTrue : isFalse,
-      reason: expanded ? 'Expected expanded semantics' : 'Expected collapsed semantics',
+      reason: expanded
+          ? 'Expected expanded semantics'
+          : 'Expected collapsed semantics',
     );
   }
 
@@ -61,14 +65,17 @@ class SemanticsSla {
     expect(
       SemanticsUtils.hasFlag(node, SemanticsFlag.isEnabled),
       enabled ? isTrue : isFalse,
-      reason: enabled ? 'Expected enabled semantics' : 'Expected disabled semantics',
+      reason: enabled
+          ? 'Expected enabled semantics'
+          : 'Expected disabled semantics',
     );
 
     expect(
       SemanticsUtils.hasFlag(node, SemanticsFlag.isReadOnly),
       readOnly ? isTrue : isFalse,
-      reason: readOnly ? 'Expected readOnly semantics' : 'Expected editable semantics',
+      reason: readOnly
+          ? 'Expected readOnly semantics'
+          : 'Expected editable semantics',
     );
   }
 }
-

@@ -23,11 +23,11 @@ final class RCheckboxListTileSpec {
     this.dense = false,
     this.textDirection,
     this.hasSubtitle = false,
-  }) : assert(
+  })  : assert(
           tristate || value != null,
           'If tristate is false, value must be non-null.',
         ),
-       assert(
+        assert(
           !isThreeLine || hasSubtitle,
           'If isThreeLine is true, subtitle must be provided.',
         );
@@ -48,4 +48,3 @@ final class RCheckboxListTileSpec {
   bool get isChecked => value == true;
   bool get isIndeterminate => tristate && value == null;
 }
-

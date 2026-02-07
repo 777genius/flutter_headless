@@ -105,7 +105,8 @@ Widget _buildTestWidget({
 
 void main() {
   group('RSwitch', () {
-    testWidgets('throws MissingCapabilityException when no renderer is provided',
+    testWidgets(
+        'throws MissingCapabilityException when no renderer is provided',
         (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
@@ -213,7 +214,8 @@ void main() {
       expect(value, isFalse);
     });
 
-    testWidgets('does nothing when disabled (onChanged == null)', (tester) async {
+    testWidgets('does nothing when disabled (onChanged == null)',
+        (tester) async {
       final renderer = _TestSwitchRenderer();
       var called = false;
 
@@ -262,7 +264,8 @@ void main() {
       expect(resolver.lastStates!.contains(WidgetState.selected), isTrue);
     });
 
-    testWidgets('autofocus requests focus and resolver receives WidgetState.focused',
+    testWidgets(
+        'autofocus requests focus and resolver receives WidgetState.focused',
         (tester) async {
       final renderer = _TestSwitchRenderer();
       final resolver = _TestSwitchTokenResolver();
@@ -359,7 +362,8 @@ void main() {
           renderer.lastRequest?.resolvedTokens?.activeTrackColor, styleColor);
     });
 
-    testWidgets('explicit overrides win over style sugar (POLA)', (tester) async {
+    testWidgets('explicit overrides win over style sugar (POLA)',
+        (tester) async {
       final renderer = _TestSwitchRenderer();
       final resolver = _TestSwitchTokenResolver();
 
@@ -385,8 +389,8 @@ void main() {
         ),
       );
 
-      expect(
-          renderer.lastRequest?.resolvedTokens?.activeTrackColor, overrideColor);
+      expect(renderer.lastRequest?.resolvedTokens?.activeTrackColor,
+          overrideColor);
     });
 
     testWidgets('semantics shows toggled state correctly', (tester) async {
@@ -404,10 +408,12 @@ void main() {
       );
 
       final semantics = tester.getSemantics(find.bySemanticsLabel('Dark mode'));
-      expect(SemanticsUtils.hasFlag(semantics, SemanticsFlag.isToggled), isTrue);
+      expect(
+          SemanticsUtils.hasFlag(semantics, SemanticsFlag.isToggled), isTrue);
     });
 
-    testWidgets('thumbIcon param flows to overrides and wins over style.thumbIcon',
+    testWidgets(
+        'thumbIcon param flows to overrides and wins over style.thumbIcon',
         (tester) async {
       final renderer = _TestSwitchRenderer();
       final resolver = _TestSwitchTokenResolver();
@@ -507,7 +513,8 @@ void main() {
       expect(semanticsWidget.excludeSemantics, isTrue);
     });
 
-    testWidgets('semanticLabel null → excludeSemantics is false', (tester) async {
+    testWidgets('semanticLabel null → excludeSemantics is false',
+        (tester) async {
       final renderer = _TestSwitchRenderer();
 
       await tester.pumpWidget(

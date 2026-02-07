@@ -24,4 +24,3 @@ final class HeadlessPressableEnterUp extends HeadlessPressableKeyIntent {
 final class HeadlessPressableArrowDown extends HeadlessPressableKeyIntent {
   const HeadlessPressableArrowDown();
 }
-

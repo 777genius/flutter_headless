@@ -40,9 +40,9 @@ class MaterialButtonTokenResolver implements RButtonTokenResolver {
     BoxConstraints? constraints,
     RenderOverrides? overrides,
   }) {
-    final motionTheme = HeadlessThemeProvider.of(context)
-            ?.capability<HeadlessMotionTheme>() ??
-        HeadlessMotionTheme.material;
+    final motionTheme =
+        HeadlessThemeProvider.of(context)?.capability<HeadlessMotionTheme>() ??
+            HeadlessMotionTheme.material;
 
     // Get theme from context or use overrides
     final scheme = colorScheme ?? Theme.of(context).colorScheme;
@@ -87,7 +87,8 @@ class MaterialButtonTokenResolver implements RButtonTokenResolver {
         buttonOverrides?.borderRadius ??
         const BorderRadius.all(Radius.circular(20));
 
-    final resolvedTextStyle = buttonOverrides?.textStyle ?? sizeTokens.textStyle;
+    final resolvedTextStyle =
+        buttonOverrides?.textStyle ?? sizeTokens.textStyle;
     final resolvedForeground =
         buttonOverrides?.foregroundColor ?? stateColors.foreground;
     final resolvedBackground =

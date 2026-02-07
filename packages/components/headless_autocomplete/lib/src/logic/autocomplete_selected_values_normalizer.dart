@@ -16,4 +16,3 @@ List<T> normalizeSelectedValuesById<T>({
   }
   return result;
 }
-

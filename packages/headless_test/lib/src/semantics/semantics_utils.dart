@@ -34,4 +34,3 @@ class SemanticsUtils {
     return (data.actions & action.index) != 0;
   }
 }
-

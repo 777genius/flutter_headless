@@ -46,7 +46,8 @@ void main() {
       ));
 
       final node = tester.getSemantics(find.byType(RTextButton));
-      SemanticsSla.expectButton(node: node, enabled: true, labelContains: 'Custom label');
+      SemanticsSla.expectButton(
+          node: node, enabled: true, labelContains: 'Custom label');
 
       await tester.pumpWidget(_buildTestWidget(
         child: const RTextButton(
@@ -60,4 +61,3 @@ void main() {
     });
   });
 }
-

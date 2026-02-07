@@ -19,9 +19,9 @@ class CupertinoSwitchListTileTokenResolver
     BoxConstraints? constraints,
     RenderOverrides? overrides,
   }) {
-    final motionTheme = HeadlessThemeProvider.of(context)
-            ?.capability<HeadlessMotionTheme>() ??
-        HeadlessMotionTheme.cupertino;
+    final motionTheme =
+        HeadlessThemeProvider.of(context)?.capability<HeadlessMotionTheme>() ??
+            HeadlessMotionTheme.cupertino;
 
     final q = HeadlessWidgetStateQuery(states);
     final tileOverrides = overrides?.get<RSwitchListTileOverrides>();
@@ -38,9 +38,8 @@ class CupertinoSwitchListTileTokenResolver
     final baseSubtitle = TextStyle(
       fontSize: 15,
       fontWeight: FontWeight.w400,
-      color: isDark
-          ? CupertinoColors.systemGrey
-          : CupertinoColors.secondaryLabel,
+      color:
+          isDark ? CupertinoColors.systemGrey : CupertinoColors.secondaryLabel,
     );
 
     Color? titleColor;

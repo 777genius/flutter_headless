@@ -211,7 +211,8 @@ void main() {
       );
     });
 
-    testWidgets('cupertino overrides win over contract overrides', (tester) async {
+    testWidgets('cupertino overrides win over contract overrides',
+        (tester) async {
       await tester.pumpWidget(
         CupertinoApp(
           home: Builder(

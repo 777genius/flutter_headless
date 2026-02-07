@@ -42,4 +42,3 @@ final class HeadlessFocusHoverController extends ChangeNotifier {
     notifyListeners();
   }
 }
-

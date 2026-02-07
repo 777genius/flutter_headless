@@ -16,4 +16,3 @@ String headlessMissingCapabilityWidgetMessage({
 }) {
   return 'Missing $missingCapabilityType. ${headlessGoldenPathHint()}';
 }
-

@@ -164,7 +164,8 @@ class _CupertinoPressableSurfaceWidgetState
           widget.controller.handleMouseExit();
           widget.visualEffects?.hoverChanged(false);
         },
-        cursor: widget.enabled ? effectiveCursorEnabled : effectiveCursorDisabled,
+        cursor:
+            widget.enabled ? effectiveCursorEnabled : effectiveCursorDisabled,
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTapDown: _handleTapDown,

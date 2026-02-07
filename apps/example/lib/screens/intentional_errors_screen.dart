@@ -7,7 +7,8 @@ class IntentionalErrorsScreen extends StatefulWidget {
   const IntentionalErrorsScreen({super.key});
 
   @override
-  State<IntentionalErrorsScreen> createState() => _IntentionalErrorsScreenState();
+  State<IntentionalErrorsScreen> createState() =>
+      _IntentionalErrorsScreenState();
 }
 
 class _IntentionalErrorsScreenState extends State<IntentionalErrorsScreen> {

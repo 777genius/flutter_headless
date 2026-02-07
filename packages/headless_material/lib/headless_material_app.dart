@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:headless_contracts/headless_contracts.dart';
-import 'package:headless_foundation/headless_foundation.dart' show OverlayController;
+import 'package:headless_foundation/headless_foundation.dart'
+    show OverlayController;
 import 'package:headless_theme/headless_theme.dart';
 
 import 'src/material_headless_theme.dart';
@@ -128,4 +129,3 @@ class _HeadlessMaterialAppState extends State<HeadlessMaterialApp> {
     );
   }
 }
-

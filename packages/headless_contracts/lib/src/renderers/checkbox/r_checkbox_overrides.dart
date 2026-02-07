@@ -97,4 +97,3 @@ final class RCheckboxOverrides {
       motion != null ||
       minTapTargetSize != null;
 }
-

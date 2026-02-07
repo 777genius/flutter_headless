@@ -88,7 +88,8 @@ void main() {
       expect(result.remoteCount, 2);
     });
 
-    test('returns only local when remoteOnlyWhenLocalEmpty and local not empty', () {
+    test('returns only local when remoteOnlyWhenLocalEmpty and local not empty',
+        () {
       final combiner = AutocompleteCombiner<String>(
         itemAdapter: adapter,
         policy: const RAutocompleteCombinePolicy(

@@ -114,7 +114,8 @@ void main() {
     });
 
     test('toString uses debugName when provided', () {
-      const keyWithName = HeadlessFeatureKey<String>(#test, debugName: 'TestKey');
+      const keyWithName =
+          HeadlessFeatureKey<String>(#test, debugName: 'TestKey');
       const keyWithoutName = HeadlessFeatureKey<String>(#test);
 
       expect(keyWithName.toString(), equals('TestKey'));

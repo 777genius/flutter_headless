@@ -11,7 +11,8 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group('Autocomplete E2E (multi-select chips)', () {
-    testWidgets('IT-MS-01: deleting chip removes selection and does not open menu',
+    testWidgets(
+        'IT-MS-01: deleting chip removes selection and does not open menu',
         (tester) async {
       await tester.pumpWidget(
         const AutocompleteTestApp(
@@ -54,4 +55,3 @@ void main() {
     });
   });
 }
-

@@ -12,8 +12,7 @@ void main() {
       renderer = const MaterialFlutterParityButtonRenderer();
     });
 
-    testWidgets('throws StateError when useMaterial3 is false',
-        (tester) async {
+    testWidgets('throws StateError when useMaterial3 is false', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(useMaterial3: false),
@@ -160,8 +159,7 @@ void main() {
       );
     });
 
-    testWidgets('disabled state propagates to Flutter button',
-        (tester) async {
+    testWidgets('disabled state propagates to Flutter button', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Builder(
@@ -209,8 +207,7 @@ void main() {
       expect(filledButton.onPressed, isNotNull);
     });
 
-    testWidgets('pressed state propagates to statesController',
-        (tester) async {
+    testWidgets('pressed state propagates to statesController', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Builder(
@@ -237,8 +234,7 @@ void main() {
       );
     });
 
-    testWidgets('hovered state propagates to statesController',
-        (tester) async {
+    testWidgets('hovered state propagates to statesController', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Builder(
@@ -265,8 +261,7 @@ void main() {
       );
     });
 
-    testWidgets('focused state propagates to statesController',
-        (tester) async {
+    testWidgets('focused state propagates to statesController', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Builder(
@@ -527,9 +522,11 @@ void main() {
           ),
         );
 
-        final buttons = tester.widgetList<FilledButton>(
-          find.byType(FilledButton),
-        ).toList();
+        final buttons = tester
+            .widgetList<FilledButton>(
+              find.byType(FilledButton),
+            )
+            .toList();
         final smallPad = buttons[0].style?.padding?.resolve({}) as EdgeInsets;
         final largePad = buttons[1].style?.padding?.resolve({}) as EdgeInsets;
         expect(largePad.horizontal, greaterThan(smallPad.horizontal));

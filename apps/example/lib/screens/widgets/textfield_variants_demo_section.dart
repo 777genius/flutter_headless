@@ -15,8 +15,7 @@ final class TextFieldVariantsDemoSection extends StatelessWidget {
 
     return DemoSection(
       title: 'Variants (intent)',
-      description:
-          'Three visual intents: filled / outlined / underlined.\n'
+      description: 'Three visual intents: filled / outlined / underlined.\n'
           'Cupertino does not have a native underlined variant.\n'
           'Use Cupertino-only borderless via RCupertinoTextField.borderless().',
       child: Column(
@@ -67,4 +66,3 @@ final class TextFieldVariantsDemoSection extends StatelessWidget {
 }
 
 void _noop(String _) {}
-

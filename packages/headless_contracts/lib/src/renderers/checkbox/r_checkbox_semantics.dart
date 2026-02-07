@@ -40,4 +40,3 @@ final class RCheckboxSemantics {
   @override
   int get hashCode => Object.hash(label, isEnabled, value, isTristate);
 }
-

@@ -22,4 +22,3 @@ final class RButtonMotionTokens {
   @override
   int get hashCode => stateChangeDuration.hashCode;
 }
-

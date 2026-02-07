@@ -36,10 +36,9 @@ class CupertinoTextFieldRenderer implements RTextFieldRenderer {
     // Get effective values from tokens or use defaults
     final backgroundColor =
         tokens?.containerBackgroundColor ?? CupertinoColors.white;
-    final borderColor =
-        tokens?.containerBorderColor ?? const Color(0xFFC6C6C8);
-    final borderRadius =
-        tokens?.containerBorderRadius ?? const BorderRadius.all(Radius.circular(5));
+    final borderColor = tokens?.containerBorderColor ?? const Color(0xFFC6C6C8);
+    final borderRadius = tokens?.containerBorderRadius ??
+        const BorderRadius.all(Radius.circular(5));
     final borderWidth = tokens?.containerBorderWidth ?? 0.5;
     final padding = tokens?.containerPadding ?? const EdgeInsets.all(7);
     final animationDuration =

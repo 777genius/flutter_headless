@@ -42,4 +42,3 @@ final class HeadlessNeverFocusHighlightPolicy
   @override
   bool showFor(FocusHighlightMode mode) => false;
 }
-

@@ -22,7 +22,8 @@ class AutocompleteManyItemsScenario extends StatefulWidget {
       _AutocompleteManyItemsScenarioState();
 }
 
-class _AutocompleteManyItemsScenarioState extends State<AutocompleteManyItemsScenario> {
+class _AutocompleteManyItemsScenarioState
+    extends State<AutocompleteManyItemsScenario> {
   static const _items = <String>[
     'Argentina',
     'Australia',
@@ -120,4 +121,3 @@ class _AutocompleteManyItemsScenarioState extends State<AutocompleteManyItemsSce
     return items.where((item) => item.toLowerCase().contains(query));
   }
 }
-

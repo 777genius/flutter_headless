@@ -46,7 +46,8 @@ void main() {
       tester.expectListTileValue('false');
     });
 
-    testWidgets('IT-03: Adaptive app uses MaterialApp on Android', (tester) async {
+    testWidgets('IT-03: Adaptive app uses MaterialApp on Android',
+        (tester) async {
       await tester.pumpWidget(const CheckboxTestApp(
         platformOverride: TargetPlatform.android,
         child: CheckboxTestScenario(
@@ -73,4 +74,3 @@ void main() {
     });
   });
 }
-

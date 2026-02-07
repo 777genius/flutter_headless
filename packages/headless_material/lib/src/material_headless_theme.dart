@@ -123,7 +123,8 @@ class MaterialHeadlessTheme extends HeadlessTheme {
   final MaterialDropdownTokenResolver _dropdownTokenResolver;
   final MaterialTextFieldRenderer _textFieldRenderer;
   final MaterialTextFieldTokenResolver _textFieldTokenResolver;
-  final MaterialAutocompleteSelectedValuesRenderer _autocompleteSelectedValuesRenderer;
+  final MaterialAutocompleteSelectedValuesRenderer
+      _autocompleteSelectedValuesRenderer;
   final MaterialInkPressableSurface _pressableSurfaceFactory;
 
   /// Creates a dark variant of the Material theme.

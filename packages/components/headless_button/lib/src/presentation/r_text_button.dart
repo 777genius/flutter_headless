@@ -196,7 +196,8 @@ class _RTextButtonState extends State<RTextButton> {
     final theme = HeadlessThemeProvider.themeOf(context);
     final bool usesResolvedTokens;
     if (renderer is RButtonRendererTokenMode) {
-      usesResolvedTokens = (renderer as RButtonRendererTokenMode).usesResolvedTokens;
+      usesResolvedTokens =
+          (renderer as RButtonRendererTokenMode).usesResolvedTokens;
     } else {
       usesResolvedTokens = true;
     }
@@ -338,7 +339,8 @@ void _reportUnconsumedOverrides(
       ..writeln('Provided: ${provided.join(', ')}')
       ..writeln('Consumed: ${consumed.join(', ')}')
       ..writeln('Unconsumed: ${unconsumed.join(', ')}')
-      ..write('Hint: Your preset may not support these overrides for this component.');
+      ..write(
+          'Hint: Your preset may not support these overrides for this component.');
 
     debugPrint(message.toString());
     return true;

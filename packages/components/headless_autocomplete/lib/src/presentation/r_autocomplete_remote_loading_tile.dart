@@ -29,4 +29,3 @@ class RAutocompleteRemoteLoadingTile extends StatelessWidget {
     );
   }
 }
-

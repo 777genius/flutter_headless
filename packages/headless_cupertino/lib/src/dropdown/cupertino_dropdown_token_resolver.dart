@@ -37,9 +37,9 @@ class CupertinoDropdownTokenResolver implements RDropdownTokenResolver {
     BoxConstraints? constraints,
     RenderOverrides? overrides,
   }) {
-    final motionTheme = HeadlessThemeProvider.of(context)
-            ?.capability<HeadlessMotionTheme>() ??
-        HeadlessMotionTheme.cupertino;
+    final motionTheme =
+        HeadlessThemeProvider.of(context)?.capability<HeadlessMotionTheme>() ??
+            HeadlessMotionTheme.cupertino;
 
     // Get brightness from context or use override
     final effectiveBrightness =
@@ -84,9 +84,11 @@ class CupertinoDropdownTokenResolver implements RDropdownTokenResolver {
       q: q,
       overlayPhase: overlayPhase,
     );
-    final isDisabled = visualState == HeadlessDropdownTriggerVisualState.disabled;
-    final isFocused = visualState == HeadlessDropdownTriggerVisualState.focused ||
-        visualState == HeadlessDropdownTriggerVisualState.open;
+    final isDisabled =
+        visualState == HeadlessDropdownTriggerVisualState.disabled;
+    final isFocused =
+        visualState == HeadlessDropdownTriggerVisualState.focused ||
+            visualState == HeadlessDropdownTriggerVisualState.open;
 
     // iOS-style colors
     final foregroundColor = isDisabled
@@ -99,9 +101,7 @@ class CupertinoDropdownTokenResolver implements RDropdownTokenResolver {
 
     final borderColor = isFocused
         ? CupertinoColors.activeBlue
-        : (isDark
-            ? CupertinoColors.systemGrey4
-            : CupertinoColors.systemGrey3);
+        : (isDark ? CupertinoColors.systemGrey4 : CupertinoColors.systemGrey3);
 
     final padding = density == null
         ? overrides?.triggerPadding ??
@@ -114,10 +114,9 @@ class CupertinoDropdownTokenResolver implements RDropdownTokenResolver {
       density: density,
       override: density == null ? overrides?.triggerMinSize : null,
     );
-    final borderRadius =
-        _resolveCornerRadius(cornerStyle) ??
-            overrides?.triggerBorderRadius ??
-            const BorderRadius.all(Radius.circular(8));
+    final borderRadius = _resolveCornerRadius(cornerStyle) ??
+        overrides?.triggerBorderRadius ??
+        const BorderRadius.all(Radius.circular(8));
 
     return RDropdownTriggerTokens(
       textStyle: overrides?.triggerTextStyle ??
@@ -153,10 +152,9 @@ class CupertinoDropdownTokenResolver implements RDropdownTokenResolver {
             const EdgeInsets.symmetric(vertical: 6),
             density,
           );
-    final borderRadius =
-        _resolveCornerRadius(cornerStyle) ??
-            overrides?.menuBorderRadius ??
-            const BorderRadius.all(Radius.circular(14));
+    final borderRadius = _resolveCornerRadius(cornerStyle) ??
+        overrides?.menuBorderRadius ??
+        const BorderRadius.all(Radius.circular(14));
 
     final baseBackgroundColor = overrides?.menuBackgroundColor ??
         (isDark
@@ -166,9 +164,7 @@ class CupertinoDropdownTokenResolver implements RDropdownTokenResolver {
       backgroundColor: baseBackgroundColor,
       backgroundOpacity: 0.85,
       borderColor: overrides?.menuBorderColor ??
-          (isDark
-              ? CupertinoColors.systemGrey4
-              : CupertinoColors.systemGrey4),
+          (isDark ? CupertinoColors.systemGrey4 : CupertinoColors.systemGrey4),
       borderRadius: borderRadius,
       elevation: 0, // iOS uses shadow, not elevation
       maxHeight: overrides?.menuMaxHeight ?? 300,
@@ -200,8 +196,9 @@ class CupertinoDropdownTokenResolver implements RDropdownTokenResolver {
             const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             density,
           );
-    final minHeight =
-        density == null ? overrides?.itemMinHeight ?? 44 : _densityMinHeight(density);
+    final minHeight = density == null
+        ? overrides?.itemMinHeight ?? 44
+        : _densityMinHeight(density);
 
     return RDropdownItemTokens(
       textStyle: overrides?.itemTextStyle ??
@@ -213,9 +210,8 @@ class CupertinoDropdownTokenResolver implements RDropdownTokenResolver {
       foregroundColor: foregroundColor,
       disabledForegroundColor: CupertinoColors.inactiveGray,
       backgroundColor: CupertinoColors.transparent,
-      highlightBackgroundColor: isDark
-          ? CupertinoColors.systemGrey5
-          : CupertinoColors.systemGrey5,
+      highlightBackgroundColor:
+          isDark ? CupertinoColors.systemGrey5 : CupertinoColors.systemGrey5,
       selectedBackgroundColor:
           CupertinoColors.activeBlue.withValues(alpha: 0.1),
       selectedMarkerColor: CupertinoColors.activeBlue,

@@ -106,4 +106,3 @@ class _HeadlessAppState extends State<HeadlessApp> {
     );
   }
 }
-

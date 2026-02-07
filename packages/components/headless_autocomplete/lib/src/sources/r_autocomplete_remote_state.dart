@@ -157,7 +157,8 @@ final class RAutocompleteRemoteState {
 /// ```dart
 /// final remoteState = ctx.features.get(rAutocompleteRemoteStateKey);
 /// ```
-const rAutocompleteRemoteStateKey = HeadlessFeatureKey<RAutocompleteRemoteState>(
+const rAutocompleteRemoteStateKey =
+    HeadlessFeatureKey<RAutocompleteRemoteState>(
   #rAutocompleteRemoteState,
   debugName: 'rAutocompleteRemoteState',
 );

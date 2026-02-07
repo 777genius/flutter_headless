@@ -13,10 +13,7 @@ abstract final class MaterialButtonParityConstants {
   static const double kMediumMinHeight = 40.0;
   static const double kLargeMinHeight = 48.0;
 
-  static const EdgeInsets kSmallPadding =
-      EdgeInsets.symmetric(horizontal: 16);
-  static const EdgeInsets kMediumPadding =
-      EdgeInsets.symmetric(horizontal: 24);
-  static const EdgeInsets kLargePadding =
-      EdgeInsets.symmetric(horizontal: 32);
+  static const EdgeInsets kSmallPadding = EdgeInsets.symmetric(horizontal: 16);
+  static const EdgeInsets kMediumPadding = EdgeInsets.symmetric(horizontal: 24);
+  static const EdgeInsets kLargePadding = EdgeInsets.symmetric(horizontal: 32);
 }

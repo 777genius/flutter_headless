@@ -21,7 +21,8 @@ void main() {
             home: HeadlessThemeProvider(
               theme: const _EmptyTheme(),
               child: HeadlessThemeOverridesScope.only<HeadlessRendererPolicy>(
-                capability: const HeadlessRendererPolicy(requireResolvedTokens: true),
+                capability:
+                    const HeadlessRendererPolicy(requireResolvedTokens: true),
                 child: Builder(
                   builder: (context) {
                     return const MaterialFlutterParityButtonRenderer().render(
@@ -46,4 +47,3 @@ void main() {
     );
   });
 }
-

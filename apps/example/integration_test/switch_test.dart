@@ -53,7 +53,8 @@ void main() {
   });
 
   group('Switch E2E Tests - Disabled State', () {
-    testWidgets('IT-04: Disabled switch does not toggle on tap', (tester) async {
+    testWidgets('IT-04: Disabled switch does not toggle on tap',
+        (tester) async {
       await tester.pumpWidget(const SwitchTestApp(
         platformOverride: TargetPlatform.iOS,
         child: SwitchTestScenario(initialValue: false, disabled: true),
@@ -65,7 +66,8 @@ void main() {
       tester.expectSwitchValue(false);
     });
 
-    testWidgets('IT-05: Disabled switch ON state does not toggle', (tester) async {
+    testWidgets('IT-05: Disabled switch ON state does not toggle',
+        (tester) async {
       await tester.pumpWidget(const SwitchTestApp(
         platformOverride: TargetPlatform.iOS,
         child: SwitchTestScenario(initialValue: true, disabled: true),
@@ -147,7 +149,8 @@ void main() {
       tester.expectSwitchValue(true);
     });
 
-    testWidgets('IT-11: Multiple Enter presses toggle correctly', (tester) async {
+    testWidgets('IT-11: Multiple Enter presses toggle correctly',
+        (tester) async {
       await tester.pumpWidget(const SwitchTestApp(
         platformOverride: TargetPlatform.iOS,
         child: SwitchTestScenario(initialValue: false, autofocus: true),

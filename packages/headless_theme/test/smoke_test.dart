@@ -13,4 +13,3 @@ void main() {
     expect(const _TestTheme().capability<Object>(), isNull);
   });
 }
-

@@ -9,7 +9,8 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group('Autocomplete E2E (duplicate ids)', () {
-    testWidgets('IT-DUP-01: duplicate ids are de-duped (no crash)', (tester) async {
+    testWidgets('IT-DUP-01: duplicate ids are de-duped (no crash)',
+        (tester) async {
       await tester.pumpWidget(
         const AutocompleteTestApp(
           child: AutocompleteDuplicateIdsScenario(),
@@ -28,4 +29,3 @@ void main() {
     });
   });
 }
-

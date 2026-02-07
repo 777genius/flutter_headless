@@ -26,7 +26,8 @@ HeadlessDropdownTriggerVisualState resolveDropdownTriggerVisualState({
 }) {
   if (q.isDisabled) return HeadlessDropdownTriggerVisualState.disabled;
 
-  final isOpen = overlayPhase == ROverlayPhase.opening || overlayPhase == ROverlayPhase.open;
+  final isOpen = overlayPhase == ROverlayPhase.opening ||
+      overlayPhase == ROverlayPhase.open;
   if (isOpen) return HeadlessDropdownTriggerVisualState.open;
 
   if (q.isPressed) return HeadlessDropdownTriggerVisualState.pressed;
@@ -34,4 +35,3 @@ HeadlessDropdownTriggerVisualState resolveDropdownTriggerVisualState({
   if (q.isFocused) return HeadlessDropdownTriggerVisualState.focused;
   return HeadlessDropdownTriggerVisualState.none;
 }
-

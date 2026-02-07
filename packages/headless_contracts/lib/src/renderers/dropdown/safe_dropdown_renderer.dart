@@ -131,7 +131,8 @@ final class SafeDropdownRenderer implements RDropdownButtonRenderer {
       enabled: !item.isDisabled,
       label: item.semanticsLabel ?? item.primaryText,
       child: GestureDetector(
-        onTap: item.isDisabled ? null : () => request.commands.selectIndex(index),
+        onTap:
+            item.isDisabled ? null : () => request.commands.selectIndex(index),
         behavior: HitTestBehavior.opaque,
         child: row,
       ),

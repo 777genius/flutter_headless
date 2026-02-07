@@ -83,7 +83,8 @@ void main() {
       tester.expectMenuOpen();
     });
 
-    testWidgets('IT-05: ArrowDown + Enter selects second option', (tester) async {
+    testWidgets('IT-05: ArrowDown + Enter selects second option',
+        (tester) async {
       await tester.pumpWidget(
         AutocompleteTestApp(
           child: AutocompleteTestScenario(

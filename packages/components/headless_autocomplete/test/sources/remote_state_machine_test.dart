@@ -135,7 +135,8 @@ void main() {
       );
 
       machine.load(rawText: 'first', trigger: RAutocompleteRemoteTrigger.input);
-      machine.load(rawText: 'second', trigger: RAutocompleteRemoteTrigger.input);
+      machine.load(
+          rawText: 'second', trigger: RAutocompleteRemoteTrigger.input);
 
       completers[1].complete(['second-result']);
       await Future.microtask(() {});
@@ -205,7 +206,8 @@ void main() {
         onStateChanged: () => states.add(machine.state),
       );
 
-      machine.load(rawText: '  test  ', trigger: RAutocompleteRemoteTrigger.input);
+      machine.load(
+          rawText: '  test  ', trigger: RAutocompleteRemoteTrigger.input);
       await Future.microtask(() {});
 
       expect(capturedQuery?.text, 'test');
@@ -238,7 +240,8 @@ void main() {
       expect(machine.results, ['result']);
     });
 
-    test('cache policy caches per query and evicts by maxEntries (LRU)', () async {
+    test('cache policy caches per query and evicts by maxEntries (LRU)',
+        () async {
       final seen = <String>[];
 
       machine = AutocompleteRemoteStateMachine<String>(
@@ -247,7 +250,8 @@ void main() {
           return ['${q.text}-result'];
         },
         policy: const RAutocompleteRemotePolicy(
-          cache: RAutocompleteRemoteCachePolicy.lastSuccessfulPerQuery(maxEntries: 2),
+          cache: RAutocompleteRemoteCachePolicy.lastSuccessfulPerQuery(
+              maxEntries: 2),
           debounce: null,
         ),
         onStateChanged: () => states.add(machine.state),
@@ -301,7 +305,9 @@ void main() {
       expect(machine.results, isEmpty);
     });
 
-    test('minQueryLength clears stale results even with keepPreviousResultsWhileLoading', () async {
+    test(
+        'minQueryLength clears stale results even with keepPreviousResultsWhileLoading',
+        () async {
       final completer = Completer<Iterable<String>>();
 
       machine = AutocompleteRemoteStateMachine<String>(

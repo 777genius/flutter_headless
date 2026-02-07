@@ -65,7 +65,8 @@ void dropdownRendererSlotConformance({
       expect(selectedMarkerFinder, findsOneWidget);
     });
 
-    testWidgets('chevron slot replaces default icon in trigger', (tester) async {
+    testWidgets('chevron slot replaces default icon in trigger',
+        (tester) async {
       await tester.pumpWidget(
         wrapApp(
           Builder(
@@ -177,7 +178,8 @@ void dropdownRendererSlotConformance({
       expect(find.byKey(const Key('empty_state_slot')), findsOneWidget);
     });
 
-    testWidgets('menuSurface slot does not bypass close contract', (tester) async {
+    testWidgets('menuSurface slot does not bypass close contract',
+        (tester) async {
       final phase = ValueNotifier<ROverlayPhase>(ROverlayPhase.open);
       var completeCloseCalls = 0;
 

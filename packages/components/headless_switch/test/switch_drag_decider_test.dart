@@ -232,7 +232,8 @@ void main() {
   });
 
   group('computeTravelPx', () {
-    test('computes travel distance using trackInnerLength formula (Material 3)', () {
+    test('computes travel distance using trackInnerLength formula (Material 3)',
+        () {
       // Material 3: trackWidth=52, trackHeight=32
       // trackInnerStart = 32 / 2 = 16
       // trackInnerEnd = 52 - 16 = 36

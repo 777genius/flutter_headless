@@ -26,7 +26,8 @@ void main() {
 
     test('precedence: includes base empty set at the end', () {
       const policy = StateResolutionPolicy();
-      final result = policy.precedence({WidgetState.hovered, WidgetState.focused});
+      final result =
+          policy.precedence({WidgetState.hovered, WidgetState.focused});
       expect(result.last, <WidgetState>{});
     });
   });
@@ -78,4 +79,3 @@ void main() {
     });
   });
 }
-

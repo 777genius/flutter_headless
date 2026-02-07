@@ -61,7 +61,8 @@ void dropdownItemInvariantsConformance({
       expect(selectedIndex, isNull);
     });
 
-    testWidgets('selected/enabled semantics are exposed on items', (tester) async {
+    testWidgets('selected/enabled semantics are exposed on items',
+        (tester) async {
       await tester.pumpWidget(
         wrapApp(
           Builder(
@@ -125,7 +126,8 @@ void dropdownItemInvariantsConformance({
         expect(
           SemanticsUtils.hasFlag(disabledNode, SemanticsFlag.isEnabled),
           isFalse,
-          reason: 'Expected disabled item to not expose SemanticsFlag.isEnabled',
+          reason:
+              'Expected disabled item to not expose SemanticsFlag.isEnabled',
         );
       } finally {
         semanticsHandle.dispose();
@@ -133,4 +135,3 @@ void dropdownItemInvariantsConformance({
     });
   });
 }
-

@@ -53,11 +53,13 @@ void main() {
         ),
       );
 
-      expect(tokens.containerBackgroundColor, CupertinoColors.darkBackgroundGray);
+      expect(
+          tokens.containerBackgroundColor, CupertinoColors.darkBackgroundGray);
       expect(tokens.textColor, CupertinoColors.white);
     });
 
-    testWidgets('focused state changes border color to primary', (tester) async {
+    testWidgets('focused state changes border color to primary',
+        (tester) async {
       late RTextFieldResolvedTokens unfocusedTokens;
       late RTextFieldResolvedTokens focusedTokens;
 

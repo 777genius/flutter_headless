@@ -51,7 +51,8 @@ void main() {
       ));
 
       final node2 = tester.getSemantics(find.byType(EditableText));
-      SemanticsSla.expectTextField(node: node2, enabled: false, readOnly: false);
+      SemanticsSla.expectTextField(
+          node: node2, enabled: false, readOnly: false);
 
       await tester.pumpWidget(_buildTestWidget(
         child: RTextField(
@@ -65,4 +66,3 @@ void main() {
     });
   });
 }
-

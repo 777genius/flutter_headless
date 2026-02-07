@@ -103,14 +103,14 @@ class CupertinoDropdownRenderer implements RDropdownButtonRenderer {
           isEnabled: !state.isDisabled,
           visualEffects: request.visualEffects,
           child: CupertinoDropdownTrigger(
-          backgroundColor: backgroundColor,
-          foregroundColor: foregroundColor,
-          borderColor: borderColor,
-          borderRadius: borderRadius,
-          padding: padding,
-          textStyle: textStyle,
-          minSize: minSize,
-          displayText: displayText,
+            backgroundColor: backgroundColor,
+            foregroundColor: foregroundColor,
+            borderColor: borderColor,
+            borderRadius: borderRadius,
+            padding: padding,
+            textStyle: textStyle,
+            minSize: minSize,
+            displayText: displayText,
             chevron: chevron,
             animationDuration: menuMotion.enterDuration,
             isFocused: state.isTriggerFocused,
@@ -126,14 +126,14 @@ class CupertinoDropdownRenderer implements RDropdownButtonRenderer {
       isEnabled: !state.isDisabled,
       visualEffects: request.visualEffects,
       child: CupertinoDropdownTrigger(
-      backgroundColor: backgroundColor,
-      foregroundColor: foregroundColor,
-      borderColor: borderColor,
-      borderRadius: borderRadius,
-      padding: padding,
-      textStyle: textStyle,
-      minSize: minSize,
-      displayText: displayText,
+        backgroundColor: backgroundColor,
+        foregroundColor: foregroundColor,
+        borderColor: borderColor,
+        borderRadius: borderRadius,
+        padding: padding,
+        textStyle: textStyle,
+        minSize: minSize,
+        displayText: displayText,
         chevron: chevron,
         animationDuration: menuMotion.enterDuration,
         isFocused: state.isTriggerFocused,
@@ -279,8 +279,8 @@ class CupertinoDropdownRenderer implements RDropdownButtonRenderer {
     final menuInner = request.items.isEmpty && slots?.emptyState != null
         ? slots!.emptyState!.build(menuContext, (_) => const SizedBox.shrink())
         : slots?.menu != null
-        ? slots!.menu!.build(menuContext, buildDefaultMenu)
-        : buildDefaultMenu(menuContext);
+            ? slots!.menu!.build(menuContext, buildDefaultMenu)
+            : buildDefaultMenu(menuContext);
 
     // Desktop/macOS UX: avoid wrapping the default menu in a ScrollView unless
     // it actually needs scrolling. Otherwise wheel events can be consumed by the

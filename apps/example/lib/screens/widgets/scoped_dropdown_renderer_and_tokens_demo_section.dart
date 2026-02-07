@@ -29,7 +29,8 @@ class _ScopedDropdownRendererAndTokensDemoSectionState
   Widget build(BuildContext context) {
     return DemoSection(
       title: 'D5 - Scoped Capability Override (Renderer + Tokens)',
-      description: 'Override RDropdownButtonRenderer + RDropdownTokenResolver together.\n'
+      description:
+          'Override RDropdownButtonRenderer + RDropdownTokenResolver together.\n'
           'This keeps visuals consistent (renderer + tokens agree).',
       child: Builder(
         builder: (context) {
@@ -119,4 +120,3 @@ final class DemoScopedDropdownTokenResolver implements RDropdownTokenResolver {
     );
   }
 }
-
