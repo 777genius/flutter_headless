@@ -9,7 +9,7 @@ Non-goals:
 Key components:
 - MaterialHeadlessTheme: capability composition for Material 3 look.
 - MaterialButtonTokenResolver: deterministic state→tokens for button.
-- MaterialButtonRenderer: visual rendering without double-invoke.
+- MaterialFlutterParityButtonRenderer: visual-only parity renderer (delegates to Flutter buttons).
 - MaterialDropdownTokenResolver: tokens for trigger/menu/item.
 - MaterialDropdownRenderer: trigger + menu rendering with close contract.
 

@@ -38,13 +38,13 @@ NakedButton(
 ```dart
 RTextButton(
   onPressed: save,
-  variant: RButtonVariant.primary,
+  variant: RButtonVariant.filled,
   // Styling в отдельном RButtonRenderer
   child: Text('Save'),
 )
 
 // Renderer (в preset пакете):
-class MaterialButtonRenderer implements RButtonRenderer {
+class MaterialFlutterParityButtonRenderer implements RButtonRenderer {
   Widget render(RButtonRenderRequest request) {
     // request.spec, request.state, request.resolvedTokens
   }
@@ -119,7 +119,7 @@ final class RButtonState {
 | **Slots** | child в builder | `RButtonSlots`, `RDropdownButtonSlots` |
 | **Theming** | Нет | `RenderlessThemeProvider` |
 | **Token resolution** | Нет | `RButtonTokenResolver` capability |
-| **Variants** | Нет | `RButtonVariant.primary/secondary` |
+| **Variants** | Нет | `RButtonVariant.filled/tonal/outlined/text` |
 
 ---
 

@@ -25,3 +25,7 @@ dev_dependencies:
   lints: ^5.1.1
   headless_test:
     path: ../headless_test
+  headless_textfield:
+    path: ../components/headless_textfield
+  headless_button:
+    path: ../components/headless_button

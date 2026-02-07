@@ -8,6 +8,7 @@ final class RTextFieldEditableTextFactory {
 
   Widget create({
     required BuildContext context,
+    GlobalKey<EditableTextState>? editableTextKey,
     required TextEditingController controller,
     required FocusNode focusNode,
     required bool autofocus,
@@ -36,16 +37,21 @@ final class RTextFieldEditableTextFactory {
     required TapRegionCallback? onTapOutside,
     RTextFieldResolvedTokens? resolvedTokens,
   }) {
-    final textStyle = resolvedTokens?.textStyle ?? const TextStyle();
+    final selectionStyle = DefaultSelectionStyle.of(context);
+    final textStyle = resolvedTokens?.textStyle ??
+        DefaultTextStyle.of(context).style;
     final textColor = resolvedTokens?.textColor;
     final cursorColor = resolvedTokens?.cursorColor ??
+        selectionStyle.cursorColor ??
         DefaultTextStyle.of(context).style.color ??
         const Color(0xFF000000);
-    final selectionColor = resolvedTokens?.selectionColor;
+    final selectionColor = resolvedTokens?.selectionColor ??
+        selectionStyle.selectionColor;
 
     final effectiveStyle = textStyle.copyWith(color: textColor);
 
     return EditableText(
+      key: editableTextKey,
       controller: controller,
       focusNode: focusNode,
       style: effectiveStyle,
@@ -65,15 +71,20 @@ final class RTextFieldEditableTextFactory {
       showCursor: showCursor,
       maxLines: maxLines,
       minLines: minLines,
-      keyboardAppearance: keyboardAppearance ?? Brightness.light,
+      keyboardAppearance:
+          keyboardAppearance ?? MediaQuery.platformBrightnessOf(context),
       scrollPadding: scrollPadding,
       dragStartBehavior: dragStartBehavior,
-      enableInteractiveSelection: enableInteractiveSelection ?? !obscureText,
+      enableInteractiveSelection:
+          enableInteractiveSelection ?? !obscureText,
       inputFormatters: inputFormatters,
       onChanged: onChanged,
       onSubmitted: onSubmitted,
       onEditingComplete: onEditingComplete,
       onTapOutside: onTapOutside,
+      // Match Flutter TextField: gesture handling is external.
+      rendererIgnoresPointer: true,
+      mouseCursor: MouseCursor.defer,
     );
   }
 

@@ -22,7 +22,7 @@
 
 Минимальный домен должен быть полезным, но без UI типов (см. `docs/ARCHITECTURE.md` → “Где нельзя хранить состояние”).
 
-- `ButtonVariant` (sealed): например `primary`, `default` (минимум).
+- `ButtonVariant` (sealed): `filled`, `tonal`, `outlined`, `text` (appearance-based, see I37).
 - `ButtonSize` (sealed): например `md` (минимум, расширяем аддитивно).
 - `ButtonSpec` (value object): variant/size/disabled.
 - `ButtonState` (immutable): минимум `isPressed`, `isFocused`, `isHovered` (если hover вообще включаем в v1 — можно начать с pressed+focused).

@@ -6,24 +6,17 @@ import 'package:headless_theme/headless_theme.dart';
 
 import '../overrides/material_button_overrides.dart';
 import '../overrides/material_override_types.dart';
+import 'material_button_density_helpers.dart';
 
 /// Material 3 token resolver for Button components.
 ///
-/// Implements [RButtonTokenResolver] with Material Design 3 styling.
-///
-  /// Token resolution priority (v1.1):
-  /// 1. Preset-specific overrides: `overrides.get<MaterialButtonOverrides>()`
-  /// 2. Contract overrides: `overrides.get<RButtonOverrides>()`
-  /// 3. Theme defaults / preset defaults
+/// Token resolution priority (v1.1):
+/// 1. Preset-specific overrides: `overrides.get<MaterialButtonOverrides>()`
+/// 2. Contract overrides: `overrides.get<RButtonOverrides>()`
+/// 3. Theme defaults / preset defaults
 ///
 /// Deterministic: same inputs always produce same outputs.
-///
-/// See `docs/V1_DECISIONS.md` → "Token Resolution Layer".
 class MaterialButtonTokenResolver implements RButtonTokenResolver {
-  /// Creates a Material button token resolver.
-  ///
-  /// [colorScheme] - Optional color scheme override.
-  /// [textTheme] - Optional text theme override.
   const MaterialButtonTokenResolver({
     this.colorScheme,
     this.textTheme,
@@ -77,13 +70,15 @@ class MaterialButtonTokenResolver implements RButtonTokenResolver {
 
     final padding = density == null
         ? buttonOverrides?.padding ?? sizeTokens.padding
-        : _applyDensityToPadding(sizeTokens.padding, density);
+        : MaterialButtonDensityHelpers.applyDensityToPadding(
+            sizeTokens.padding, density);
 
-    // Resolve minimum size (respect constraints for accessibility)
+    // Resolve minimum visual size (tap target is handled by policy at component level)
     final minSize = _resolveMinSize(
       constraints: constraints,
       density: density,
       override: density == null ? buttonOverrides?.minSize : null,
+      size: spec.size,
     );
 
     final borderRadius = _resolveCornerRadius(
@@ -121,17 +116,29 @@ class MaterialButtonTokenResolver implements RButtonTokenResolver {
   /// Resolve base colors based on variant.
   _ColorSet _resolveBaseColors(RButtonVariant variant, ColorScheme scheme) {
     switch (variant) {
-      case RButtonVariant.primary:
+      case RButtonVariant.filled:
         return _ColorSet(
           foreground: scheme.onPrimary,
           background: scheme.primary,
           border: Colors.transparent,
         );
-      case RButtonVariant.secondary:
+      case RButtonVariant.tonal:
+        return _ColorSet(
+          foreground: scheme.onSecondaryContainer,
+          background: scheme.secondaryContainer,
+          border: Colors.transparent,
+        );
+      case RButtonVariant.outlined:
         return _ColorSet(
           foreground: scheme.primary,
           background: Colors.transparent,
           border: scheme.outline,
+        );
+      case RButtonVariant.text:
+        return _ColorSet(
+          foreground: scheme.primary,
+          background: Colors.transparent,
+          border: Colors.transparent,
         );
     }
   }
@@ -196,7 +203,7 @@ class MaterialButtonTokenResolver implements RButtonTokenResolver {
       case RButtonSize.small:
         return _SizeTokens(
           textStyle: text.labelMedium ?? const TextStyle(fontSize: 12),
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         );
       case RButtonSize.medium:
         return _SizeTokens(
@@ -216,12 +223,21 @@ class MaterialButtonTokenResolver implements RButtonTokenResolver {
     required BoxConstraints? constraints,
     required MaterialComponentDensity? density,
     required Size? override,
+    required RButtonSize size,
   }) {
-    // Default Material minimum touch target
-    const defaultMinSize = Size(48, 48);
+    // Default Material 3 minimum visual size.
+    //
+    // IMPORTANT: This is NOT the tap target.
+    // Tap target sizing is handled by HeadlessTapTargetPolicy at the component level.
+    final defaultMinSize = switch (size) {
+      RButtonSize.small => const Size(56, 36),
+      RButtonSize.medium => const Size(64, 40),
+      RButtonSize.large => const Size(72, 48),
+    };
     final base = density == null
         ? defaultMinSize
-        : _applyDensityToMinSize(defaultMinSize, density);
+        : MaterialButtonDensityHelpers.applyDensityToMinSize(
+            defaultMinSize, density);
 
     final withOverride = override ?? base;
 
@@ -254,44 +270,6 @@ class MaterialButtonTokenResolver implements RButtonTokenResolver {
       case null:
         return null;
     }
-  }
-
-  EdgeInsets _applyDensityToPadding(
-    EdgeInsets padding,
-    MaterialComponentDensity density,
-  ) {
-    final deltaH = switch (density) {
-      MaterialComponentDensity.compact => -4.0,
-      MaterialComponentDensity.standard => 0.0,
-      MaterialComponentDensity.comfortable => 4.0,
-    };
-    final deltaV = switch (density) {
-      MaterialComponentDensity.compact => -2.0,
-      MaterialComponentDensity.standard => 0.0,
-      MaterialComponentDensity.comfortable => 2.0,
-    };
-
-    return EdgeInsets.fromLTRB(
-      math.max(0, padding.left + deltaH),
-      math.max(0, padding.top + deltaV),
-      math.max(0, padding.right + deltaH),
-      math.max(0, padding.bottom + deltaV),
-    );
-  }
-
-  Size _applyDensityToMinSize(
-    Size base,
-    MaterialComponentDensity density,
-  ) {
-    final delta = switch (density) {
-      MaterialComponentDensity.compact => -8.0,
-      MaterialComponentDensity.standard => 0.0,
-      MaterialComponentDensity.comfortable => 8.0,
-    };
-    return Size(
-      math.max(0, base.width + delta),
-      math.max(0, base.height + delta),
-    );
   }
 }
 

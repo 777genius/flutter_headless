@@ -199,6 +199,87 @@ void main() {
 
       expect(selected, 'Beta');
       expect(controller.text, 'Beta');
+      expect(controller.selection.isCollapsed, isTrue);
+      expect(controller.selection.baseOffset, 'Beta'.length);
+      controller.dispose();
+    });
+
+    testWidgets(
+        'typing prefix after selection keeps selectedIndex (checkmark stays)',
+        (tester) async {
+      final fieldRenderer = _TestTextFieldRenderer();
+      final menuRenderer = _TestDropdownRenderer();
+      final controller = TextEditingController();
+
+      await tester.pumpWidget(_createTestWidget(
+        fieldRenderer: fieldRenderer,
+        menuRenderer: menuRenderer,
+        child: RAutocomplete<String>(
+          controller: controller,
+          source: RAutocompleteLocalSource(options: (_) => const ['Alpha', 'Beta', 'Gamma']),
+          itemAdapter: _adapter,
+          onSelected: (_) {},
+          openOnTap: true,
+          openOnInput: true,
+        ),
+      ));
+
+      await tester.tap(find.byKey(const Key('autocomplete-field')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('menu-item-1'))); // Beta
+      await tester.pumpAndSettle();
+
+      // Replace by typing prefix; selection should remain (Beta still matches).
+      await tester.enterText(find.byType(EditableText), 'b');
+      await tester.pumpAndSettle();
+
+      expect(menuRenderer.lastRequest?.state.selectedIndex, 1);
+      controller.dispose();
+    });
+
+    testWidgets('reopen after selection shows all options (filter starts on input)',
+        (tester) async {
+      final fieldRenderer = _TestTextFieldRenderer();
+      final menuRenderer = _TestDropdownRenderer();
+      final controller = TextEditingController();
+
+      const all = ['Alpha', 'Beta', 'Gamma'];
+
+      Iterable<String> optionsBuilder(TextEditingValue value) {
+        final q = value.text.toLowerCase();
+        if (q.isEmpty) return all;
+        return all.where((o) => o.toLowerCase().contains(q));
+      }
+
+      await tester.pumpWidget(_createTestWidget(
+        fieldRenderer: fieldRenderer,
+        menuRenderer: menuRenderer,
+        child: RAutocomplete<String>(
+          controller: controller,
+          source: RAutocompleteLocalSource(options: optionsBuilder),
+          itemAdapter: _adapter,
+          onSelected: (_) {},
+          openOnTap: true,
+          openOnFocus: false,
+          openOnInput: true,
+        ),
+      ));
+
+      // Open and select "Beta" (would normally make query="Beta" and filter to 1).
+      await tester.tap(find.byKey(const Key('autocomplete-field')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('menu-item-1')));
+      await tester.pumpAndSettle();
+      expect(controller.text, 'Beta');
+
+      // Reopen: should show all options, even though field has text.
+      await tester.tap(find.byKey(const Key('autocomplete-field')));
+      await tester.pumpAndSettle();
+      expect(
+        menuRenderer.lastRequest?.items.map((i) => i.primaryText).toList(),
+        all,
+      );
+
       controller.dispose();
     });
 
@@ -1812,8 +1893,8 @@ void main() {
       await tester.pumpAndSettle();
       expect(menuRenderer.lastRequest?.state.isOpen ?? false, isFalse);
 
-      // Now "tap container" should reset dismissed and reopen.
-      fieldRenderer.lastRequest!.commands!.tapContainer!.call();
+      // Now a user tap should reset dismissed and reopen.
+      await tester.tap(find.byKey(const Key('autocomplete-field')));
       await tester.pumpAndSettle();
       expect(menuRenderer.lastRequest?.state.isOpen ?? false, isTrue);
 

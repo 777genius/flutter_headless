@@ -50,6 +50,48 @@ class _TestButtonTokenResolver implements RButtonTokenResolver {
   }
 }
 
+/// Renderer that declares token-mode (usesResolvedTokens = false).
+class _TokenModeRenderer implements RButtonRenderer, RButtonRendererTokenMode {
+  RButtonRenderRequest? lastRequest;
+
+  @override
+  bool get usesResolvedTokens => false;
+
+  @override
+  Widget render(RButtonRenderRequest request) {
+    lastRequest = request;
+    return Container(child: request.content);
+  }
+}
+
+/// Token resolver that counts how many times resolve() is called.
+class _CountingTokenResolver implements RButtonTokenResolver {
+  int callCount = 0;
+
+  @override
+  RButtonResolvedTokens resolve({
+    required BuildContext context,
+    required RButtonSpec spec,
+    required Set<WidgetState> states,
+    BoxConstraints? constraints,
+    RenderOverrides? overrides,
+  }) {
+    callCount++;
+    return const RButtonResolvedTokens(
+      textStyle: TextStyle(fontSize: 14),
+      foregroundColor: Color(0xFF000000),
+      backgroundColor: Color(0xFFCCCCCC),
+      borderColor: Color(0xFF111111),
+      padding: EdgeInsets.all(8),
+      minSize: Size(44, 44),
+      borderRadius: BorderRadius.all(Radius.circular(12)),
+      disabledOpacity: 0.38,
+      pressOverlayColor: Color(0x1F000000),
+      pressOpacity: 1.0,
+    );
+  }
+}
+
 // Test renderer that captures requests and renders a simple container
 class _TestButtonRenderer implements RButtonRenderer {
   RButtonRenderRequest? lastRequest;
@@ -82,8 +124,8 @@ class _TestButtonRenderer implements RButtonRenderer {
 class _TestTheme extends HeadlessTheme {
   _TestTheme(this._renderer, {this.tokenResolver});
 
-  final _TestButtonRenderer _renderer;
-  final _TestButtonTokenResolver? tokenResolver;
+  final RButtonRenderer _renderer;
+  final RButtonTokenResolver? tokenResolver;
 
   @override
   T? capability<T>() {
@@ -107,9 +149,9 @@ class _EmptyTheme extends HeadlessTheme {
 
 // Helper to build widget tree with theme
 Widget _buildTestWidget({
-  required _TestButtonRenderer renderer,
+  required RButtonRenderer renderer,
   required Widget child,
-  _TestButtonTokenResolver? tokenResolver,
+  RButtonTokenResolver? tokenResolver,
 }) {
   return MaterialApp(
     home: HeadlessThemeProvider(
@@ -634,14 +676,14 @@ void main() {
         renderer: renderer,
         child: RTextButton(
           onPressed: () {},
-          variant: RButtonVariant.primary,
+          variant: RButtonVariant.filled,
           size: RButtonSize.large,
           semanticLabel: 'Test label',
           child: const Text('Test'),
         ),
       ));
 
-      expect(renderer.lastRequest?.spec.variant, RButtonVariant.primary);
+      expect(renderer.lastRequest?.spec.variant, RButtonVariant.filled);
       expect(renderer.lastRequest?.spec.size, RButtonSize.large);
       expect(renderer.lastRequest?.spec.semanticLabel, 'Test label');
     });
@@ -679,8 +721,6 @@ void main() {
       ));
 
       expect(renderer.lastRequest?.resolvedTokens, isNotNull);
-      expect(resolver.lastConstraints, isNotNull);
-      expect(renderer.lastRequest?.constraints, isNotNull);
     });
 
     testWidgets('per-instance overrides flow into resolver and affect resolvedTokens',
@@ -792,6 +832,48 @@ void main() {
       await gesture.up();
       await tester.pump();
     });
+  });
+
+  group('Token-mode', () {
+    testWidgets(
+      'resolver is NOT called when renderer declares usesResolvedTokens=false',
+      (tester) async {
+        final renderer = _TokenModeRenderer();
+        final resolver = _CountingTokenResolver();
+
+        await tester.pumpWidget(_buildTestWidget(
+          renderer: renderer,
+          tokenResolver: resolver,
+          child: RTextButton(
+            onPressed: () {},
+            child: const Text('Test'),
+          ),
+        ));
+
+        expect(resolver.callCount, 0);
+        expect(renderer.lastRequest?.resolvedTokens, isNull);
+      },
+    );
+
+    testWidgets(
+      'resolver IS called when renderer does not implement RButtonRendererTokenMode',
+      (tester) async {
+        final renderer = _TestButtonRenderer();
+        final resolver = _CountingTokenResolver();
+
+        await tester.pumpWidget(_buildTestWidget(
+          renderer: renderer,
+          tokenResolver: resolver,
+          child: RTextButton(
+            onPressed: () {},
+            child: const Text('Test'),
+          ),
+        ));
+
+        expect(resolver.callCount, 1);
+        expect(renderer.lastRequest?.resolvedTokens, isNotNull);
+      },
+    );
   });
 
   group('Missing capability', () {

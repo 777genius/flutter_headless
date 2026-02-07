@@ -6,6 +6,7 @@ import 'package:headless_theme/headless_theme.dart';
 
 import '../overrides/cupertino_button_overrides.dart';
 import '../overrides/cupertino_override_types.dart';
+import 'cupertino_button_density_helpers.dart';
 
 /// Cupertino token resolver for Button components.
 ///
@@ -63,15 +64,17 @@ class CupertinoButtonTokenResolver implements RButtonTokenResolver {
     // Resolve size-dependent values
     final sizeTokens = _resolveSizeTokens(spec.size);
 
-    // Resolve minimum size (respect constraints for accessibility)
+    // Resolve minimum visual size (tap target is handled by policy at component level)
     final minSize = _resolveMinSize(
       constraints: constraints,
       density: density,
       override: density == null ? buttonOverrides?.minSize : null,
+      size: spec.size,
     );
     final padding = density == null
         ? buttonOverrides?.padding ?? sizeTokens.padding
-        : _applyDensityToPadding(sizeTokens.padding, density);
+        : CupertinoButtonDensityHelpers.applyDensityToPadding(
+            sizeTokens.padding, density);
     final borderRadius =
         _resolveCornerRadius(cupertinoOverrides?.cornerStyle) ??
             buttonOverrides?.borderRadius ??
@@ -105,22 +108,33 @@ class CupertinoButtonTokenResolver implements RButtonTokenResolver {
 
   /// Resolve base colors based on variant.
   _ColorSet _resolveBaseColors(RButtonVariant variant, bool isDark) {
+    final primary = isDark ? CupertinoColors.systemBlue : CupertinoColors.activeBlue;
     switch (variant) {
-      case RButtonVariant.primary:
+      case RButtonVariant.filled:
         return _ColorSet(
           foreground: CupertinoColors.white,
-          background:
-              isDark ? CupertinoColors.systemBlue : CupertinoColors.activeBlue,
+          background: primary,
           border: CupertinoColors.transparent,
         );
-      case RButtonVariant.secondary:
+      case RButtonVariant.tonal:
         return _ColorSet(
-          foreground:
-              isDark ? CupertinoColors.systemBlue : CupertinoColors.activeBlue,
+          foreground: primary,
+          background: primary.withValues(
+            alpha: isDark ? 0.26 : 0.12,
+          ),
+          border: CupertinoColors.transparent,
+        );
+      case RButtonVariant.outlined:
+        return _ColorSet(
+          foreground: primary,
           background: CupertinoColors.transparent,
-          border: isDark
-              ? CupertinoColors.systemBlue
-              : CupertinoColors.activeBlue,
+          border: primary,
+        );
+      case RButtonVariant.text:
+        return _ColorSet(
+          foreground: primary,
+          background: CupertinoColors.transparent,
+          border: CupertinoColors.transparent,
         );
     }
   }
@@ -205,11 +219,18 @@ class CupertinoButtonTokenResolver implements RButtonTokenResolver {
     required BoxConstraints? constraints,
     required CupertinoComponentDensity? density,
     required Size? override,
+    required RButtonSize size,
   }) {
-    const defaultMinSize = Size(44, 44);
+    final defaultMinDim = switch (size) {
+      RButtonSize.small => 28.0,
+      RButtonSize.medium => 32.0,
+      RButtonSize.large => 44.0,
+    };
+    final defaultMinSize = Size(defaultMinDim, defaultMinDim);
     final base = density == null
         ? defaultMinSize
-        : _applyDensityToMinSize(defaultMinSize, density);
+        : CupertinoButtonDensityHelpers.applyDensityToMinSize(
+            defaultMinSize, density);
     final withOverride = override ?? base;
 
     if (constraints != null) {
@@ -241,44 +262,6 @@ class CupertinoButtonTokenResolver implements RButtonTokenResolver {
       case null:
         return null;
     }
-  }
-
-  EdgeInsets _applyDensityToPadding(
-    EdgeInsets padding,
-    CupertinoComponentDensity density,
-  ) {
-    final deltaH = switch (density) {
-      CupertinoComponentDensity.compact => -4.0,
-      CupertinoComponentDensity.standard => 0.0,
-      CupertinoComponentDensity.comfortable => 4.0,
-    };
-    final deltaV = switch (density) {
-      CupertinoComponentDensity.compact => -2.0,
-      CupertinoComponentDensity.standard => 0.0,
-      CupertinoComponentDensity.comfortable => 2.0,
-    };
-
-    return EdgeInsets.fromLTRB(
-      math.max(0, padding.left + deltaH),
-      math.max(0, padding.top + deltaV),
-      math.max(0, padding.right + deltaH),
-      math.max(0, padding.bottom + deltaV),
-    );
-  }
-
-  Size _applyDensityToMinSize(
-    Size base,
-    CupertinoComponentDensity density,
-  ) {
-    final delta = switch (density) {
-      CupertinoComponentDensity.compact => -6.0,
-      CupertinoComponentDensity.standard => 0.0,
-      CupertinoComponentDensity.comfortable => 6.0,
-    };
-    return Size(
-      math.max(0, base.width + delta),
-      math.max(0, base.height + delta),
-    );
   }
 }
 

@@ -11,24 +11,24 @@ void main() {
       resolver = const CupertinoButtonTokenResolver();
     });
 
-    testWidgets('resolves tokens for primary variant', (tester) async {
+    testWidgets('resolves tokens for filled variant', (tester) async {
       await tester.pumpWidget(
         CupertinoApp(
           home: Builder(
             builder: (context) {
               final tokens = resolver.resolve(
                 context: context,
-                spec: const RButtonSpec(variant: RButtonVariant.primary),
+                spec: const RButtonSpec(variant: RButtonVariant.filled),
                 states: {},
               );
 
-              // Primary uses filled style with active blue
+              // Filled uses active blue background.
               expect(tokens.backgroundColor, isNot(CupertinoColors.transparent));
               expect(tokens.borderColor, CupertinoColors.transparent);
               expect(tokens.padding, isNotNull);
               expect(tokens.borderRadius, isNotNull);
-              // iOS minimum touch target
-              expect(tokens.minSize, const Size(44, 44));
+              // Minimum visual size (tap target is handled by component policy)
+              expect(tokens.minSize, const Size(32, 32));
 
               return const SizedBox.shrink();
             },
@@ -37,18 +37,65 @@ void main() {
       );
     });
 
-    testWidgets('resolves tokens for secondary variant', (tester) async {
+    testWidgets('resolves tokens for tonal variant', (tester) async {
       await tester.pumpWidget(
         CupertinoApp(
           home: Builder(
             builder: (context) {
               final tokens = resolver.resolve(
                 context: context,
-                spec: const RButtonSpec(variant: RButtonVariant.secondary),
+                spec: const RButtonSpec(variant: RButtonVariant.tonal),
                 states: {},
               );
 
-              // Secondary uses outlined style
+              // Tonal uses translucent primary background (alpha < 1.0).
+              expect(tokens.backgroundColor, isNot(CupertinoColors.transparent));
+              expect(tokens.backgroundColor.a, lessThan(1.0));
+              expect(tokens.borderColor, CupertinoColors.transparent);
+              expect(tokens.foregroundColor, isNot(CupertinoColors.white));
+
+              return const SizedBox.shrink();
+            },
+          ),
+        ),
+      );
+    });
+
+    testWidgets('resolves tokens for text variant', (tester) async {
+      await tester.pumpWidget(
+        CupertinoApp(
+          home: Builder(
+            builder: (context) {
+              final tokens = resolver.resolve(
+                context: context,
+                spec: const RButtonSpec(variant: RButtonVariant.text),
+                states: {},
+              );
+
+              // Text uses transparent bg, transparent border, primary foreground.
+              expect(tokens.backgroundColor, CupertinoColors.transparent);
+              expect(tokens.borderColor, CupertinoColors.transparent);
+              expect(tokens.foregroundColor, isNot(CupertinoColors.transparent));
+
+              return const SizedBox.shrink();
+            },
+          ),
+        ),
+      );
+    });
+
+    testWidgets('resolves tokens for outlined variant', (tester) async {
+      await tester.pumpWidget(
+        CupertinoApp(
+          home: Builder(
+            builder: (context) {
+              final tokens = resolver.resolve(
+                context: context,
+                spec: const RButtonSpec(variant: RButtonVariant.outlined),
+                states: {},
+              );
+
+              // Outlined uses transparent bg + non-transparent border.
               expect(tokens.backgroundColor, CupertinoColors.transparent);
               expect(tokens.borderColor, isNot(CupertinoColors.transparent));
 
@@ -66,13 +113,13 @@ void main() {
             builder: (context) {
               final normalTokens = resolver.resolve(
                 context: context,
-                spec: const RButtonSpec(variant: RButtonVariant.primary),
+                spec: const RButtonSpec(variant: RButtonVariant.filled),
                 states: {},
               );
 
               final disabledTokens = resolver.resolve(
                 context: context,
-                spec: const RButtonSpec(variant: RButtonVariant.primary),
+                spec: const RButtonSpec(variant: RButtonVariant.filled),
                 states: {WidgetState.disabled},
               );
 
@@ -101,7 +148,7 @@ void main() {
 
               final tokens = lightResolver.resolve(
                 context: context,
-                spec: const RButtonSpec(variant: RButtonVariant.secondary),
+                spec: const RButtonSpec(variant: RButtonVariant.outlined),
                 states: {},
               );
 
@@ -127,7 +174,7 @@ void main() {
 
               final tokens = darkResolver.resolve(
                 context: context,
-                spec: const RButtonSpec(variant: RButtonVariant.secondary),
+                spec: const RButtonSpec(variant: RButtonVariant.outlined),
                 states: {},
               );
 
@@ -216,7 +263,7 @@ void main() {
               const overrideColor = CupertinoColors.systemRed;
               final tokens = resolver.resolve(
                 context: context,
-                spec: const RButtonSpec(variant: RButtonVariant.primary),
+                spec: const RButtonSpec(variant: RButtonVariant.filled),
                 states: {},
                 overrides: RenderOverrides({
                   RButtonOverrides: RButtonOverrides.tokens(
@@ -262,7 +309,7 @@ void main() {
         CupertinoApp(
           home: Builder(
             builder: (context) {
-              const spec = RButtonSpec(variant: RButtonVariant.primary);
+              const spec = RButtonSpec(variant: RButtonVariant.filled);
               final states = {WidgetState.hovered};
 
               final tokens1 = resolver.resolve(

@@ -26,6 +26,78 @@ void main() {
       expect(find.byType(AnchoredOverlayEngineHost), findsOneWidget);
     });
 
+    testWidgets('installs HeadlessFocusHighlightScope', (tester) async {
+      HeadlessFocusHighlightController? captured;
+
+      await tester.pumpWidget(HeadlessApp(
+        theme: _TestTheme(),
+        appBuilder: (overlayBuilder) {
+          return Directionality(
+            textDirection: TextDirection.ltr,
+            child: Builder(
+              builder: (context) {
+                captured = HeadlessFocusHighlightScope.maybeOf(context);
+                return overlayBuilder(context, const SizedBox.shrink());
+              },
+            ),
+          );
+        },
+      ));
+
+      expect(captured, isNotNull);
+    });
+
+    testWidgets('uses provided FocusHighlightController', (tester) async {
+      final controller = HeadlessFocusHighlightController(
+        policy: const HeadlessAlwaysFocusHighlightPolicy(),
+      );
+      addTearDown(controller.dispose);
+
+      HeadlessFocusHighlightController? captured;
+
+      await tester.pumpWidget(HeadlessApp(
+        theme: _TestTheme(),
+        focusHighlightController: controller,
+        appBuilder: (overlayBuilder) {
+          return Directionality(
+            textDirection: TextDirection.ltr,
+            child: Builder(
+              builder: (context) {
+                captured = HeadlessFocusHighlightScope.of(context);
+                return overlayBuilder(context, const SizedBox.shrink());
+              },
+            ),
+          );
+        },
+      ));
+
+      expect(identical(captured, controller), isTrue);
+      expect(captured!.showFocusHighlight, isTrue);
+    });
+
+    testWidgets('applies custom focusHighlightPolicy', (tester) async {
+      bool? showValue;
+
+      await tester.pumpWidget(HeadlessApp(
+        theme: _TestTheme(),
+        focusHighlightPolicy: const HeadlessAlwaysFocusHighlightPolicy(),
+        appBuilder: (overlayBuilder) {
+          return Directionality(
+            textDirection: TextDirection.ltr,
+            child: Builder(
+              builder: (context) {
+                showValue = HeadlessFocusHighlightScope.showOf(context);
+                return overlayBuilder(context, const SizedBox.shrink());
+              },
+            ),
+          );
+        },
+      ));
+
+      // AlwaysPolicy -> always true
+      expect(showValue, isTrue);
+    });
+
     testWidgets('uses provided OverlayController', (tester) async {
       final controller = OverlayController();
       addTearDown(controller.dispose);

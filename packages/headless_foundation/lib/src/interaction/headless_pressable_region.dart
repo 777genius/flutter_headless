@@ -77,6 +77,7 @@ final class HeadlessPressableRegion extends StatelessWidget {
         },
         cursor: enabled ? cursorWhenEnabled : cursorWhenDisabled,
         child: GestureDetector(
+          excludeFromSemantics: true,
           behavior: HitTestBehavior.opaque,
           onTapDown: (details) {
             controller.handleTapDown();

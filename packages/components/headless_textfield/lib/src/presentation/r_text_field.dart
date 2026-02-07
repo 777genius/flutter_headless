@@ -1,4 +1,5 @@
 import 'package:flutter/gestures.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:headless_foundation/headless_foundation.dart';
@@ -10,6 +11,7 @@ import '../logic/r_text_field_formatters.dart';
 import 'render_overrides_debug.dart';
 import 'r_text_field_editable_text_factory.dart';
 import 'r_text_field_request_composer.dart';
+import 'r_text_field_selection_gesture_wrapper.dart';
 import 'r_text_field_style.dart';
 
 /// Headless text field (controlled or controller-driven).
@@ -126,6 +128,9 @@ class _RTextFieldState extends State<RTextField> {
   late HeadlessFocusNodeOwner _focusNodeOwner;
   FocusNode get _focusNode => _focusNodeOwner.node;
   late HeadlessFocusHoverController _focusHover;
+  bool _keyboardRefreshScheduled = false;
+  final GlobalKey<EditableTextState> _editableTextKey =
+      GlobalKey<EditableTextState>(debugLabel: 'RTextFieldEditableText');
   final _valueSync = RTextFieldValueSync();
   final _editableFactory = const RTextFieldEditableTextFactory();
   final _requestComposer = const RTextFieldRequestComposer();
@@ -221,6 +226,12 @@ class _RTextFieldState extends State<RTextField> {
         value: widget.value,
       );
     }
+
+    // Web stability: if the field stays focused through a rebuild (theme switch,
+    // parent layout changes, etc.) refresh the editing session geometry.
+    if (_focusNode.hasFocus) {
+      _scheduleKeyboardRefresh();
+    }
   }
 
   @override
@@ -234,6 +245,26 @@ class _RTextFieldState extends State<RTextField> {
 
   void _handleFocusChange() {
     _focusHover.handleFocusChange(_focusNode.hasFocus);
+    if (_focusNode.hasFocus) {
+      _scheduleKeyboardRefresh();
+    }
+  }
+
+  void _scheduleKeyboardRefresh() {
+    // Web stability: DOM-backed text input can occasionally desync its geometry
+    // after rebuilds while remaining focused, leaving an invisible element that
+    // blocks pointer events elsewhere (e.g. AppBar actions).
+    //
+    // Calling requestKeyboard() post-frame nudges the engine to ensure the
+    // editing session + geometry are up to date.
+    if (_keyboardRefreshScheduled) return;
+    _keyboardRefreshScheduled = true;
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _keyboardRefreshScheduled = false;
+      if (!mounted) return;
+      if (!_focusNode.hasFocus) return;
+      _editableTextKey.currentState?.requestKeyboard();
+    });
   }
 
   void _handleTextChanged(String text) {
@@ -248,7 +279,15 @@ class _RTextFieldState extends State<RTextField> {
     // Disabled: no focus at all
     // ReadOnly: can focus (for selection/copy), just can't edit
     if (!widget.enabled) return;
-    _focusNode.requestFocus();
+    if (!_focusNode.hasFocus) {
+      _focusNode.requestFocus();
+      return;
+    }
+
+    // Web parity: tapping while already focused should reopen the editing
+    // session if it was closed by the engine (e.g. blur from interacting with
+    // other UI while keeping Flutter focus).
+    _editableTextKey.currentState?.requestKeyboard();
   }
 
   void _handleClearText() {
@@ -330,10 +369,18 @@ class _RTextFieldState extends State<RTextField> {
       overrides: overrides,
     );
 
+    final selectionEnabled =
+        (widget.enableInteractiveSelection ?? !widget.obscureText) &&
+            widget.enabled;
+    final rendered = RTextFieldSelectionGestureWrapper(
+      editableTextKey: _editableTextKey,
+      selectionEnabled: selectionEnabled,
+      child: renderer.render(request),
+    );
     final content = _requestComposer.wrapWithInteraction(
       widget: widget,
       controller: _focusHover,
-      child: renderer.render(request),
+      child: rendered,
       resolvedTokens: resolvedTokens,
     );
     reportUnconsumedRenderOverrides('RTextField', overrides);
@@ -364,6 +411,7 @@ class _RTextFieldState extends State<RTextField> {
 
     return _editableFactory.create(
       context: context,
+      editableTextKey: _editableTextKey,
       controller: _controller,
       focusNode: _focusNode,
       autofocus: widget.autofocus,

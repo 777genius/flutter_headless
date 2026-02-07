@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:headless_contracts/headless_contracts.dart';
 import 'package:headless_theme/headless_theme.dart';
 
-import 'button/material_button_renderer.dart';
+import 'accessibility/material_tap_target_policy.dart';
 import 'button/material_button_token_resolver.dart';
+import 'button/material_flutter_parity_button_renderer.dart';
 import 'checkbox/material_checkbox_renderer.dart';
 import 'checkbox/material_checkbox_token_resolver.dart';
 import 'checkbox_list_tile/material_checkbox_list_tile_renderer.dart';
@@ -23,7 +24,7 @@ import '../primitives/material_ink_pressable_surface.dart';
 /// Material 3 theme preset for Headless components.
 ///
 /// Implements [HeadlessTheme] and provides Material-styled capabilities:
-/// - [RButtonRenderer] via [MaterialButtonRenderer]
+/// - [RButtonRenderer] via [MaterialFlutterParityButtonRenderer] (parity-by-reuse)
 /// - [RButtonTokenResolver] via [MaterialButtonTokenResolver]
 /// - [RDropdownButtonRenderer] via [MaterialDropdownRenderer]
 /// - [RDropdownTokenResolver] via [MaterialDropdownTokenResolver]
@@ -60,7 +61,8 @@ class MaterialHeadlessTheme extends HeadlessTheme {
   })  : _colorScheme = colorScheme,
         _textTheme = textTheme,
         _defaults = defaults,
-        _buttonRenderer = const MaterialButtonRenderer(),
+        _tapTargetPolicy = const MaterialTapTargetPolicy(),
+        _buttonRenderer = const MaterialFlutterParityButtonRenderer(),
         _buttonTokenResolver = MaterialButtonTokenResolver(
           colorScheme: colorScheme,
           textTheme: textTheme,
@@ -106,7 +108,8 @@ class MaterialHeadlessTheme extends HeadlessTheme {
   final ColorScheme? _colorScheme;
   final TextTheme? _textTheme;
   final MaterialHeadlessDefaults? _defaults;
-  final MaterialButtonRenderer _buttonRenderer;
+  final MaterialTapTargetPolicy _tapTargetPolicy;
+  final RButtonRenderer _buttonRenderer;
   final MaterialButtonTokenResolver _buttonTokenResolver;
   final MaterialCheckboxRenderer _checkboxRenderer;
   final MaterialCheckboxTokenResolver _checkboxTokenResolver;
@@ -152,6 +155,11 @@ class MaterialHeadlessTheme extends HeadlessTheme {
 
   @override
   T? capability<T>() {
+    // Accessibility capabilities
+    if (T == HeadlessTapTargetPolicy) {
+      return _tapTargetPolicy as T;
+    }
+
     // Button capabilities
     if (T == RButtonRenderer) {
       return _buttonRenderer as T;

@@ -33,6 +33,13 @@ scripts:
   format:
     run: melos exec -- dart format --output=none --set-exit-if-changed .
 
+  update-goldens:
+    run: melos exec --fail-fast --concurrency=1 -- "flutter test --update-goldens"
+    description: Re-generate golden image files for all Flutter packages.
+    packageFilters:
+      flutter: true
+      dirExists: test/
+
   guardrails:
     run: dart run tools/headless_cli/bin/guardrails.dart
 

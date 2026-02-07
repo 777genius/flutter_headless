@@ -10,7 +10,7 @@ void main() {
       final capability = theme.capability<RButtonRenderer>();
 
       expect(capability, isNotNull);
-      expect(capability, isA<MaterialButtonRenderer>());
+      expect(capability, isA<MaterialFlutterParityButtonRenderer>());
     });
 
     test('provides RButtonTokenResolver capability', () {

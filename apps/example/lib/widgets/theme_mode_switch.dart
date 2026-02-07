@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:headless/headless.dart';
 
 import '../theme_mode_scope.dart';
@@ -11,13 +13,30 @@ import '../theme_mode_scope.dart';
 class ThemeModeSwitch extends StatelessWidget {
   const ThemeModeSwitch({super.key});
 
+  static void _closeActiveTextInputSession() {
+    // Web stability: a DOM-backed text input can intermittently block pointer
+    // events in other parts of the UI after rebuild/theme changes.
+    //
+    // Be aggressive: blur Flutter focus + ask engine to hide the text input.
+    FocusManager.instance.primaryFocus?.unfocus();
+    // `TextInput.hide` is safe to call even when no client is active.
+    SystemChannels.textInput.invokeMethod<void>('TextInput.hide');
+  }
+
+  static void _schedule(VoidCallback cb) {
+    SchedulerBinding.instance.addPostFrameCallback((_) => cb());
+  }
+
   @override
   Widget build(BuildContext context) {
     final scope = ThemeModeScope.of(context);
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
+    // TextFieldTapRegion: keep AppBar actions tappable while any text field
+    // is focused (prevents "tap outside" focus management from interfering).
+    return TextFieldTapRegion(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
         // Material/Cupertino switch
         Text(
           'Material',
@@ -27,10 +46,19 @@ class ThemeModeSwitch extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 4),
-        RSwitch(
-          value: scope.isCupertino,
-          onChanged: (_) => scope.toggleMode(),
-          semanticLabel: 'Switch between Material and Cupertino theme',
+        Listener(
+          behavior: HitTestBehavior.translucent,
+          onPointerDown: (_) => _closeActiveTextInputSession(),
+          child: RSwitch(
+            value: scope.isCupertino,
+            onChanged: (_) {
+              _closeActiveTextInputSession();
+              // Give the engine a frame to fully close the editing session
+              // before rebuilding the app with a different preset.
+              _schedule(scope.toggleMode);
+            },
+            semanticLabel: 'Switch between Material and Cupertino theme',
+          ),
         ),
         const SizedBox(width: 4),
         Text(
@@ -42,18 +70,26 @@ class ThemeModeSwitch extends StatelessWidget {
         ),
         const SizedBox(width: 24),
         // Light/Dark switch with thumbIcon
-        RSwitch(
-          value: scope.isDark,
-          onChanged: (_) => scope.toggleBrightness(),
-          semanticLabel: 'Switch between light and dark theme',
-          thumbIcon: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.selected)) {
-              return const Icon(Icons.dark_mode, size: 16);
-            }
-            return const Icon(Icons.light_mode, size: 16);
-          }),
+        Listener(
+          behavior: HitTestBehavior.translucent,
+          onPointerDown: (_) => _closeActiveTextInputSession(),
+          child: RSwitch(
+            value: scope.isDark,
+            onChanged: (_) {
+              _closeActiveTextInputSession();
+              _schedule(scope.toggleBrightness);
+            },
+            semanticLabel: 'Switch between light and dark theme',
+            thumbIcon: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.selected)) {
+                return const Icon(Icons.dark_mode, size: 16);
+              }
+              return const Icon(Icons.light_mode, size: 16);
+            }),
+          ),
         ),
-      ],
+        ],
+      ),
     );
   }
 }

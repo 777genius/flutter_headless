@@ -47,8 +47,9 @@ class CupertinoTextFieldTokenResolver implements RTextFieldTokenResolver {
     final isFocused = q.isFocused;
     final isDisabled = q.isDisabled;
     final isError = q.isError;
-    final isBorderless = cupertinoOverrides?.isBorderless ??
-        (spec.variant == RTextFieldVariant.underlined);
+    // Cupertino does not have a native "underlined" text field variant.
+    // Borderless is an explicit Cupertino-only override.
+    final isBorderless = cupertinoOverrides?.isBorderless ?? false;
 
     // Resolve colors based on state
     final colors = _resolveColors(
@@ -83,7 +84,7 @@ class CupertinoTextFieldTokenResolver implements RTextFieldTokenResolver {
       containerBackgroundColor:
           textFieldOverrides?.containerBackgroundColor ??
               _resolveBackgroundColor(
-                variant: spec.variant,
+                isBorderless: isBorderless,
                 fallback: colors.background,
               ),
       containerBorderColor:
@@ -120,10 +121,10 @@ class CupertinoTextFieldTokenResolver implements RTextFieldTokenResolver {
   }
 
   Color _resolveBackgroundColor({
-    required RTextFieldVariant variant,
+    required bool isBorderless,
     required Color fallback,
   }) {
-    if (variant == RTextFieldVariant.underlined) {
+    if (isBorderless) {
       return CupertinoColors.transparent;
     }
     return fallback;

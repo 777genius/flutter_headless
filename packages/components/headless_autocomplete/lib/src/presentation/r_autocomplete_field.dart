@@ -115,7 +115,12 @@ final class RAutocompleteField extends StatelessWidget {
       spec: spec,
       state: state,
       semantics: semantics,
-      commands: RTextFieldCommands(tapContainer: onTapContainer),
+      // IMPORTANT:
+      // RAutocomplete manages pointer taps itself via AutocompletePointerTapHandler
+      // (see _wrapWithPointerListener). Passing tapContainer here would cause
+      // some renderers (Material) to wrap the whole field in a GestureDetector
+      // and block EditableText tap handling (caret placement / collapsing selection).
+      commands: const RTextFieldCommands(),
       slots: slots,
       resolvedTokens: resolvedTokens,
       overrides: trackedOverrides,

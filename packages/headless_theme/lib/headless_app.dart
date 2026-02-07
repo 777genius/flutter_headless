@@ -21,6 +21,8 @@ class HeadlessApp extends StatefulWidget {
     required this.theme,
     required this.appBuilder,
     this.overlayController,
+    this.focusHighlightController,
+    this.focusHighlightPolicy = const HeadlessFlutterFocusHighlightPolicy(),
     this.enableAutoRepositionTicker = false,
   });
 
@@ -36,6 +38,17 @@ class HeadlessApp extends StatefulWidget {
   /// If provided, it will NOT be disposed by this widget.
   final OverlayController? overlayController;
 
+  /// Optional external focus highlight controller.
+  ///
+  /// If provided, it will NOT be disposed by this widget.
+  final HeadlessFocusHighlightController? focusHighlightController;
+
+  /// Policy used when [focusHighlightController] is not provided.
+  ///
+  /// Defaults to Flutter-like focus highlight behavior:
+  /// show focus highlight only in keyboard navigation mode.
+  final HeadlessFocusHighlightPolicy focusHighlightPolicy;
+
   /// When enabled, AnchoredOverlayEngineHost will request reposition every frame while overlays
   /// are active.
   final bool enableAutoRepositionTicker;
@@ -47,6 +60,8 @@ class HeadlessApp extends StatefulWidget {
 class _HeadlessAppState extends State<HeadlessApp> {
   late final OverlayController _overlayController;
   late final bool _ownsOverlayController;
+  late final HeadlessFocusHighlightController _focusHighlightController;
+  late final bool _ownsFocusHighlightController;
 
   @override
   void initState() {
@@ -54,12 +69,20 @@ class _HeadlessAppState extends State<HeadlessApp> {
     final external = widget.overlayController;
     _ownsOverlayController = external == null;
     _overlayController = external ?? OverlayController();
+
+    final externalFocus = widget.focusHighlightController;
+    _ownsFocusHighlightController = externalFocus == null;
+    _focusHighlightController = externalFocus ??
+        HeadlessFocusHighlightController(policy: widget.focusHighlightPolicy);
   }
 
   @override
   void dispose() {
     if (_ownsOverlayController) {
       _overlayController.dispose();
+    }
+    if (_ownsFocusHighlightController) {
+      _focusHighlightController.dispose();
     }
     super.dispose();
   }
@@ -76,7 +99,10 @@ class _HeadlessAppState extends State<HeadlessApp> {
 
     return HeadlessThemeProvider(
       theme: widget.theme,
-      child: widget.appBuilder(overlayBuilder),
+      child: HeadlessFocusHighlightScope(
+        controller: _focusHighlightController,
+        child: widget.appBuilder(overlayBuilder),
+      ),
     );
   }
 }

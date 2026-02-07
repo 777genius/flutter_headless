@@ -181,7 +181,7 @@ AnimatedBuilder(
 - `headless_cupertino.dart` (barrel)
 
 **Button** (`packages/headless_cupertino/lib/src/button/`):
-- `cupertino_button_renderer.dart`
+- `cupertino_flutter_parity_button_renderer.dart`
 - `cupertino_button_token_resolver.dart`
 
 **Dropdown** (`packages/headless_cupertino/lib/src/dropdown/`):

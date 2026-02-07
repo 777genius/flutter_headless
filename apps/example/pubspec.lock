@@ -128,7 +128,7 @@ packages:
     source: path
     version: "0.0.0"
   headless_contracts:
-    dependency: "direct overridden"
+    dependency: "direct main"
     description:
       path: "../../packages/headless_contracts"
       relative: true

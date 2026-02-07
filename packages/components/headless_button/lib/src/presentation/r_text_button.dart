@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/widgets.dart';
 import 'package:headless_foundation/headless_foundation.dart';
 import 'package:headless_contracts/headless_contracts.dart';
@@ -32,9 +30,8 @@ import 'r_button_style.dart';
 /// The button has a single activation source: [GestureDetector] for pointer
 /// and [Focus.onKeyEvent] for keyboard.
 ///
-/// Accessibility activation is provided via `GestureDetector.onTap` in the shared
-/// pressable region (component-owned), so screen readers can trigger
-/// `SemanticsAction.tap` reliably without adding `Semantics(onTap: ...)`.
+/// Accessibility activation is component-owned as well:
+/// the widget exposes `SemanticsAction.tap` and maps it to [onPressed].
 ///
 /// ## Example
 ///
@@ -50,7 +47,7 @@ class RTextButton extends StatefulWidget {
     required this.child,
     this.onPressed,
     this.disabled = false,
-    this.variant = RButtonVariant.secondary,
+    this.variant = RButtonVariant.outlined,
     this.size = RButtonSize.medium,
     this.style,
     this.semanticLabel,
@@ -197,7 +194,14 @@ class _RTextButtonState extends State<RTextButton> {
     }
 
     final theme = HeadlessThemeProvider.themeOf(context);
-    final tokenResolver = theme.capability<RButtonTokenResolver>();
+    final bool usesResolvedTokens;
+    if (renderer is RButtonRendererTokenMode) {
+      usesResolvedTokens = (renderer as RButtonRendererTokenMode).usesResolvedTokens;
+    } else {
+      usesResolvedTokens = true;
+    }
+    final tokenResolver =
+        usesResolvedTokens ? theme.capability<RButtonTokenResolver>() : null;
     final overrides = _trackOverrides(mergeStyleIntoOverrides(
       style: widget.style,
       overrides: widget.overrides,
@@ -205,18 +209,18 @@ class _RTextButtonState extends State<RTextButton> {
     ));
 
     final spec = _createSpec();
-    final state = _createState();
-    final baseConstraints = _createBaseConstraints();
-
-    final resolvedTokens = tokenResolver?.resolve(
-      context: context,
-      spec: spec,
-      states: state.toWidgetStates(),
-      constraints: baseConstraints,
-      overrides: overrides,
+    final state = _createState(
+      showFocusHighlight: HeadlessFocusHighlightScope.showOf(context),
     );
 
-    final constraints = _resolveConstraints(baseConstraints, resolvedTokens);
+    final resolvedTokens = usesResolvedTokens
+        ? tokenResolver?.resolve(
+            context: context,
+            spec: spec,
+            states: state.toWidgetStates(),
+            overrides: overrides,
+          )
+        : null;
 
     final request = RButtonRenderRequest(
       context: context,
@@ -233,13 +237,12 @@ class _RTextButtonState extends State<RTextButton> {
       slots: widget.slots,
       visualEffects: _visualEffects,
       resolvedTokens: resolvedTokens,
-      constraints: constraints,
       overrides: overrides,
     );
 
-    final content = renderer.render(request);
+    final rendererOutput = renderer.render(request);
     _reportUnconsumedOverrides('RTextButton', overrides);
-    return _wrapWithInteraction(child: content);
+    return _wrapWithInteraction(context: context, child: rendererOutput);
   }
 
   RButtonSpec _createSpec() {
@@ -250,42 +253,41 @@ class _RTextButtonState extends State<RTextButton> {
     );
   }
 
-  RButtonState _createState() {
+  RButtonState _createState({
+    required bool showFocusHighlight,
+  }) {
     final p = _pressable.state;
     return RButtonState(
       isPressed: p.isPressed,
       isHovered: p.isHovered,
       isFocused: p.isFocused,
+      showFocusHighlight: showFocusHighlight,
       isDisabled: widget.isDisabled,
     );
   }
 
-  BoxConstraints _createBaseConstraints() {
-    return BoxConstraints(
-      minWidth: WcagConstants.kMinTouchTargetSize.width,
-      minHeight: WcagConstants.kMinTouchTargetSize.height,
-    );
+  Size _resolveTapTargetSize(BuildContext context) {
+    final policy = HeadlessThemeProvider.of(context)
+        ?.capability<HeadlessTapTargetPolicy>();
+    if (policy != null) {
+      return policy.minTapTargetSize(
+        context: context,
+        component: HeadlessTapTargetComponent.button,
+      );
+    }
+    return WcagConstants.kMinTouchTargetSize;
   }
 
-  BoxConstraints _resolveConstraints(
-    BoxConstraints base,
-    RButtonResolvedTokens? tokens,
-  ) {
-    if (tokens == null) return base;
-    return BoxConstraints(
-      minWidth: math.max(base.minWidth, tokens.minSize.width),
-      minHeight: math.max(base.minHeight, tokens.minSize.height),
-    );
-  }
+  Widget _wrapWithInteraction({
+    required BuildContext context,
+    required Widget child,
+  }) {
+    final tapTargetSize = _resolveTapTargetSize(context);
 
-  Widget _wrapWithInteraction({required Widget child}) {
     return Semantics(
       button: true,
       enabled: !widget.isDisabled,
       label: widget.semanticLabel,
-      // Accessibility activation must be owned by the component.
-      // This enables SemanticsAction.tap (screen readers) without adding a
-      // second pointer activation path in renderers.
       onTap: widget.isDisabled ? null : _activate,
       child: HeadlessPressableRegion(
         controller: _pressable,
@@ -296,7 +298,17 @@ class _RTextButtonState extends State<RTextButton> {
         cursorWhenDisabled: SystemMouseCursors.forbidden,
         onActivate: _activate,
         visualEffects: _visualEffects,
-        child: child,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minWidth: tapTargetSize.width,
+            minHeight: tapTargetSize.height,
+          ),
+          child: Center(
+            widthFactor: 1.0,
+            heightFactor: 1.0,
+            child: child,
+          ),
+        ),
       ),
     );
   }

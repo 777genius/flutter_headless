@@ -11,14 +11,14 @@ void main() {
       resolver = const MaterialButtonTokenResolver();
     });
 
-    testWidgets('resolves tokens for primary variant', (tester) async {
+    testWidgets('resolves tokens for filled variant', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Builder(
             builder: (context) {
               final tokens = resolver.resolve(
                 context: context,
-                spec: const RButtonSpec(variant: RButtonVariant.primary),
+                spec: const RButtonSpec(variant: RButtonVariant.filled),
                 states: {},
               );
 
@@ -26,7 +26,7 @@ void main() {
               expect(tokens.borderColor, Colors.transparent);
               expect(tokens.padding, isNotNull);
               expect(tokens.borderRadius, isNotNull);
-              expect(tokens.minSize, const Size(48, 48));
+              expect(tokens.minSize, const Size(64, 40));
 
               return const SizedBox.shrink();
             },
@@ -35,19 +35,65 @@ void main() {
       );
     });
 
-    testWidgets('resolves tokens for secondary variant', (tester) async {
+    testWidgets('resolves tokens for outlined variant', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Builder(
             builder: (context) {
               final tokens = resolver.resolve(
                 context: context,
-                spec: const RButtonSpec(variant: RButtonVariant.secondary),
+                spec: const RButtonSpec(variant: RButtonVariant.outlined),
                 states: {},
               );
 
               expect(tokens.backgroundColor, Colors.transparent);
               expect(tokens.borderColor, isNot(Colors.transparent));
+
+              return const SizedBox.shrink();
+            },
+          ),
+        ),
+      );
+    });
+
+    testWidgets('resolves tokens for tonal variant', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Builder(
+            builder: (context) {
+              final scheme = Theme.of(context).colorScheme;
+              final tokens = resolver.resolve(
+                context: context,
+                spec: const RButtonSpec(variant: RButtonVariant.tonal),
+                states: {},
+              );
+
+              expect(tokens.backgroundColor, scheme.secondaryContainer);
+              expect(tokens.foregroundColor, scheme.onSecondaryContainer);
+              expect(tokens.borderColor, Colors.transparent);
+
+              return const SizedBox.shrink();
+            },
+          ),
+        ),
+      );
+    });
+
+    testWidgets('resolves tokens for text variant', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Builder(
+            builder: (context) {
+              final scheme = Theme.of(context).colorScheme;
+              final tokens = resolver.resolve(
+                context: context,
+                spec: const RButtonSpec(variant: RButtonVariant.text),
+                states: {},
+              );
+
+              expect(tokens.foregroundColor, scheme.primary);
+              expect(tokens.backgroundColor, Colors.transparent);
+              expect(tokens.borderColor, Colors.transparent);
 
               return const SizedBox.shrink();
             },
@@ -63,13 +109,13 @@ void main() {
             builder: (context) {
               final normalTokens = resolver.resolve(
                 context: context,
-                spec: const RButtonSpec(variant: RButtonVariant.primary),
+                spec: const RButtonSpec(variant: RButtonVariant.filled),
                 states: {},
               );
 
               final disabledTokens = resolver.resolve(
                 context: context,
-                spec: const RButtonSpec(variant: RButtonVariant.primary),
+                spec: const RButtonSpec(variant: RButtonVariant.filled),
                 states: {WidgetState.disabled},
               );
 
@@ -93,13 +139,13 @@ void main() {
             builder: (context) {
               final normalTokens = resolver.resolve(
                 context: context,
-                spec: const RButtonSpec(variant: RButtonVariant.primary),
+                spec: const RButtonSpec(variant: RButtonVariant.filled),
                 states: {},
               );
 
               final pressedTokens = resolver.resolve(
                 context: context,
-                spec: const RButtonSpec(variant: RButtonVariant.primary),
+                spec: const RButtonSpec(variant: RButtonVariant.filled),
                 states: {WidgetState.pressed},
               );
 
@@ -188,7 +234,7 @@ void main() {
               final overrideColor = Colors.red;
               final tokens = resolver.resolve(
                 context: context,
-                spec: const RButtonSpec(variant: RButtonVariant.primary),
+                spec: const RButtonSpec(variant: RButtonVariant.filled),
                 states: {},
                 overrides: RenderOverrides({
                   RButtonOverrides: RButtonOverrides.tokens(
@@ -233,7 +279,7 @@ void main() {
         MaterialApp(
           home: Builder(
             builder: (context) {
-              final spec = const RButtonSpec(variant: RButtonVariant.primary);
+              final spec = const RButtonSpec(variant: RButtonVariant.filled);
               final states = {WidgetState.hovered};
 
               final tokens1 = resolver.resolve(

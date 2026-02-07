@@ -24,7 +24,10 @@ abstract interface class RButtonTokenResolver {
   /// [context] - BuildContext for theme/density access
   /// [spec] - Button specification (variant, size)
   /// [states] - Current widget states (pressed, hovered, etc.)
-  /// [constraints] - Optional layout constraints (for min hit target policy)
+  /// [constraints] - Optional visual layout constraints (e.g. parent layout).
+  ///
+  /// Tap target sizing is handled separately by [HeadlessTapTargetPolicy] at
+  /// the component level and must not be mixed into visual token resolution.
   /// [overrides] - Per-instance style/token overrides
   RButtonResolvedTokens resolve({
     required BuildContext context,

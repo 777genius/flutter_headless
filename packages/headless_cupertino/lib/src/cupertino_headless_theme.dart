@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:headless_contracts/headless_contracts.dart';
 import 'package:headless_theme/headless_theme.dart';
 
-import 'button/cupertino_button_renderer.dart';
+import 'accessibility/cupertino_tap_target_policy.dart';
 import 'button/cupertino_button_token_resolver.dart';
+import 'button/cupertino_flutter_parity_button_renderer.dart';
 import 'checkbox/cupertino_checkbox_renderer.dart';
 import 'checkbox/cupertino_checkbox_token_resolver.dart';
 import 'checkbox_list_tile/cupertino_checkbox_list_tile_renderer.dart';
@@ -21,7 +22,7 @@ import 'textfield/cupertino_text_field_token_resolver.dart';
 /// Cupertino (iOS) theme preset for Headless components.
 ///
 /// Implements [HeadlessTheme] and provides iOS-styled capabilities:
-/// - [RButtonRenderer] via [CupertinoButtonRenderer]
+/// - [RButtonRenderer] via [CupertinoFlutterParityButtonRenderer] (parity visual port)
 /// - [RButtonTokenResolver] via [CupertinoButtonTokenResolver]
 /// - [RDropdownButtonRenderer] via [CupertinoDropdownRenderer]
 /// - [RDropdownTokenResolver] via [CupertinoDropdownTokenResolver]
@@ -48,7 +49,8 @@ class CupertinoHeadlessTheme extends HeadlessTheme {
   CupertinoHeadlessTheme({
     Brightness? brightness,
   })  : _brightness = brightness,
-        _buttonRenderer = const CupertinoButtonRenderer(),
+        _tapTargetPolicy = const CupertinoTapTargetPolicy(),
+        _buttonRenderer = const CupertinoFlutterParityButtonRenderer(),
         _buttonTokenResolver = CupertinoButtonTokenResolver(
           brightness: brightness,
         ),
@@ -79,7 +81,8 @@ class CupertinoHeadlessTheme extends HeadlessTheme {
         _pressableSurfaceFactory = const CupertinoPressableSurface();
 
   final Brightness? _brightness;
-  final CupertinoButtonRenderer _buttonRenderer;
+  final CupertinoTapTargetPolicy _tapTargetPolicy;
+  final RButtonRenderer _buttonRenderer;
   final CupertinoButtonTokenResolver _buttonTokenResolver;
   final CupertinoCheckboxRenderer _checkboxRenderer;
   final CupertinoCheckboxTokenResolver _checkboxTokenResolver;
@@ -120,6 +123,11 @@ class CupertinoHeadlessTheme extends HeadlessTheme {
 
   @override
   T? capability<T>() {
+    // Accessibility capabilities
+    if (T == HeadlessTapTargetPolicy) {
+      return _tapTargetPolicy as T;
+    }
+
     // Button capabilities
     if (T == RButtonRenderer) {
       return _buttonRenderer as T;

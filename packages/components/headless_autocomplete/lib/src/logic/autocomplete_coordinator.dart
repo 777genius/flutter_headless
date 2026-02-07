@@ -90,7 +90,12 @@ final class AutocompleteCoordinator<T> {
     _menuCoordinator.resetDismissed();
     focusNode.requestFocus();
     if (!_config.openOnTap) return;
-    _syncOptions(trigger: RAutocompleteRemoteTrigger.tap);
+    _syncOptions(
+      trigger: RAutocompleteRemoteTrigger.tap,
+      textOverride: _textOverrideForShowAllOnOpenIfNeeded(
+        trigger: RAutocompleteRemoteTrigger.tap,
+      ),
+    );
     _openMenu();
   }
 
@@ -390,7 +395,12 @@ final class AutocompleteCoordinator<T> {
         _menuCoordinator.wasDismissed) {
       return;
     }
-    _syncOptions(trigger: RAutocompleteRemoteTrigger.focus);
+    _syncOptions(
+      trigger: RAutocompleteRemoteTrigger.focus,
+      textOverride: _textOverrideForShowAllOnOpenIfNeeded(
+        trigger: RAutocompleteRemoteTrigger.focus,
+      ),
+    );
     _openMenu();
   }
 
@@ -484,12 +494,14 @@ final class AutocompleteCoordinator<T> {
 
   void _syncOptions({
     RAutocompleteRemoteTrigger trigger = RAutocompleteRemoteTrigger.input,
+    TextEditingValue? textOverride,
   }) {
+    final effectiveText = textOverride ?? controller.value;
     // For remote/hybrid sources, trigger source controller
     final sourceController = _sourceController;
     if (sourceController != null) {
       sourceController.resolve(
-        text: controller.value,
+        text: effectiveText,
         trigger: trigger,
       );
       // Source controller will notify via _handleSourceStateChanged
@@ -504,7 +516,7 @@ final class AutocompleteCoordinator<T> {
     };
 
     final snapshot = _optionsController.resolve(
-      text: controller.value,
+      text: effectiveText,
       optionsBuilder: _config.optionsBuilder,
       maxOptions: _config.maxOptions,
       selectedIds: selectedIds,
@@ -529,6 +541,36 @@ final class AutocompleteCoordinator<T> {
       if (_isDisposed) return;
       _syncOptions();
     });
+  }
+
+  TextEditingValue? _textOverrideForShowAllOnOpenIfNeeded({
+    required RAutocompleteRemoteTrigger trigger,
+  }) {
+    if (!_shouldShowAllOnOpen(trigger: trigger)) return null;
+    final committed = _selection.committedText;
+    if (committed == null || committed.isEmpty) return null;
+
+    // Only when the input still shows the committed value:
+    // user hasn't started editing yet.
+    if (controller.text != committed) return null;
+    return const TextEditingValue(
+      text: '',
+      selection: TextSelection.collapsed(offset: 0),
+      composing: TextRange.empty,
+    );
+  }
+
+  bool _shouldShowAllOnOpen({
+    required RAutocompleteRemoteTrigger trigger,
+  }) {
+    if (trigger != RAutocompleteRemoteTrigger.focus &&
+        trigger != RAutocompleteRemoteTrigger.tap) {
+      return false;
+    }
+    // This behavior is primarily for single-select "committed selection"
+    // cases (text equals chosen option). Multiple mode typically clears query.
+    if (_config.selectionMode is AutocompleteMultipleSelectionMode<T>) return false;
+    return _selection.selectedIndex != null;
   }
 
   int _selectionSignature({

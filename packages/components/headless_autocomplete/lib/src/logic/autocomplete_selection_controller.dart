@@ -10,6 +10,7 @@ abstract interface class AutocompleteSelectionController<T> {
   Set<int>? get selectedItemsIndices;
   int? get highlightedIndex;
   Iterable<ListboxItemId> get selectedIds;
+  String? get committedText;
 
   /// Optimistically overrides selected ids (used to keep UI responsive while
   /// awaiting external controlled state to rebuild).
@@ -91,6 +92,9 @@ final class AutocompleteSingleSelectionController<T>
   ListboxItemId? get selectedId => _selectedId;
 
   @override
+  String? get committedText => _lastSelectedText;
+
+  @override
   int? get selectedIndex => _indexById[_selectedId];
 
   @override
@@ -147,10 +151,23 @@ final class AutocompleteSingleSelectionController<T>
     if (_isApplyingSelectionText) {
       return false;
     }
-    if (_selectedId != null && text != _lastSelectedText) {
-      _selectedId = null;
-      _lastSelectedText = null;
-      _listbox.setSelectedId(null);
+    final committed = _lastSelectedText;
+    if (_selectedId != null && committed != null) {
+      if (text.isEmpty) {
+        _selectedId = null;
+        _lastSelectedText = null;
+        _listbox.setSelectedId(null);
+      } else {
+        // Material-like behavior for editable combobox:
+        // keep the committed selection while the user is narrowing by prefix.
+        // This prevents "checkmark disappears on first character" regressions.
+        final keepSelected = committed.toLowerCase().startsWith(text.toLowerCase());
+        if (!keepSelected) {
+          _selectedId = null;
+          _lastSelectedText = null;
+          _listbox.setSelectedId(null);
+        }
+      }
     }
     return true;
   }
@@ -274,9 +291,10 @@ final class AutocompleteSingleSelectionController<T>
     _lastText = text;
     _isApplyingSelectionText = true;
     try {
+      final selection = TextSelection.collapsed(offset: text.length);
       _controller.value = TextEditingValue(
         text: text,
-        selection: TextSelection.collapsed(offset: text.length),
+        selection: selection,
         composing: TextRange.empty,
       );
     } finally {

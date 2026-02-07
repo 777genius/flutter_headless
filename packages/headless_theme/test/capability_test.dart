@@ -166,7 +166,7 @@ void main() {
     test('RButtonSpec has sensible defaults', () {
       const spec = RButtonSpec();
 
-      expect(spec.variant, RButtonVariant.secondary);
+      expect(spec.variant, RButtonVariant.outlined);
       expect(spec.size, RButtonSize.medium);
       expect(spec.semanticLabel, isNull);
     });
@@ -177,6 +177,7 @@ void main() {
       expect(state.isPressed, isFalse);
       expect(state.isHovered, isFalse);
       expect(state.isFocused, isFalse);
+      expect(state.showFocusHighlight, isFalse);
       expect(state.isDisabled, isFalse);
     });
 

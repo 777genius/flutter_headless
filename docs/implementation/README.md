@@ -40,6 +40,8 @@
 - [I32 — Component v1: Switch (Material/Cupertino parity, Flutter-like API)](./I32_component_switch_v1.md)
 - [I33 — Switch Interaction Parity v1 (Material ripple + Drag thumb like Flutter)](./I33_switch_interaction_parity_v1.md)
 - [I35 — headless_material: Material TextField variants parity v1 (filled/outlined/underlined)](./I35_material_textfield_variants_parity_v1.md)
+- [I36 — Button: Flutter parity renderer (visual-only) + Tap target policy separation v1](./I36_button_flutter_parity_renderer_tap_target_policy_v1.md)
+- [I37 — Button: appearance-variants (filled/tonal/outlined/text) + deterministic focus highlight + token-mode + demo/tests v1](./I37_button_variants_focus_highlight_token_mode_demo_v1.md)
 
 ### Основные источники требований (читать параллельно)
 

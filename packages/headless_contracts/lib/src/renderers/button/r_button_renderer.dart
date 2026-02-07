@@ -20,6 +20,17 @@ abstract interface class RButtonRenderer {
   Widget render(RButtonRenderRequest request);
 }
 
+/// Optional renderer extension that declares resolved-tokens usage.
+///
+/// Components can use this to skip token resolution work when the active
+/// renderer is parity-by-reuse and ignores [RButtonRenderRequest.resolvedTokens].
+///
+/// If a renderer does not implement this interface, components assume it MAY
+/// consume resolved tokens and will resolve them when a token resolver exists.
+abstract interface class RButtonRendererTokenMode {
+  bool get usesResolvedTokens;
+}
+
 /// Render request containing everything a button renderer needs.
 ///
 /// Follows the pattern: context + spec + state + semantics + slots + tokens + constraints.
@@ -85,7 +96,10 @@ final class RButtonRenderRequest {
   /// If null, renderer may use default theme values.
   final RButtonResolvedTokens? resolvedTokens;
 
-  /// Layout constraints (e.g., minimum hit target size).
+  /// Visual layout constraints for the rendered button.
+  ///
+  /// These are visual constraints only. Tap target sizing is handled
+  /// separately by [HeadlessTapTargetPolicy] at the component level.
   final BoxConstraints? constraints;
 
   /// Per-instance override bag for preset customization.
@@ -102,12 +116,12 @@ final class RButtonRenderRequest {
 @immutable
 final class RButtonSpec {
   const RButtonSpec({
-    this.variant = RButtonVariant.secondary,
+    this.variant = RButtonVariant.outlined,
     this.size = RButtonSize.medium,
     this.semanticLabel,
   });
 
-  /// Visual variant (primary, secondary, etc.).
+  /// Visual appearance variant.
   final RButtonVariant variant;
 
   /// Size variant.
@@ -119,13 +133,35 @@ final class RButtonSpec {
 
 /// Button visual variants.
 ///
-/// Minimal set for v1. More variants can be added in minor releases.
+/// Appearance-based variants following standard design-system naming.
+/// Each variant maps to native platform equivalents:
+///
+/// | Variant    | Material               | Cupertino                          |
+/// |------------|------------------------|------------------------------------|
+/// | [filled]   | `FilledButton`         | `CupertinoButton.filled`           |
+/// | [tonal]    | `FilledButton.tonal`   | `CupertinoButton.tinted`           |
+/// | [outlined] | `OutlinedButton`       | design-system extension (non-native)|
+/// | [text]     | `TextButton`           | `CupertinoButton` (plain)          |
 enum RButtonVariant {
-  /// Primary action button (high emphasis).
-  primary,
+  /// Filled background, high emphasis.
+  ///
+  /// Material: `FilledButton` / Cupertino: `CupertinoButton.filled`.
+  filled,
 
-  /// Secondary/default button (medium emphasis).
-  secondary,
+  /// Soft tinted background, medium emphasis.
+  ///
+  /// Material: `FilledButton.tonal` / Cupertino: `CupertinoButton.tinted`.
+  tonal,
+
+  /// Outline border with transparent background.
+  ///
+  /// Material: `OutlinedButton` / Cupertino: design-system extension (non-native).
+  outlined,
+
+  /// No background or border, low emphasis.
+  ///
+  /// Material: `TextButton` / Cupertino: `CupertinoButton` (plain).
+  text,
 }
 
 /// Button size variants.
@@ -150,6 +186,7 @@ final class RButtonState {
     this.isPressed = false,
     this.isHovered = false,
     this.isFocused = false,
+    this.showFocusHighlight = false,
     this.isDisabled = false,
   });
 
@@ -161,6 +198,12 @@ final class RButtonState {
 
   /// Whether the button has keyboard focus.
   final bool isFocused;
+
+  /// Whether focus highlight (focus ring) should be shown when focused.
+  ///
+  /// This is derived by the component from a platform policy
+  /// (typically based on [FocusManager.highlightMode]).
+  final bool showFocusHighlight;
 
   /// Whether the button is disabled.
   final bool isDisabled;

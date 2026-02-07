@@ -20,6 +20,7 @@
 /// ```
 library;
 
+export 'src/accessibility/cupertino_tap_target_policy.dart';
 export 'headless_cupertino_app.dart';
 export 'button.dart';
 export 'checkbox.dart';

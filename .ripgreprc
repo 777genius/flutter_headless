@@ -1,0 +1,7 @@
+--glob=!**/build/**
+--glob=!**/.dart_tool/**
+--glob=!**/.pub-cache/**
+--glob=!**/ios/Pods/**
+--glob=!**/*.png
+--glob=!**/*.g.dart
+--glob=!**/*.freezed.dart

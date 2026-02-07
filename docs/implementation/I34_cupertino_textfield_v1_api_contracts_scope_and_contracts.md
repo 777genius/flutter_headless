@@ -62,8 +62,11 @@
 Дополнительно (v1):
 
 - `RTextFieldSpec.variant` — это **intent**, не “точный iOS пиксель‑перфект вид”.
-- Cupertino preset может маппить `variant` в ближайший нативный вид.
+- Cupertino preset не обязан поддерживать все intents как отдельные визуальные режимы.
 - Если нужны дополнительные режимы (например, grouped/inset/plain), они должны быть реализованы через `CupertinoTextFieldOverrides` (preset-specific), а не через расширение `RTextFieldVariant`.
+  - В частности: **borderless** — это Cupertino-only affordance и включается явно через:
+    - `CupertinoTextFieldOverrides(isBorderless: true)`
+    - `RCupertinoTextField.borderless(...)`
 
 ---
 

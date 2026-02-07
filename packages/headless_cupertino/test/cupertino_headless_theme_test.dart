@@ -11,7 +11,7 @@ void main() {
       final capability = theme.capability<RButtonRenderer>();
 
       expect(capability, isNotNull);
-      expect(capability, isA<CupertinoButtonRenderer>());
+      expect(capability, isA<CupertinoFlutterParityButtonRenderer>());
     });
 
     test('provides RButtonTokenResolver capability', () {

@@ -42,7 +42,11 @@ final class RButtonResolvedTokens {
   /// Content padding.
   final EdgeInsetsGeometry padding;
 
-  /// Minimum touch target size (WCAG/platform guidelines).
+  /// Minimum visual size for the button surface.
+  ///
+  /// This is the minimum size of the visual element, NOT the tap target.
+  /// Tap target sizing is handled by [HeadlessTapTargetPolicy] at the
+  /// component level.
   final Size minSize;
 
   /// Corner radius for button shape.

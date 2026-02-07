@@ -4,15 +4,19 @@ import 'package:headless_theme/headless_theme.dart';
 
 /// Material 3 token resolver for TextField components.
 ///
-/// Implements [RTextFieldTokenResolver] with Material Design 3 styling.
+/// Provides resolved visual tokens consumed by the **component** (RTextField)
+/// for `EditableText` configuration (textStyle, cursorColor, selectionColor).
+///
+/// NOTE: In Material parity mode, the **renderer** does NOT read these tokens.
+/// Container, label, helper, and icon tokens are resolved but ignored by
+/// `MaterialTextFieldRenderer` — `InputDecorator` provides M3 defaults directly.
+/// These tokens remain for non-parity renderers and per-instance overrides.
 ///
 /// Token resolution priority (v1):
 /// 1. Per-instance contract overrides: `overrides.get<RTextFieldOverrides>()`
 /// 2. Theme defaults / preset defaults
 ///
 /// Deterministic: same inputs always produce same outputs.
-///
-/// See `docs/V1_DECISIONS.md` → "Token Resolution Layer".
 class MaterialTextFieldTokenResolver implements RTextFieldTokenResolver {
   /// Creates a Material text field token resolver.
   ///
@@ -87,7 +91,8 @@ class MaterialTextFieldTokenResolver implements RTextFieldTokenResolver {
     final errorColor = fieldOverrides?.errorColor ?? scheme.error;
 
     // Cursor/selection
-    final cursorColor = fieldOverrides?.cursorColor ?? scheme.primary;
+    final cursorColor = fieldOverrides?.cursorColor ??
+        (isError ? scheme.error : scheme.primary);
     final selectionColor =
         fieldOverrides?.selectionColor ?? scheme.primary.withValues(alpha: 0.4);
 
@@ -135,7 +140,7 @@ class MaterialTextFieldTokenResolver implements RTextFieldTokenResolver {
       iconColor: iconColor,
       iconSpacing: fieldOverrides?.iconSpacing ?? 12.0,
       // Sizing
-      minSize: fieldOverrides?.minSize ?? const Size(200, 48),
+      minSize: fieldOverrides?.minSize ?? Size.zero,
     );
   }
 

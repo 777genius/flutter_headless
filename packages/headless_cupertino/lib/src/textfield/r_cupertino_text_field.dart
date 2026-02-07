@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:headless_contracts/headless_contracts.dart';
 import 'package:headless_textfield/headless_textfield.dart';
 
 import '../overrides/cupertino_text_field_overrides.dart';

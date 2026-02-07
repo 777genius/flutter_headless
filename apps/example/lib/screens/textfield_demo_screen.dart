@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:headless_contracts/headless_contracts.dart';
 import 'package:headless_textfield/headless_textfield.dart';
 
 import '../widgets/theme_mode_switch.dart';
 import 'widgets/demo_section.dart';
+import 'widgets/textfield_overrides_demo_section.dart';
+import 'widgets/textfield_variants_demo_section.dart';
 
 class TextFieldDemoScreen extends StatefulWidget {
   const TextFieldDemoScreen({super.key});
@@ -52,12 +55,15 @@ class _TextFieldDemoScreenState extends State<TextFieldDemoScreen> {
                     label: 'Email',
                     placeholder: 'Enter your email',
                     helperText: 'We will never share your email',
+                    variant: RTextFieldVariant.underlined,
                   ),
                   const SizedBox(height: 8),
                   Text('Current value: $_email'),
                 ],
               ),
             ),
+            const SizedBox(height: 24),
+            const TextFieldVariantsDemoSection(),
             const SizedBox(height: 24),
             DemoSection(
               title: 'Password Field',
@@ -68,6 +74,7 @@ class _TextFieldDemoScreenState extends State<TextFieldDemoScreen> {
                 label: 'Password',
                 placeholder: 'Enter password',
                 obscureText: true,
+                variant: RTextFieldVariant.outlined,
               ),
             ),
             const SizedBox(height: 24),
@@ -84,6 +91,7 @@ class _TextFieldDemoScreenState extends State<TextFieldDemoScreen> {
                     : _email.contains('@')
                         ? null
                         : 'Please enter a valid email',
+                variant: RTextFieldVariant.filled,
               ),
             ),
             const SizedBox(height: 24),
@@ -98,6 +106,7 @@ class _TextFieldDemoScreenState extends State<TextFieldDemoScreen> {
                 helperText: 'Max 500 characters',
                 maxLines: 4,
                 minLines: 2,
+                variant: RTextFieldVariant.outlined,
               ),
             ),
             const SizedBox(height: 24),
@@ -108,6 +117,7 @@ class _TextFieldDemoScreenState extends State<TextFieldDemoScreen> {
                 value: 'Cannot edit this',
                 label: 'Disabled Field',
                 enabled: false,
+                variant: RTextFieldVariant.outlined,
               ),
             ),
             const SizedBox(height: 24),
@@ -118,6 +128,7 @@ class _TextFieldDemoScreenState extends State<TextFieldDemoScreen> {
                 value: 'Read-only content',
                 label: 'Read-Only Field',
                 readOnly: true,
+                variant: RTextFieldVariant.underlined,
               ),
             ),
             const SizedBox(height: 24),
@@ -131,6 +142,7 @@ class _TextFieldDemoScreenState extends State<TextFieldDemoScreen> {
                     label: 'Controller-driven',
                     placeholder: 'Type here...',
                     onChanged: (v) => setState(() {}),
+                    variant: RTextFieldVariant.filled,
                   ),
                   const SizedBox(height: 8),
                   Row(
@@ -158,75 +170,7 @@ class _TextFieldDemoScreenState extends State<TextFieldDemoScreen> {
               ),
             ),
             const SizedBox(height: 24),
-            DemoSection(
-              title: 'Per-Instance Overrides',
-              description: 'Custom styling via RenderOverrides tokens',
-              child: Column(
-                children: [
-                  RTextField(
-                    value: '',
-                    onChanged: (_) {},
-                    placeholder: 'Rounded corners',
-                    overrides: RenderOverrides.only(
-                      const RTextFieldOverrides.tokens(
-                        containerBorderRadius:
-                            BorderRadius.all(Radius.circular(24)),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  RTextField(
-                    value: '',
-                    onChanged: (_) {},
-                    placeholder: 'Filled background',
-                    overrides: RenderOverrides.only(
-                      RTextFieldOverrides.tokens(
-                        containerBackgroundColor:
-                            Theme.of(context).colorScheme.surfaceContainerHigh,
-                        containerBorderWidth: 0,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  RTextField(
-                    value: '',
-                    onChanged: (_) {},
-                    placeholder: 'Thick accent border',
-                    overrides: RenderOverrides.only(
-                      RTextFieldOverrides.tokens(
-                        containerBorderColor:
-                            Theme.of(context).colorScheme.primary,
-                        containerBorderWidth: 2,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  RTextField(
-                    value: '',
-                    onChanged: (_) {},
-                    placeholder: 'Custom cursor & selection',
-                    overrides: RenderOverrides.only(
-                      RTextFieldOverrides.tokens(
-                        cursorColor: Colors.deepOrange,
-                        selectionColor: Colors.deepOrange.withValues(alpha: 0.3),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  RTextField(
-                    value: '',
-                    onChanged: (_) {},
-                    placeholder: 'Dense padding',
-                    overrides: RenderOverrides.only(
-                      const RTextFieldOverrides.tokens(
-                        containerPadding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            const TextFieldOverridesDemoSection(),
             const SizedBox(height: 24),
             DemoSection(
               title: 'Slots (leading / trailing)',
@@ -245,6 +189,7 @@ class _TextFieldDemoScreenState extends State<TextFieldDemoScreen> {
                       leading: Icon(Icons.search),
                       trailing: Icon(Icons.mic),
                     ),
+                    variant: RTextFieldVariant.filled,
                   ),
                   const SizedBox(height: 8),
                   Text('Value: ${_searchController.text}'),

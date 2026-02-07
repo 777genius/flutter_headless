@@ -14,7 +14,7 @@ final class _EmptyTheme extends HeadlessTheme {
 void main() {
   group('Strict tokens policy (preset)', () {
     testWidgets(
-      'MaterialButtonRenderer throws a clear error when strict mode is enabled and resolvedTokens are missing',
+      'MaterialFlutterParityButtonRenderer does NOT throw with requireResolvedTokens: true and resolvedTokens: null',
       (tester) async {
         await tester.pumpWidget(
           MaterialApp(
@@ -24,7 +24,7 @@ void main() {
                 capability: const HeadlessRendererPolicy(requireResolvedTokens: true),
                 child: Builder(
                   builder: (context) {
-                    return const MaterialButtonRenderer().render(
+                    return const MaterialFlutterParityButtonRenderer().render(
                       RButtonRenderRequest(
                         context: context,
                         spec: const RButtonSpec(),
@@ -40,9 +40,8 @@ void main() {
           ),
         );
 
-        final e = tester.takeException();
-        expect(e, isA<StateError>());
-        expect(e.toString(), contains('[Headless] MaterialButtonRenderer требует resolvedTokens.'));
+        expect(tester.takeException(), isNull);
+        expect(find.text('Tap'), findsOneWidget);
       },
     );
   });

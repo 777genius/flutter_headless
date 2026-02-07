@@ -51,6 +51,9 @@ final class AutocompleteMultipleSelectionController<T>
   bool get isApplyingSelectionText => _isApplyingSelectionText;
 
   @override
+  String? get committedText => null;
+
+  @override
   int? get selectedIndex => null;
 
   @override
