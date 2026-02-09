@@ -4,6 +4,8 @@ import 'package:headless_contracts/headless_contracts.dart';
 import 'material_button_parity_constants.dart';
 import 'material_parity_button_state_adapter.dart';
 import 'material_parity_button_style_factory.dart';
+import 'material_parity_focus_overlay.dart';
+import 'material_parity_focus_overlay_resolver.dart';
 
 /// Material parity renderer that delegates visual rendering to Flutter's
 /// own [FilledButton] / [OutlinedButton] widgets.
@@ -138,12 +140,32 @@ class _MaterialParityButtonShellState
         ),
     };
 
-    return ExcludeSemantics(
-      child: AbsorbPointer(
-        absorbing: true,
-        child: flutterButton,
-      ),
+    final focusOverlayColor =
+        MaterialParityFocusOverlayResolver.resolveOverlayColor(
+      context: context,
+      variant: variant,
+      state: request.state,
     );
+
+    Widget result = ExcludeSemantics(
+      child: AbsorbPointer(absorbing: true, child: flutterButton),
+    );
+
+    if (focusOverlayColor != null) {
+      final overrideRadius =
+          request.overrides?.get<RButtonOverrides>()?.borderRadius;
+      final ShapeBorder overlayShape = overrideRadius != null
+          ? RoundedRectangleBorder(borderRadius: overrideRadius)
+          : const StadiumBorder();
+
+      result = MaterialParityFocusOverlay(
+        color: focusOverlayColor,
+        shape: overlayShape,
+        child: result,
+      );
+    }
+
+    return result;
   }
 }
 

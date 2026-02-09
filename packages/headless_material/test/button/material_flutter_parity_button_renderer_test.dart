@@ -559,6 +559,201 @@ void main() {
       });
     });
 
+    group('focus overlay', () {
+      testWidgets('renders focus overlay when isFocused && showFocusHighlight',
+          (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Builder(
+              builder: (context) {
+                return renderer.render(
+                  RButtonRenderRequest(
+                    context: context,
+                    spec: const RButtonSpec(variant: RButtonVariant.filled),
+                    state: const RButtonState(
+                      isFocused: true,
+                      showFocusHighlight: true,
+                    ),
+                    content: const Text('Focused'),
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+
+        expect(
+          find.byType(MaterialParityFocusOverlay),
+          findsOneWidget,
+        );
+      });
+
+      testWidgets(
+          'no focus overlay when isFocused but showFocusHighlight is false',
+          (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Builder(
+              builder: (context) {
+                return renderer.render(
+                  RButtonRenderRequest(
+                    context: context,
+                    spec: const RButtonSpec(variant: RButtonVariant.filled),
+                    state: const RButtonState(
+                      isFocused: true,
+                      showFocusHighlight: false,
+                    ),
+                    content: const Text('Focused no highlight'),
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+
+        expect(find.byType(MaterialParityFocusOverlay), findsNothing);
+      });
+
+      testWidgets('no focus overlay when not focused', (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Builder(
+              builder: (context) {
+                return renderer.render(
+                  RButtonRenderRequest(
+                    context: context,
+                    spec: const RButtonSpec(variant: RButtonVariant.filled),
+                    state: const RButtonState(),
+                    content: const Text('Normal'),
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+
+        expect(find.byType(MaterialParityFocusOverlay), findsNothing);
+      });
+
+      testWidgets('no focus overlay when disabled even if focused',
+          (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Builder(
+              builder: (context) {
+                return renderer.render(
+                  RButtonRenderRequest(
+                    context: context,
+                    spec: const RButtonSpec(variant: RButtonVariant.filled),
+                    state: const RButtonState(
+                      isFocused: true,
+                      showFocusHighlight: true,
+                      isDisabled: true,
+                    ),
+                    content: const Text('Disabled Focused'),
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+
+        expect(find.byType(MaterialParityFocusOverlay), findsNothing);
+      });
+
+      testWidgets('overlay shown for each variant when focused',
+          (tester) async {
+        for (final variant in RButtonVariant.values) {
+          await tester.pumpWidget(
+            MaterialApp(
+              home: Builder(
+                builder: (context) {
+                  return renderer.render(
+                    RButtonRenderRequest(
+                      context: context,
+                      spec: RButtonSpec(variant: variant),
+                      state: const RButtonState(
+                        isFocused: true,
+                        showFocusHighlight: true,
+                      ),
+                      content: Text('Focused $variant'),
+                    ),
+                  );
+                },
+              ),
+            ),
+          );
+
+          expect(
+            find.byType(MaterialParityFocusOverlay),
+            findsOneWidget,
+            reason: '$variant should show focus overlay',
+          );
+        }
+      });
+
+      testWidgets('uses StadiumBorder shape by default', (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Builder(
+              builder: (context) {
+                return renderer.render(
+                  RButtonRenderRequest(
+                    context: context,
+                    spec: const RButtonSpec(variant: RButtonVariant.filled),
+                    state: const RButtonState(
+                      isFocused: true,
+                      showFocusHighlight: true,
+                    ),
+                    content: const Text('Default shape'),
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+
+        final overlay = tester.widget<MaterialParityFocusOverlay>(
+          find.byType(MaterialParityFocusOverlay),
+        );
+        expect(overlay.shape, isA<StadiumBorder>());
+      });
+
+      testWidgets('uses overridden borderRadius when provided', (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Builder(
+              builder: (context) {
+                return renderer.render(
+                  RButtonRenderRequest(
+                    context: context,
+                    spec: const RButtonSpec(variant: RButtonVariant.filled),
+                    state: const RButtonState(
+                      isFocused: true,
+                      showFocusHighlight: true,
+                    ),
+                    content: const Text('Custom radius'),
+                    overrides: RenderOverrides.only(
+                      RButtonOverrides(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+
+        final overlay = tester.widget<MaterialParityFocusOverlay>(
+          find.byType(MaterialParityFocusOverlay),
+        );
+        expect(overlay.shape, isA<RoundedRectangleBorder>());
+        final rrb = overlay.shape as RoundedRectangleBorder;
+        expect(rrb.borderRadius, BorderRadius.circular(8));
+      });
+    });
+
     buttonRendererSingleActivationSourceConformanceV2(
       presetName: 'Material parity',
       rendererGetter: () => renderer,

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/theme_mode_switch.dart';
+import 'widgets/button_comparison_row.dart';
 import 'widgets/button_overrides_demo_section.dart';
 import 'widgets/button_variants_demo_section.dart';
 import 'widgets/demo_section.dart';
+import 'widgets/flutter_standard_buttons_section.dart';
 
 class ButtonDemoScreen extends StatefulWidget {
   const ButtonDemoScreen({super.key});
@@ -40,9 +42,15 @@ class _ButtonDemoScreenState extends State<ButtonDemoScreen> {
             ),
           ),
           const SizedBox(height: 24),
-          ButtonVariantsDemoSection(
-            isDisabled: _isDisabled,
-            onPressed: _onPressed,
+          ButtonComparisonRow(
+            left: ButtonVariantsDemoSection(
+              isDisabled: _isDisabled,
+              onPressed: _onPressed,
+            ),
+            right: FlutterStandardButtonsSection(
+              isDisabled: _isDisabled,
+              onPressed: _onPressed,
+            ),
           ),
           const SizedBox(height: 24),
           ButtonOverridesDemoSection(

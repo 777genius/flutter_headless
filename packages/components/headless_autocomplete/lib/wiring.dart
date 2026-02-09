@@ -47,7 +47,6 @@ export 'package:headless_contracts/headless_contracts.dart'
         SafeDropdownItemContentBuilder,
         SafeDropdownItemContentContext,
         SafeDropdownItemContext,
-
         SafeDropdownMenuSurfaceBuilder,
         SafeDropdownMenuSurfaceContext,
         SafeDropdownRenderer,

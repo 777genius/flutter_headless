@@ -16,7 +16,7 @@ final class ButtonVariantsDemoSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DemoSection(
-      title: 'Variants x Sizes',
+      title: 'Headless Variants x Sizes',
       description: 'Matrix of all appearance variants and size options.\n'
           'filled | tonal | outlined | text  x  small | medium | large',
       child: Column(
