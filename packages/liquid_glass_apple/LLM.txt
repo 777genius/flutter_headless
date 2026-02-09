@@ -1,0 +1,11 @@
+# liquid_glass_apple
+
+Cross-platform glassmorphism effect inspired by iOS materials. Uses BackdropFilter for blur + tint effects.
+
+## Key concepts
+- Provides `GlassContainer` widget with configurable `GlassStyle` presets (regular, ultraThin, thin).
+- Works on all platforms (web, mobile, desktop) but is not a pixel-perfect iOS replica.
+- Performance-sensitive: avoid in ListView/scrolling containers; prefer 1-3 instances per screen.
+
+## Public API
+- See `lib/liquid_glass_apple.dart` for the barrel export.

@@ -1,6 +1,6 @@
 name: anchored_overlay_engine
 description: Anchored overlay lifecycle engine (positioning, policies, insertion).
-version: 0.0.0
+version: 0.1.0
 publish_to: none
 
 environment:

@@ -1,6 +1,6 @@
 name: headless_tokens
 description: Headless tokens package (raw + semantic). Pure Dart.
-version: 0.0.0
+version: 0.1.0
 publish_to: none
 
 environment:

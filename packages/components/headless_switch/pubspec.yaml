@@ -1,6 +1,6 @@
 name: headless_switch
 description: Headless Switch component package.
-version: 0.0.0
+version: 0.1.0
 publish_to: none
 
 environment:

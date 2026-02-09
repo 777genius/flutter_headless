@@ -1,0 +1,11 @@
+# headless_contracts
+
+Renderer contracts and slot overrides for Headless components.
+
+## Key concepts
+- Defines capability contracts (ISP interfaces) that components use to request renderers via `HeadlessTheme.capability<T>()`.
+- Renderers implement these contracts to provide visual representation; components never know the concrete renderer.
+- Provides slot override mechanisms for customizing parts of a component's visual output.
+
+## Public API
+- See `lib/headless_contracts.dart` for the barrel export.

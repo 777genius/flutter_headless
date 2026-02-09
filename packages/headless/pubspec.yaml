@@ -1,6 +1,6 @@
 name: headless
 description: Headless facade package (re-exports core contracts + common components).
-version: 0.0.0
+version: 0.1.0
 publish_to: none
 
 environment:

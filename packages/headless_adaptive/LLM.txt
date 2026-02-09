@@ -1,0 +1,11 @@
+# headless_adaptive
+
+Adaptive theme helpers for Headless components.
+
+## Key concepts
+- Provides `HeadlessAdaptiveApp` that auto-selects MaterialApp or CupertinoApp based on platform (iOS/macOS -> Cupertino, others -> Material).
+- Installs the matching headless theme (`MaterialHeadlessTheme` or `CupertinoHeadlessTheme`) and overlay host automatically.
+- Supports platform override for deterministic testing.
+
+## Public API
+- See `lib/headless_adaptive.dart` for the barrel export.

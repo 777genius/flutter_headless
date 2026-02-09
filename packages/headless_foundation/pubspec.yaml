@@ -1,6 +1,6 @@
 name: headless_foundation
 description: Shared behavior primitives for Headless (overlay, focus, listbox, interactions, fsm, state resolution).
-version: 0.0.0
+version: 0.1.0
 publish_to: none
 
 environment:

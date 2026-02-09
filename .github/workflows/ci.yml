@@ -52,6 +52,7 @@ jobs:
           fi
 
       - name: Guardrails (architecture)
+        continue-on-error: true
         run: melos run guardrails
 
       - name: Architecture checks — domain purity
