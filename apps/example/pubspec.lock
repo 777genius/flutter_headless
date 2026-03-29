@@ -7,7 +7,7 @@ packages:
       path: "../../packages/anchored_overlay_engine"
       relative: true
     source: path
-    version: "0.0.0"
+    version: "1.0.0"
   async:
     dependency: transitive
     description:
@@ -98,98 +98,98 @@ packages:
       path: "../../packages/headless"
       relative: true
     source: path
-    version: "0.0.0"
+    version: "1.0.0"
   headless_adaptive:
     dependency: "direct main"
     description:
       path: "../../packages/headless_adaptive"
       relative: true
     source: path
-    version: "0.0.0"
+    version: "1.0.0"
   headless_autocomplete:
     dependency: "direct overridden"
     description:
       path: "../../packages/components/headless_autocomplete"
       relative: true
     source: path
-    version: "0.0.0"
+    version: "1.0.0"
   headless_button:
     dependency: "direct overridden"
     description:
       path: "../../packages/components/headless_button"
       relative: true
     source: path
-    version: "0.0.0"
+    version: "1.0.0"
   headless_checkbox:
     dependency: "direct main"
     description:
       path: "../../packages/components/headless_checkbox"
       relative: true
     source: path
-    version: "0.0.0"
+    version: "1.0.0"
   headless_contracts:
     dependency: "direct main"
     description:
       path: "../../packages/headless_contracts"
       relative: true
     source: path
-    version: "0.0.0"
+    version: "1.0.0"
   headless_cupertino:
     dependency: "direct main"
     description:
       path: "../../packages/headless_cupertino"
       relative: true
     source: path
-    version: "0.0.0"
+    version: "1.0.0"
   headless_dropdown_button:
     dependency: "direct overridden"
     description:
       path: "../../packages/components/headless_dropdown_button"
       relative: true
     source: path
-    version: "0.0.0"
+    version: "1.0.0"
   headless_foundation:
     dependency: "direct main"
     description:
       path: "../../packages/headless_foundation"
       relative: true
     source: path
-    version: "0.0.0"
+    version: "1.0.0"
   headless_material:
     dependency: "direct main"
     description:
       path: "../../packages/headless_material"
       relative: true
     source: path
-    version: "0.0.0"
+    version: "1.0.0"
   headless_switch:
     dependency: "direct main"
     description:
       path: "../../packages/components/headless_switch"
       relative: true
     source: path
-    version: "0.0.0"
+    version: "1.0.0"
   headless_textfield:
     dependency: "direct main"
     description:
       path: "../../packages/components/headless_textfield"
       relative: true
     source: path
-    version: "0.0.0"
+    version: "1.0.0"
   headless_theme:
     dependency: "direct overridden"
     description:
       path: "../../packages/headless_theme"
       relative: true
     source: path
-    version: "0.0.0"
+    version: "1.0.0"
   headless_tokens:
     dependency: "direct overridden"
     description:
       path: "../../packages/headless_tokens"
       relative: true
     source: path
-    version: "0.0.0"
+    version: "1.0.0"
   integration_test:
     dependency: "direct dev"
     description: flutter

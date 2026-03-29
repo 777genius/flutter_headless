@@ -572,8 +572,9 @@ final class AutocompleteCoordinator<T> {
     }
     // This behavior is primarily for single-select "committed selection"
     // cases (text equals chosen option). Multiple mode typically clears query.
-    if (_config.selectionMode is AutocompleteMultipleSelectionMode<T>)
+    if (_config.selectionMode is AutocompleteMultipleSelectionMode<T>) {
       return false;
+    }
     return _selection.selectedIndex != null;
   }
 

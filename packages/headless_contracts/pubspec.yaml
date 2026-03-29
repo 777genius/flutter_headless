@@ -1,7 +1,9 @@
 name: headless_contracts
 description: Renderer contracts and slot overrides for Headless components.
-version: 0.1.0
-publish_to: none
+version: 1.0.0
+homepage: https://github.com/777genius/flutter_headless
+repository: https://github.com/777genius/flutter_headless
+issue_tracker: https://github.com/777genius/flutter_headless/issues
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
@@ -12,9 +14,9 @@ dependencies:
     sdk: flutter
   meta: ^1.16.0
   headless_foundation:
-    path: ../headless_foundation
+    version: ^1.0.0
   anchored_overlay_engine:
-    path: ../anchored_overlay_engine
+    version: ^1.0.0
 
 dev_dependencies:
   flutter_test:

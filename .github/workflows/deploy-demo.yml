@@ -34,6 +34,12 @@ jobs:
       - name: Bootstrap
         run: melos bootstrap
 
+      - name: Analyze
+        run: melos run analyze
+
+      - name: Test
+        run: melos run test
+
       - name: Build web
         working-directory: apps/example
         run: flutter build web --release --base-href /flutter_headless/

@@ -27,6 +27,15 @@ scripts:
     packageFilters:
       flutter: true
 
+  test:golden:
+    run: melos exec --fail-fast --concurrency=1 -- "flutter test --tags golden"
+    packageFilters:
+      flutter: true
+      dirExists: test/
+
+  test:integration:
+    run: dart run tools/headless_cli/bin/run_integration_tests.dart
+
   test:
     run: melos run test:dart && melos run test:flutter
 
@@ -43,3 +52,11 @@ scripts:
   guardrails:
     run: dart run tools/headless_cli/bin/guardrails.dart
 
+  release:guardrails:
+    run: dart run tools/headless_cli/bin/release_guardrails.dart
+
+  release:dry-run:
+    run: dart run tools/headless_cli/bin/publish_dry_run.dart
+
+  release:check:
+    run: dart run melos bootstrap && dart run melos run analyze && dart run melos run test && dart run melos run release:guardrails && dart run melos run release:dry-run

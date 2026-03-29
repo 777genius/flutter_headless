@@ -130,8 +130,6 @@ void main() {
         tester.expectMenuClosed();
         tester.expectSelected('apple');
       },
-      // TODO: Fix Escape handling in overlay architecture
-      skip: true,
     );
 
     // =========================================================================

@@ -1,7 +1,9 @@
 name: headless_test
 description: Optional test helpers for Headless (a11y/overlay/focus/keyboard).
-version: 0.1.0
-publish_to: none
+version: 1.0.0
+homepage: https://github.com/777genius/flutter_headless
+repository: https://github.com/777genius/flutter_headless
+issue_tracker: https://github.com/777genius/flutter_headless/issues
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
@@ -13,16 +15,15 @@ dependencies:
   flutter_test:
     sdk: flutter
   anchored_overlay_engine:
-    path: ../anchored_overlay_engine
+    version: ^1.0.0
   headless_tokens:
-    path: ../headless_tokens
+    version: ^1.0.0
   headless_foundation:
-    path: ../headless_foundation
+    version: ^1.0.0
   headless_contracts:
-    path: ../headless_contracts
+    version: ^1.0.0
   headless_theme:
-    path: ../headless_theme
+    version: ^1.0.0
 
 dev_dependencies:
   lints: ^5.1.1
-

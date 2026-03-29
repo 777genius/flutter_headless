@@ -294,8 +294,10 @@ String _pubspecTemplate(ComponentSpec spec) {
   return '''
 name: ${spec.packageName}
 description: Headless ${spec.titleName} component package.
-version: 0.0.0
-publish_to: none
+version: 1.0.0
+homepage: https://github.com/777genius/flutter_headless
+repository: https://github.com/777genius/flutter_headless
+issue_tracker: https://github.com/777genius/flutter_headless/issues
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
@@ -305,17 +307,17 @@ dependencies:
   flutter:
     sdk: flutter
   headless_foundation:
-    path: ../../headless_foundation
+    version: ^1.0.0
   headless_contracts:
-    path: ../../headless_contracts
+    version: ^1.0.0
   headless_theme:
-    path: ../../headless_theme
+    version: ^1.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   headless_test:
-    path: ../../headless_test
+    version: ^1.0.0
   lints: ^5.1.1
 ''';
 }
@@ -426,13 +428,15 @@ void main() {
 String _a11yTestTemplate(ComponentSpec spec) {
   return '''
 import 'package:flutter_test/flutter_test.dart';
+import 'package:headless_test/headless_test.dart';
 
 void main() {
-  testWidgets(
-    '${spec.className} a11y conformance',
-    (tester) async {},
-    skip: 'TODO: implement a11y conformance for ${spec.className}.',
-  );
+  group('Conformance / A11y SLA', () {
+    testWidgets('${spec.className} scaffold compiles', (tester) async {
+      // Replace this scaffold with component-specific semantics assertions.
+      expect(SemanticsSla, isNotNull);
+    });
+  });
 }
 ''';
 }

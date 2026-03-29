@@ -739,8 +739,9 @@ class _TestThemeWithPressableSurface extends HeadlessTheme {
   T? capability<T>() {
     if (T == RSwitchRenderer) return switchRenderer as T;
     if (T == RSwitchListTileRenderer) return listTileRenderer as T;
-    if (T == HeadlessPressableSurfaceFactory)
+    if (T == HeadlessPressableSurfaceFactory) {
       return pressableSurfaceFactory as T;
+    }
     return null;
   }
 }

@@ -1,7 +1,9 @@
 name: headless_foundation
 description: Shared behavior primitives for Headless (overlay, focus, listbox, interactions, fsm, state resolution).
-version: 0.1.0
-publish_to: none
+version: 1.0.0
+homepage: https://github.com/777genius/flutter_headless
+repository: https://github.com/777genius/flutter_headless
+issue_tracker: https://github.com/777genius/flutter_headless/issues
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
@@ -12,12 +14,11 @@ dependencies:
     sdk: flutter
   meta: ^1.11.0
   anchored_overlay_engine:
-    path: ../anchored_overlay_engine
+    version: ^1.0.0
   headless_tokens:
-    path: ../headless_tokens
+    version: ^1.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   lints: ^5.0.0
-

@@ -1,7 +1,9 @@
 name: headless_tokens
 description: Headless tokens package (raw + semantic). Pure Dart.
-version: 0.1.0
-publish_to: none
+version: 1.0.0
+homepage: https://github.com/777genius/flutter_headless
+repository: https://github.com/777genius/flutter_headless
+issue_tracker: https://github.com/777genius/flutter_headless/issues
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
@@ -12,4 +14,3 @@ dependencies:
 dev_dependencies:
   lints: ^5.0.0
   test: ^1.25.0
-

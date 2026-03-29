@@ -304,11 +304,12 @@ class _RSwitchListTileState extends State<RSwitchListTile> {
         if (mounted) setState(() => _switchHovered = true);
       },
       onExit: (_) {
-        if (mounted)
+        if (mounted) {
           setState(() {
             _switchHovered = false;
             _switchPressed = false;
           });
+        }
       },
       cursor: widget.isDisabled
           ? SystemMouseCursors.forbidden

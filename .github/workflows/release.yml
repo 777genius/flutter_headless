@@ -1,0 +1,73 @@
+name: Release Readiness
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  release-checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Install workspace tooling (melos)
+        run: |
+          dart pub global activate melos
+          echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+          dart pub get
+
+      - name: Bootstrap
+        run: melos bootstrap
+
+      - name: Format check
+        run: melos run format
+
+      - name: Analyze
+        run: melos run analyze
+
+      - name: Test
+        run: melos run test
+
+      - name: Golden and parity tests
+        run: melos run test:golden
+
+      - name: Release guardrails
+        run: melos run release:guardrails
+
+      - name: Publish dry-run
+        run: melos run release:dry-run
+
+  integration:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Install workspace tooling (melos)
+        run: |
+          dart pub global activate melos
+          echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+          dart pub get
+
+      - name: Bootstrap
+        run: melos bootstrap
+
+      - name: Integration tests
+        run: melos run test:integration
