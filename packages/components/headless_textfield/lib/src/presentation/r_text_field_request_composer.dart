@@ -2,12 +2,12 @@ import 'package:flutter/widgets.dart';
 import 'package:headless_foundation/headless_foundation.dart';
 import 'package:headless_contracts/headless_contracts.dart';
 
-import 'r_text_field.dart';
+import 'r_text_field_view_model.dart';
 
 final class RTextFieldRequestComposer {
   const RTextFieldRequestComposer();
 
-  RTextFieldSpec createSpec(RTextField w) {
+  RTextFieldSpec createSpec(RTextFieldViewModel w) {
     return RTextFieldSpec(
       placeholder: w.placeholder,
       label: w.label,
@@ -23,22 +23,22 @@ final class RTextFieldRequestComposer {
   }
 
   RTextFieldState createState({
-    required RTextField widget,
+    required RTextFieldViewModel viewModel,
     required HeadlessFocusHoverState focusHoverState,
     required String text,
   }) {
     return RTextFieldState(
       isFocused: focusHoverState.isFocused,
       isHovered: focusHoverState.isHovered,
-      isDisabled: !widget.enabled,
-      isReadOnly: widget.readOnly,
+      isDisabled: !viewModel.enabled,
+      isReadOnly: viewModel.readOnly,
       hasText: text.isNotEmpty,
-      isError: widget.hasError,
-      isObscured: widget.obscureText,
+      isError: viewModel.hasError,
+      isObscured: viewModel.obscureText,
     );
   }
 
-  RTextFieldSemantics createSemantics(RTextField w) {
+  RTextFieldSemantics createSemantics(RTextFieldViewModel w) {
     return RTextFieldSemantics(
       label: w.label,
       hint: w.placeholder,
@@ -50,31 +50,33 @@ final class RTextFieldRequestComposer {
   }
 
   String? createSemanticsValue({
-    required RTextField widget,
+    required RTextFieldViewModel viewModel,
     required String text,
   }) {
-    if (widget.obscureText) return null;
-    if (widget.errorText == null || widget.errorText!.isEmpty) return text;
+    if (viewModel.obscureText) return null;
+    if (viewModel.errorText == null || viewModel.errorText!.isEmpty) {
+      return text;
+    }
     return text.isEmpty
-        ? 'Error: ${widget.errorText}'
-        : '$text, Error: ${widget.errorText}';
+        ? 'Error: ${viewModel.errorText}'
+        : '$text, Error: ${viewModel.errorText}';
   }
 
   Widget wrapWithInteraction({
-    required RTextField widget,
+    required RTextFieldViewModel viewModel,
     required HeadlessFocusHoverController controller,
     required Widget child,
     RTextFieldResolvedTokens? resolvedTokens,
   }) {
-    final cursor = !widget.enabled
+    final cursor = !viewModel.enabled
         ? SystemMouseCursors.forbidden
-        : widget.readOnly
+        : viewModel.readOnly
             ? SystemMouseCursors.basic
             : SystemMouseCursors.text;
 
     Widget content = HeadlessHoverRegion(
       controller: controller,
-      enabled: widget.enabled,
+      enabled: viewModel.enabled,
       cursorWhenEnabled: cursor,
       cursorWhenDisabled: SystemMouseCursors.forbidden,
       child: child,
@@ -91,7 +93,7 @@ final class RTextFieldRequestComposer {
       );
     }
 
-    if (!widget.enabled) {
+    if (!viewModel.enabled) {
       content = IgnorePointer(child: content);
     }
 

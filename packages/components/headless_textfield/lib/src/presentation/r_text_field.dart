@@ -4,15 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:headless_foundation/headless_foundation.dart';
 import 'package:headless_contracts/headless_contracts.dart';
-import 'package:headless_theme/headless_theme.dart';
 
 import '../logic/r_text_field_value_sync.dart';
-import '../logic/r_text_field_formatters.dart';
-import 'render_overrides_debug.dart';
+import 'r_text_field_actions.dart';
 import 'r_text_field_editable_text_factory.dart';
 import 'r_text_field_request_composer.dart';
-import 'r_text_field_selection_gesture_wrapper.dart';
+import 'r_text_field_render_view.dart';
 import 'r_text_field_style.dart';
+import 'r_text_field_view_model.dart';
 
 /// Headless text field (controlled or controller-driven).
 class RTextField extends StatefulWidget {
@@ -58,13 +57,7 @@ class RTextField extends StatefulWidget {
     this.slots,
     this.overrides,
   }) {
-    if (value != null && controller != null) {
-      throw ArgumentError(
-        'Cannot provide both value and controller. '
-        'Use either controlled mode (value + onChanged) or '
-        'controller-driven mode (controller only).',
-      );
-    }
+    validateTextFieldControlConfig(value: value, controller: controller);
   }
 
   final String? value;
@@ -112,10 +105,7 @@ class RTextField extends StatefulWidget {
   final RTextFieldSlots? slots;
   final RenderOverrides? overrides;
 
-  /// Whether this is a multiline field.
   bool get isMultiline => maxLines == null || maxLines! > 1;
-
-  /// Whether the field has an error.
   bool get hasError => errorText != null;
 
   @override
@@ -188,13 +178,10 @@ class _RTextFieldState extends State<RTextField> {
   void didUpdateWidget(RTextField oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (widget.controller != null && widget.value != null) {
-      throw ArgumentError(
-        'Cannot provide both controller and value. '
-        'Use either controlled mode (value + onChanged) or '
-        'controller-driven mode (controller only).',
-      );
-    }
+    validateTextFieldControlConfig(
+      value: widget.value,
+      controller: widget.controller,
+    );
 
     if (widget.controller != oldWidget.controller) {
       _controller.removeListener(_handleControllerChange);
@@ -276,171 +263,36 @@ class _RTextFieldState extends State<RTextField> {
   }
 
   void _handleTapContainer() {
-    // Disabled: no focus at all
-    // ReadOnly: can focus (for selection/copy), just can't edit
-    if (!widget.enabled) return;
-    if (!_focusNode.hasFocus) {
-      _focusNode.requestFocus();
-      return;
-    }
-
-    // Web parity: tapping while already focused should reopen the editing
-    // session if it was closed by the engine (e.g. blur from interacting with
-    // other UI while keeping Flutter focus).
-    _editableTextKey.currentState?.requestKeyboard();
+    requestTextFieldFocusOrKeyboard(
+      enabled: widget.enabled,
+      focusNode: _focusNode,
+      editableTextState: _editableTextKey.currentState,
+    );
   }
 
   void _handleClearText() {
-    if (!widget.enabled) return;
-    _controller.value = const TextEditingValue(
-      text: '',
-      selection: TextSelection.collapsed(offset: 0),
-      composing: TextRange.empty,
+    clearTextFieldValue(
+      enabled: widget.enabled,
+      controller: _controller,
+      valueSync: _valueSync,
+      onChanged: widget.onChanged,
     );
-    _valueSync.notifyIfChanged('', widget.onChanged);
   }
 
   @override
   Widget build(BuildContext context) {
-    final renderer =
-        HeadlessThemeProvider.maybeCapabilityOf<RTextFieldRenderer>(
-      context,
-      componentName: 'RTextField',
-    );
-    if (renderer == null) {
-      final hasTheme = HeadlessThemeProvider.of(context) != null;
-      final exception = hasTheme
-          ? const MissingCapabilityException(
-              capabilityType: 'RTextFieldRenderer',
-              componentName: 'RTextField',
-            )
-          : const MissingThemeException();
-      FlutterError.reportError(
-        FlutterErrorDetails(
-          exception: exception,
-          stack: StackTrace.current,
-          library: 'headless_textfield',
-          context: ErrorDescription('while building RTextField'),
-        ),
-      );
-      return HeadlessMissingCapabilityWidget(
-        componentName: 'RTextField',
-        message: headlessMissingCapabilityWidgetMessage(
-          missingCapabilityType: 'RTextFieldRenderer',
-        ),
-      );
-    }
-
-    final theme = HeadlessThemeProvider.themeOf(context);
-    final tokenResolver = theme.capability<RTextFieldTokenResolver>();
-    final overrides = trackRenderOverrides(mergeStyleIntoOverrides(
-      style: widget.style,
-      overrides: widget.overrides,
-      toOverride: (s) => s.toOverrides(),
-    ));
-
-    final spec = _requestComposer.createSpec(widget);
-    final state = _requestComposer.createState(
-      widget: widget,
-      focusHoverState: _focusHover.state,
-      text: _controller.text,
-    );
-    final semantics = _requestComposer.createSemantics(widget);
-    final commands = RTextFieldCommands(
-      tapContainer: _handleTapContainer,
-      clearText: _handleClearText,
-    );
-
-    final resolvedTokens = tokenResolver?.resolve(
-      context: context,
-      spec: spec,
-      states: state.toWidgetStates(),
-      overrides: overrides,
-    );
-
-    final request = RTextFieldRenderRequest(
-      context: context,
-      input:
-          _createEditableText(context: context, resolvedTokens: resolvedTokens),
-      spec: spec,
-      state: state,
-      semantics: semantics,
-      commands: commands,
-      slots: widget.slots,
-      resolvedTokens: resolvedTokens,
-      overrides: overrides,
-    );
-
-    final selectionEnabled =
-        (widget.enableInteractiveSelection ?? !widget.obscureText) &&
-            widget.enabled;
-    final rendered = RTextFieldSelectionGestureWrapper(
-      editableTextKey: _editableTextKey,
-      selectionEnabled: selectionEnabled,
-      child: renderer.render(request),
-    );
-    final content = _requestComposer.wrapWithInteraction(
-      widget: widget,
-      controller: _focusHover,
-      child: rendered,
-      resolvedTokens: resolvedTokens,
-    );
-    reportUnconsumedRenderOverrides('RTextField', overrides);
-
-    return Semantics(
-      textField: true,
-      enabled: widget.enabled,
-      readOnly: widget.readOnly,
-      label: widget.label,
-      hint: widget.placeholder,
-      value: _requestComposer.createSemanticsValue(
-        widget: widget,
-        text: _controller.text,
-      ),
-      child: content,
-    );
-  }
-
-  Widget _createEditableText({
-    required BuildContext context,
-    RTextFieldResolvedTokens? resolvedTokens,
-  }) {
-    final effectiveFormatters = RTextFieldFormatters.build(
-      inputFormatters: widget.inputFormatters,
-      maxLength: widget.maxLength,
-      maxLengthEnforcement: widget.maxLengthEnforcement,
-    );
-
-    return _editableFactory.create(
-      context: context,
-      editableTextKey: _editableTextKey,
+    return RTextFieldRenderView(
+      viewModel: RTextFieldViewModel.fromWidget(widget),
       controller: _controller,
       focusNode: _focusNode,
-      autofocus: widget.autofocus,
-      obscureText: widget.obscureText,
-      readOnly: widget.readOnly,
-      enabled: widget.enabled,
-      isMultiline: widget.isMultiline,
-      keyboardType: widget.keyboardType,
-      textInputAction: widget.textInputAction,
-      textCapitalization: widget.textCapitalization,
-      autocorrect: widget.autocorrect,
-      enableSuggestions: widget.enableSuggestions,
-      smartDashesType: widget.smartDashesType,
-      smartQuotesType: widget.smartQuotesType,
-      maxLines: widget.maxLines,
-      minLines: widget.minLines,
-      showCursor: widget.showCursor,
-      keyboardAppearance: widget.keyboardAppearance,
-      scrollPadding: widget.scrollPadding,
-      dragStartBehavior: widget.dragStartBehavior,
-      enableInteractiveSelection: widget.enableInteractiveSelection,
-      inputFormatters: effectiveFormatters,
-      onChanged: _handleTextChanged,
+      focusHover: _focusHover,
+      editableTextKey: _editableTextKey,
+      editableFactory: _editableFactory,
+      requestComposer: _requestComposer,
+      onTextChanged: _handleTextChanged,
       onSubmitted: _handleSubmitted,
-      onEditingComplete: widget.onEditingComplete,
-      onTapOutside: widget.onTapOutside,
-      resolvedTokens: resolvedTokens,
+      onTapContainer: _handleTapContainer,
+      onClearText: _handleClearText,
     );
   }
 }
