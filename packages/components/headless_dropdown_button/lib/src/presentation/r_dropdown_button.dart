@@ -7,6 +7,7 @@ import '../logic/dropdown_menu_keyboard_controller.dart';
 import 'dropdown_anchor_rect_resolver.dart';
 import 'dropdown_menu_key_event_adapter.dart';
 import 'dropdown_overlay_controller.dart';
+import 'dropdown_pointer_signal_handler.dart';
 import 'dropdown_selection_controller.dart';
 import 'missing_dropdown_button_renderer_widget.dart';
 import '../render_request/r_dropdown_request_composer.dart';
@@ -77,6 +78,7 @@ class _RDropdownButtonState<T> extends State<RDropdownButton<T>> {
   late DropdownMenuKeyboardController _menuKeyboard;
   late HeadlessPressableController _pressable;
   late final HeadlessPressableVisualEffectsController _visualEffects;
+  late final DropdownPointerSignalHandler _pointerSignalHandler;
   final _requestComposer = const RDropdownRequestComposer();
   late final RDropdownButtonHost<T> _host;
   final RDropdownOptionsResolver<T> _optionsResolver =
@@ -84,12 +86,16 @@ class _RDropdownButtonState<T> extends State<RDropdownButton<T>> {
   final GlobalKey _triggerKey = GlobalKey();
   Rect? _lastAnchorRect;
   bool _isDisposed = false;
+
   @override
   void initState() {
     super.initState();
     _focusNodeOwner = HeadlessFocusNodeOwner(
       external: widget.focusNode,
       debugLabel: 'RDropdownButton',
+    );
+    _pointerSignalHandler = DropdownPointerSignalHandler(
+      triggerContextGetter: () => _triggerKey.currentContext,
     );
     _host = RDropdownButtonHost<T>(
       contextGetter: () => context,
@@ -107,6 +113,7 @@ class _RDropdownButtonState<T> extends State<RDropdownButton<T>> {
         node: node,
         event: event,
       ),
+      menuPointerSignalHandler: _pointerSignalHandler.handle,
       notifyStateChanged: () => setState(() {}),
     );
     _overlay = DropdownOverlayController(_host);
@@ -125,15 +132,12 @@ class _RDropdownButtonState<T> extends State<RDropdownButton<T>> {
   @override
   void didUpdateWidget(RDropdownButton<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
-
     if (widget.focusNode != oldWidget.focusNode) {
       _focusNodeOwner.update(widget.focusNode);
     }
-
     // Clear state if disabled changes (POLA invariant)
     if (widget.isDisabled && !oldWidget.isDisabled) {
       _pressable.setDisabled(true);
-
       if (_overlay.isMenuOpen) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (!_isDisposed) {
@@ -152,7 +156,6 @@ class _RDropdownButtonState<T> extends State<RDropdownButton<T>> {
     _pressable.removeListener(_onPressableChanged);
     _pressable.dispose();
     _visualEffects.dispose();
-
     _focusNodeOwner.dispose();
     super.dispose();
   }
@@ -183,7 +186,6 @@ class _RDropdownButtonState<T> extends State<RDropdownButton<T>> {
     if (renderer == null) {
       return buildMissingDropdownButtonRenderer(context: context);
     }
-
     final overrides = trackRenderOverrides(mergeStyleIntoOverrides(
       style: widget.style,
       overrides: widget.overrides,
@@ -191,7 +193,6 @@ class _RDropdownButtonState<T> extends State<RDropdownButton<T>> {
     ));
     final content = renderer.render(_createTriggerRequest(context, overrides));
     reportUnconsumedRenderOverrides('RDropdownButton', overrides);
-
     return RDropdownTriggerShell(
       triggerKey: _triggerKey,
       isDisabled: widget.isDisabled,
@@ -202,6 +203,7 @@ class _RDropdownButtonState<T> extends State<RDropdownButton<T>> {
       autofocus: widget.autofocus,
       onToggleMenu: _toggleMenu,
       onArrowDown: openMenu,
+      onEscape: closeMenu,
       onFocusLost: _selection.resetTypeahead,
       visualEffects: _visualEffects,
       child: content,
@@ -247,7 +249,6 @@ class _RDropdownButtonState<T> extends State<RDropdownButton<T>> {
         variant: widget.variant,
         size: widget.size,
       );
-
   RDropdownTriggerRenderRequest _createTriggerRequest(
     BuildContext context,
     RenderOverrides? overrides,
@@ -278,7 +279,6 @@ class _RDropdownButtonState<T> extends State<RDropdownButton<T>> {
       overrides: widget.overrides,
       toOverride: (s) => s.toOverrides(),
     ));
-
     return createDropdownMenuRequest(
       composer: _requestComposer,
       context: context,

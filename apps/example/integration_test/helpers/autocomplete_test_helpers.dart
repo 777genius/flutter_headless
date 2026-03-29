@@ -101,6 +101,15 @@ extension AutocompleteTesterExtensions on WidgetTester {
     await pumpAndSettle();
   }
 
+  Future<void> focusAutocompleteField() async {
+    final editable = find.descendant(
+      of: find.byKey(AutocompleteTestKeys.field),
+      matching: find.byType(EditableText),
+    );
+    await tap(editable.first, warnIfMissed: false);
+    await pumpAndSettle();
+  }
+
   Future<void> enterAutocompleteText(String text) async {
     await enterText(find.byType(EditableText), text);
     await pumpAndSettle();

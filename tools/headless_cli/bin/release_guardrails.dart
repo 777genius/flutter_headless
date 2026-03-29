@@ -1,13 +1,17 @@
 import 'dart:io';
 
+import 'package:headless_cli/src/release_manifest.dart';
+
 void main() {
   final errors = <String>[];
 
   _requireRootFile('LICENSE', errors);
   _requireRootFile('RELEASE_NOTES.md', errors);
+  _requireRootFile('RELEASING.md', errors);
 
-  for (final package in _releasePackages) {
+  for (final package in releasePackages) {
     _checkPackageMetadata(package, errors);
+    _checkPackageDocs(package, errors);
     _checkPackageChangelog(package, errors);
     _checkRuntimeFiles(package, errors);
   }
@@ -29,8 +33,8 @@ void _requireRootFile(String path, List<String> errors) {
   }
 }
 
-void _checkPackageMetadata(_ReleasePackage package, List<String> errors) {
-  final pubspecPath = '${package.path}/pubspec.yaml';
+void _checkPackageMetadata(ReleasePackage package, List<String> errors) {
+  final pubspecPath = package.pubspecPath;
   final pubspec = File(pubspecPath).readAsStringSync();
 
   _requireContains(pubspec, pubspecPath, 'version: 1.0.0', errors);
@@ -61,7 +65,19 @@ void _checkPackageMetadata(_ReleasePackage package, List<String> errors) {
   }
 }
 
-void _checkPackageChangelog(_ReleasePackage package, List<String> errors) {
+void _checkPackageDocs(ReleasePackage package, List<String> errors) {
+  final license = File('${package.path}/LICENSE');
+  if (!license.existsSync()) {
+    errors.add('Missing package LICENSE: ${license.path}');
+  }
+
+  final readme = File('${package.path}/README.md');
+  if (!readme.existsSync()) {
+    errors.add('Missing package README: ${readme.path}');
+  }
+}
+
+void _checkPackageChangelog(ReleasePackage package, List<String> errors) {
   final changelogPath = '${package.path}/CHANGELOG.md';
   final changelogFile = File(changelogPath);
   if (!changelogFile.existsSync()) {
@@ -75,7 +91,7 @@ void _checkPackageChangelog(_ReleasePackage package, List<String> errors) {
   }
 }
 
-void _checkRuntimeFiles(_ReleasePackage package, List<String> errors) {
+void _checkRuntimeFiles(ReleasePackage package, List<String> errors) {
   final root = Directory('${package.path}/lib');
   if (!root.existsSync()) return;
 
@@ -108,38 +124,4 @@ void _requireContains(
   }
 }
 
-const _releasePackages = <_ReleasePackage>[
-  _ReleasePackage(
-      'anchored_overlay_engine', 'packages/anchored_overlay_engine'),
-  _ReleasePackage('headless_tokens', 'packages/headless_tokens'),
-  _ReleasePackage('headless_foundation', 'packages/headless_foundation'),
-  _ReleasePackage('headless_contracts', 'packages/headless_contracts'),
-  _ReleasePackage('headless_theme', 'packages/headless_theme'),
-  _ReleasePackage('headless_adaptive', 'packages/headless_adaptive'),
-  _ReleasePackage('headless_material', 'packages/headless_material'),
-  _ReleasePackage('headless_cupertino', 'packages/headless_cupertino'),
-  _ReleasePackage('headless_test', 'packages/headless_test'),
-  _ReleasePackage('headless', 'packages/headless'),
-  _ReleasePackage('headless_button', 'packages/components/headless_button'),
-  _ReleasePackage('headless_checkbox', 'packages/components/headless_checkbox'),
-  _ReleasePackage('headless_switch', 'packages/components/headless_switch'),
-  _ReleasePackage(
-    'headless_dropdown_button',
-    'packages/components/headless_dropdown_button',
-  ),
-  _ReleasePackage(
-      'headless_textfield', 'packages/components/headless_textfield'),
-  _ReleasePackage(
-    'headless_autocomplete',
-    'packages/components/headless_autocomplete',
-  ),
-];
-
 final _buildMethodPattern = RegExp(r'\b_build[A-Za-z0-9_]*\s*\(');
-
-final class _ReleasePackage {
-  const _ReleasePackage(this.name, this.path);
-
-  final String name;
-  final String path;
-}

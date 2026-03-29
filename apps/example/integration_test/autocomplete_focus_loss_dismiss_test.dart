@@ -31,7 +31,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Focus field and open via keyboard.
-      await tester.tapAutocompleteField();
+      await tester.focusAutocompleteField();
       await tester.enterAutocompleteText('fi');
       await tester.pressKey(LogicalKeyboardKey.arrowDown, settle: true);
       tester.expectMenuOpen();
@@ -44,7 +44,7 @@ void main() {
       expect(_menuSurface, findsNothing);
 
       // Refocus should NOT auto-open because it was dismissed.
-      await tester.tapAutocompleteField();
+      await tester.focusAutocompleteField();
       await tester.pumpAndSettle();
       tester.expectMenuClosed();
 

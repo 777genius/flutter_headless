@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:headless_foundation/headless_foundation.dart';
 import 'package:headless_contracts/headless_contracts.dart';
@@ -25,6 +26,7 @@ final class RDropdownButtonHost<T>
     required RDropdownMenuRenderRequest Function(BuildContext)
         menuRequestBuilder,
     required KeyEventResult Function(FocusNode, KeyEvent) menuKeyHandler,
+    required void Function(PointerSignalEvent event)? menuPointerSignalHandler,
     required VoidCallback notifyStateChanged,
   })  : _contextGetter = contextGetter,
         _triggerContextGetter = triggerContextGetter,
@@ -37,6 +39,7 @@ final class RDropdownButtonHost<T>
         _onChanged = onChanged,
         _menuRequestBuilder = menuRequestBuilder,
         _menuKeyHandler = menuKeyHandler,
+        _menuPointerSignalHandler = menuPointerSignalHandler,
         _notifyStateChanged = notifyStateChanged;
 
   final BuildContext Function() _contextGetter;
@@ -50,6 +53,7 @@ final class RDropdownButtonHost<T>
   final ValueChanged<T>? _onChanged;
   final RDropdownMenuRenderRequest Function(BuildContext) _menuRequestBuilder;
   final KeyEventResult Function(FocusNode, KeyEvent) _menuKeyHandler;
+  final void Function(PointerSignalEvent event)? _menuPointerSignalHandler;
   final VoidCallback _notifyStateChanged;
 
   late DropdownOverlayController _overlay;
@@ -108,6 +112,10 @@ final class RDropdownButtonHost<T>
   @override
   KeyEventResult Function(FocusNode, KeyEvent) get menuKeyHandler =>
       _menuKeyHandler;
+
+  @override
+  void Function(PointerSignalEvent event)? get menuPointerSignalHandler =>
+      _menuPointerSignalHandler;
 
   @override
   void notifyStateChanged() => _notifyStateChanged();

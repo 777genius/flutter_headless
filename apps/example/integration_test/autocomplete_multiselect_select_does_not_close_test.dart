@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:integration_test/integration_test.dart';
 import 'package:headless/headless.dart';
 
 import 'helpers/autocomplete_multi_select_scenario.dart';
@@ -10,6 +11,8 @@ final _menuSurface = find.byWidgetPredicate(
 );
 
 void main() {
+  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+
   testWidgets(
       'Multi-select: selecting an item keeps menu open (allows multiple picks)',
       (tester) async {

@@ -121,22 +121,41 @@ extension DropdownMatchers on CommonFinders {
   Finder get dropdown => byKey(DropdownTestKeys.dropdown);
 
   /// Checks if menu is open by looking for first item.
-  Finder get menuFirstItem => text('Apple');
+  Finder get menuFirstItem => find.descendant(
+        of: _menuSurface(),
+        matching: text('Apple'),
+      );
 
   /// Finds selection label.
   Finder get selectionLabel => byKey(DropdownTestKeys.selectionLabel);
+
+  Finder _menuSurface() {
+    return find.byWidgetPredicate(
+      (w) => w.runtimeType.toString() == 'MaterialMenuSurface',
+    );
+  }
 }
 
 /// Expectation helpers.
 extension DropdownExpects on WidgetTester {
+  Finder _menuSurface() {
+    return find.byWidgetPredicate(
+      (w) => w.runtimeType.toString() == 'MaterialMenuSurface',
+    );
+  }
+
+  Finder _menuItem(String label) {
+    return find.descendant(of: _menuSurface(), matching: find.text(label));
+  }
+
   /// Asserts that menu is open.
   void expectMenuOpen() {
-    expect(find.text('Apple'), findsOneWidget);
+    expect(_menuItem('Apple'), findsOneWidget);
   }
 
   /// Asserts that menu is closed.
   void expectMenuClosed() {
-    expect(find.text('Apple'), findsNothing);
+    expect(_menuItem('Apple'), findsNothing);
   }
 
   /// Asserts selected value.
@@ -148,7 +167,7 @@ extension DropdownExpects on WidgetTester {
   /// Asserts menu is positioned below widget.
   void expectMenuBelowWidget(Finder widgetFinder, {double tolerance = 20}) {
     final widgetBox = getRect(widgetFinder);
-    final menuItemBox = getRect(find.text('Apple'));
+    final menuItemBox = getRect(_menuItem('Apple'));
 
     expect(
       menuItemBox.top,
@@ -161,7 +180,7 @@ extension DropdownExpects on WidgetTester {
   /// Asserts menu is horizontally aligned with widget.
   void expectMenuAlignedWith(Finder widgetFinder, {double tolerance = 50}) {
     final widgetBox = getRect(widgetFinder);
-    final menuItemBox = getRect(find.text('Apple'));
+    final menuItemBox = getRect(_menuItem('Apple'));
 
     expect(
       menuItemBox.left,

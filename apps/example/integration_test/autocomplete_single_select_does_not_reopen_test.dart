@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:integration_test/integration_test.dart';
 import 'package:headless/headless.dart';
 
 import 'helpers/autocomplete_test_app.dart';
@@ -54,6 +55,8 @@ class _SingleSelectReopenScenarioState
 }
 
 void main() {
+  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+
   testWidgets('Single-select: selecting closes menu and does not reopen',
       (tester) async {
     await tester.pumpWidget(

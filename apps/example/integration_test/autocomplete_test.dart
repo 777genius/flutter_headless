@@ -256,8 +256,8 @@ void main() {
       await tester.pumpAndSettle();
 
       // Finland should be hidden now.
-      expect(find.text('Finland'), findsNothing);
-      expect(find.text('France'), findsOneWidget);
+      tester.expectMenuClosed(expectedText: 'Finland');
+      tester.expectMenuOpen(expectedText: 'France');
     });
 
     testWidgets('IT-13: pinSelectedOptions moves selected to top',

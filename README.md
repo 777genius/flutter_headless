@@ -194,6 +194,7 @@ class _DemoState extends State<Demo> {
 - Users Cookbook: `docs/users/COOKBOOK.md`
 - Guardrails for customization: `docs/users/GUARDRAILS.md`
 - Example app: `apps/example`
+- Release process: `RELEASING.md`
 
 ## When Headless is overkill
 

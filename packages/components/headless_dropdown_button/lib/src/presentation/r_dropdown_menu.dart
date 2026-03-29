@@ -1,8 +1,10 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:headless_contracts/headless_contracts.dart';
 import 'package:headless_theme/headless_theme.dart';
 
+import 'dropdown_menu_interaction_shell.dart';
 import 'r_dropdown_menu_state.dart';
 
 /// Overlay menu widget that re-renders on menu state changes.
@@ -15,6 +17,7 @@ final class RDropdownMenu extends StatelessWidget {
     required this.focusNode,
     required this.createMenuRequest,
     required this.onKeyEvent,
+    this.onPointerSignal,
     super.key,
   });
 
@@ -22,12 +25,14 @@ final class RDropdownMenu extends StatelessWidget {
   final FocusNode focusNode;
   final RDropdownMenuRenderRequest Function(BuildContext) createMenuRequest;
   final KeyEventResult Function(FocusNode, KeyEvent) onKeyEvent;
+  final void Function(PointerSignalEvent event)? onPointerSignal;
 
   @override
   Widget build(BuildContext context) {
-    return Focus(
+    return DropdownMenuInteractionShell(
       focusNode: focusNode,
       onKeyEvent: onKeyEvent,
+      onPointerSignal: onPointerSignal,
       child: ValueListenableBuilder<RDropdownMenuState>(
         valueListenable: stateNotifier,
         builder: (context, menuState, _) {

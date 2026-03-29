@@ -661,6 +661,101 @@ void main() {
 
       focusNode.dispose();
     });
+
+    testWidgets('single-select close does not reopen from focus restore',
+        (tester) async {
+      final fieldRenderer = _TestTextFieldRenderer();
+      final menuRenderer = _TestDropdownRenderer();
+      String? selected;
+
+      await tester.pumpWidget(_createTestWidget(
+        fieldRenderer: fieldRenderer,
+        menuRenderer: menuRenderer,
+        child: StatefulBuilder(
+          builder: (context, setState) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                RAutocomplete<String>(
+                  source: RAutocompleteLocalSource(
+                    options: (_) => const ['Alpha', 'Beta'],
+                  ),
+                  itemAdapter: _adapter,
+                  onSelected: (value) {
+                    setState(() => selected = value);
+                  },
+                  openOnTap: true,
+                  openOnFocus: true,
+                  openOnInput: true,
+                  closeOnSelected: true,
+                ),
+                Text('Selected: ${selected ?? 'none'}'),
+              ],
+            );
+          },
+        ),
+      ));
+
+      await tester.tap(find.byType(EditableText));
+      await tester.pumpAndSettle();
+      expect(menuRenderer.lastRequest?.state.isOpen, isTrue);
+
+      await tester.tap(find.byKey(const Key('menu-item-0')));
+      await tester.pumpAndSettle();
+      expect(menuRenderer.lastRequest?.state.isOpen, isFalse);
+
+      for (var i = 0; i < 6; i++) {
+        await tester.pump(const Duration(milliseconds: 16));
+        expect(menuRenderer.lastRequest?.state.isOpen, isFalse);
+      }
+
+      expect(find.text('Selected: Alpha'), findsOneWidget);
+    });
+
+    testWidgets('single-select closeOnSelected=false keeps menu open',
+        (tester) async {
+      final fieldRenderer = _TestTextFieldRenderer();
+      final menuRenderer = _TestDropdownRenderer();
+      String? selected;
+
+      await tester.pumpWidget(_createTestWidget(
+        fieldRenderer: fieldRenderer,
+        menuRenderer: menuRenderer,
+        child: StatefulBuilder(
+          builder: (context, setState) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                RAutocomplete<String>(
+                  source: RAutocompleteLocalSource(
+                    options: (_) => const ['Alpha', 'Beta'],
+                  ),
+                  itemAdapter: _adapter,
+                  onSelected: (value) {
+                    setState(() => selected = value);
+                  },
+                  openOnTap: true,
+                  openOnFocus: false,
+                  openOnInput: false,
+                  closeOnSelected: false,
+                ),
+                Text('Selected: ${selected ?? 'none'}'),
+              ],
+            );
+          },
+        ),
+      ));
+
+      await tester.tap(find.byType(EditableText));
+      await tester.pumpAndSettle();
+      expect(menuRenderer.lastRequest?.state.isOpen, isTrue);
+
+      await tester.tap(find.byKey(const Key('menu-item-0')));
+      await tester.pumpAndSettle();
+
+      expect(menuRenderer.lastRequest?.state.isOpen, isTrue);
+      expect(find.text('Selected: Alpha'), findsOneWidget);
+    });
   });
 
   group('Style sugar', () {

@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:headless_foundation/headless_foundation.dart';
 import 'package:headless_contracts/headless_contracts.dart';
@@ -19,6 +20,7 @@ abstract interface class DropdownOverlayHost {
 
   RDropdownMenuRenderRequest Function(BuildContext) get menuRequestBuilder;
   KeyEventResult Function(FocusNode, KeyEvent) get menuKeyHandler;
+  void Function(PointerSignalEvent event)? get menuPointerSignalHandler;
 
   void notifyStateChanged();
 }
@@ -82,6 +84,7 @@ final class DropdownOverlayController {
           focusNode: _menuFocusNode!,
           createMenuRequest: _host.menuRequestBuilder,
           onKeyEvent: _host.menuKeyHandler,
+          onPointerSignal: _host.menuPointerSignalHandler,
         );
       },
       anchor: anchor,

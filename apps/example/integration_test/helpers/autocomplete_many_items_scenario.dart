@@ -10,12 +10,14 @@ class AutocompleteManyItemsScenario extends StatefulWidget {
     this.openOnInput = false,
     this.openOnTap = true,
     this.presentation = RAutocompleteSelectedValuesPresentation.chips,
+    this.initialSelectedValues = const <String>[],
   });
 
   final bool openOnFocus;
   final bool openOnInput;
   final bool openOnTap;
   final RAutocompleteSelectedValuesPresentation presentation;
+  final List<String> initialSelectedValues;
 
   @override
   State<AutocompleteManyItemsScenario> createState() =>
@@ -78,6 +80,12 @@ class _AutocompleteManyItemsScenarioState
   );
 
   List<String> _selected = const [];
+
+  @override
+  void initState() {
+    super.initState();
+    _selected = List<String>.from(widget.initialSelectedValues);
+  }
 
   @override
   Widget build(BuildContext context) {

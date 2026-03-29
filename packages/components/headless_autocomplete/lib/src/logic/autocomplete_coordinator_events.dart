@@ -24,9 +24,13 @@ extension _AutocompleteCoordinatorEvents<T> on AutocompleteCoordinator<T> {
 
   void _handleFocusChanged(bool hasFocus) {
     if (!hasFocus) {
-      if (_config.selectionMode is AutocompleteMultipleSelectionMode<T> &&
-          _menuCoordinator.isMenuOpen) {
-        autocompleteDebugLog('focusLostIgnored: multiple+menuOpen');
+      final keepMenuOpenOnSelection =
+          _config.selectionMode is AutocompleteMultipleSelectionMode<T> ||
+              !_config.closeOnSelected;
+      if (keepMenuOpenOnSelection && _menuCoordinator.isMenuOpen) {
+        autocompleteDebugLog(
+          'focusLostIgnored: selectionKeepsMenuOpen+menuOpen',
+        );
         return;
       }
       autocompleteDebugLog(
@@ -107,6 +111,9 @@ extension _AutocompleteCoordinatorEvents<T> on AutocompleteCoordinator<T> {
     autocompleteDebugLog(
       'selectIndex: $index menuOpen=${_menuCoordinator.isMenuOpen} closeOnSelected=${_config.closeOnSelected}',
     );
+    if (_config.closeOnSelected) {
+      suppressOpenOnFocusOnce();
+    }
     _selection.selectByIndex(
       index: index,
       closeOnSelected: _config.closeOnSelected,

@@ -109,6 +109,10 @@ final class AutocompleteCoordinator<T> {
     focusNode.requestFocus();
   }
 
+  void suppressOpenOnFocusOnce() {
+    _suppressOpenOnFocusOnce = true;
+  }
+
   void setSelectedIdsOptimistic(Set<ListboxItemId> ids) {
     _selection.setSelectedIdsOptimistic(ids);
     _syncOptions();

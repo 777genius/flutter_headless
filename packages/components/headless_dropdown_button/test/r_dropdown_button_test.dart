@@ -730,6 +730,10 @@ void main() {
       // Selection unchanged
       expect(selectedValue, 'a');
       expect(changeCount, 0);
+      expect(
+        renderer.lastRequest?.state.overlayPhase,
+        isIn([ROverlayPhase.closing, ROverlayPhase.closed]),
+      );
     });
   });
 
@@ -915,6 +919,46 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(renderer.lastRequest?.state.isTriggerHovered, isTrue);
+    });
+
+    testWidgets('pointer scroll over open menu scrolls ancestor page',
+        (tester) async {
+      final renderer = _TestDropdownRenderer();
+      final scrollController = ScrollController();
+
+      await tester.pumpWidget(_buildTestWidget(
+        renderer: renderer,
+        child: SingleChildScrollView(
+          controller: scrollController,
+          child: Column(
+            children: [
+              const SizedBox(height: 400),
+              RDropdownButton<String>(
+                value: null,
+                onChanged: (v) {},
+                options: [
+                  _option('a', label: 'Option A'),
+                  _option('b', label: 'Option B'),
+                ],
+              ),
+              const SizedBox(height: 1200),
+            ],
+          ),
+        ),
+      ));
+
+      await tester.tap(find.byKey(const Key('dropdown-trigger')));
+      await tester.pumpAndSettle();
+
+      expect(scrollController.offset, 0);
+
+      final menuCenter = tester.getRect(find.text('Option A')).center;
+      final pointer = TestPointer(1, PointerDeviceKind.mouse);
+      await tester.sendEventToBinding(pointer.hover(menuCenter));
+      await tester.sendEventToBinding(pointer.scroll(const Offset(0, 100)));
+      await tester.pumpAndSettle();
+
+      expect(scrollController.offset, greaterThan(0));
     });
   });
 

@@ -1,10 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:integration_test/integration_test.dart';
 
 import 'helpers/autocomplete_many_items_scenario.dart';
 import 'helpers/autocomplete_test_app.dart';
 import 'helpers/autocomplete_test_helpers.dart';
 
 void main() {
+  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+
   testWidgets(
     'IT-MULTI-SPACE-01: many selected values still leave room to type',
     (tester) async {
@@ -14,6 +17,17 @@ void main() {
             openOnFocus: true,
             openOnInput: true,
             openOnTap: true,
+            initialSelectedValues: <String>[
+              'Germany',
+              'Japan',
+              'France',
+              'United States',
+              'Norway',
+              'Sweden',
+              'Italy',
+              'Portugal',
+              'Canada',
+            ],
           ),
         ),
       );
@@ -21,28 +35,6 @@ void main() {
 
       await tester.tapAutocompleteField();
       tester.expectMenuOpen(expectedText: 'Argentina');
-
-      final surface = find.byWidgetPredicate(
-        (w) => w.runtimeType.toString() == 'MaterialMenuSurface',
-      );
-      expect(surface, findsOneWidget);
-
-      for (final name in const <String>[
-        'Germany',
-        'Japan',
-        'France',
-        'United States',
-        'Norway',
-        'Sweden',
-        'Italy',
-        'Portugal',
-        'Canada',
-      ]) {
-        await tester
-            .tap(find.descendant(of: surface, matching: find.text(name)));
-        await tester.pumpAndSettle();
-        tester.expectMenuOpen(expectedText: 'Argentina');
-      }
 
       await tester.enterAutocompleteText('fi');
       tester.expectMenuOpen(expectedText: 'Finland');
