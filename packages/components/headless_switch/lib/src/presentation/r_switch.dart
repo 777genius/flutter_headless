@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:headless_contracts/headless_contracts.dart';
@@ -8,6 +6,9 @@ import 'package:headless_theme/headless_theme.dart';
 
 import '_debug_utils.dart';
 import 'logic/switch_drag_decider.dart';
+import 'missing_switch_renderer_widget.dart';
+import 'r_switch_interaction_shell.dart';
+import 'r_switch_request_factory.dart';
 import 'r_switch_style.dart';
 
 /// A headless switch component.
@@ -247,35 +248,36 @@ class _RSwitchState extends State<RSwitch> {
       componentName: 'RSwitch',
     );
     if (renderer == null) {
-      final hasTheme = HeadlessThemeProvider.of(context) != null;
-      final exception = hasTheme
-          ? const MissingCapabilityException(
-              capabilityType: 'RSwitchRenderer',
-              componentName: 'RSwitch',
-            )
-          : const MissingThemeException();
-      FlutterError.reportError(
-        FlutterErrorDetails(
-          exception: exception,
-          stack: StackTrace.current,
-          library: 'headless_switch',
-          context: ErrorDescription('while building RSwitch'),
-        ),
-      );
-      return HeadlessMissingCapabilityWidget(
+      return buildMissingSwitchRenderer(
+        context: context,
+        capabilityType: 'RSwitchRenderer',
         componentName: 'RSwitch',
-        message: headlessMissingCapabilityWidgetMessage(
-          missingCapabilityType: 'RSwitchRenderer',
-        ),
       );
     }
 
     final theme = HeadlessThemeProvider.themeOf(context);
     final tokenResolver = theme.capability<RSwitchTokenResolver>();
-    final overrides = trackSwitchOverrides(_mergeStyleIntoOverrides());
-    final spec = _createSpec();
-    final state = _createState();
-    final baseConstraints = _createBaseConstraints();
+    final overrides = trackSwitchOverrides(mergeSwitchStyleIntoOverrides(
+      overrides: widget.overrides,
+      style: widget.style,
+      thumbIcon: widget.thumbIcon,
+    ));
+    final spec = createSwitchSpec(
+      value: widget.value,
+      semanticLabel: widget.semanticLabel,
+      dragStartBehavior: widget.dragStartBehavior,
+    );
+    final pressableState = _pressable.state;
+    final state = createSwitchState(
+      isPressed: pressableState.isPressed,
+      isHovered: pressableState.isHovered,
+      isFocused: pressableState.isFocused,
+      isDisabled: widget.isDisabled,
+      value: widget.value,
+      dragT: _dragT,
+      dragVisualValue: _dragVisualValue,
+    );
+    final baseConstraints = createSwitchBaseConstraints();
 
     final resolvedTokens = tokenResolver?.resolve(
       context: context,
@@ -292,7 +294,8 @@ class _RSwitchState extends State<RSwitch> {
       );
     }
 
-    final constraints = _resolveConstraints(baseConstraints, resolvedTokens);
+    final constraints =
+        resolveSwitchConstraints(baseConstraints, resolvedTokens);
 
     final request = RSwitchRenderRequest(
       context: context,
@@ -313,115 +316,43 @@ class _RSwitchState extends State<RSwitch> {
     final content = renderer.render(request);
     reportUnconsumedSwitchOverrides('RSwitch', overrides);
 
-    return Semantics(
-      enabled: !widget.isDisabled,
-      toggled: widget.value,
-      label: widget.semanticLabel,
-      excludeSemantics: widget.semanticLabel != null,
-      child: RawGestureDetector(
-        gestures: <Type, GestureRecognizerFactory>{
-          TapAndHorizontalDragGestureRecognizer:
-              GestureRecognizerFactoryWithHandlers<
-                  TapAndHorizontalDragGestureRecognizer>(
-            () => TapAndHorizontalDragGestureRecognizer(debugOwner: this),
-            (TapAndHorizontalDragGestureRecognizer instance) {
-              instance
-                ..onTapDown = _handleTapDown
-                ..onTapUp = _handleTapUp
-                ..onCancel = _handleCancel
-                ..onDragStart = _handleDragStart
-                ..onDragUpdate = _handleDragUpdate
-                ..onDragEnd = _handleDragEnd
-                ..dragStartBehavior = widget.dragStartBehavior;
-            },
-          ),
-        },
-        child: Focus(
-          focusNode: _focusNodeOwner.node,
-          autofocus: widget.autofocus,
-          canRequestFocus: !widget.isDisabled,
-          skipTraversal: widget.isDisabled,
-          onFocusChange: (focused) {
-            _pressable.handleFocusChange(focused);
-            _visualEffects.focusChanged(focused);
-          },
-          onKeyEvent: (node, event) {
-            if (widget.isDisabled) return KeyEventResult.ignored;
-            return handlePressableKeyEvent(
-              controller: _pressable,
-              event: event,
-              onActivate: _activate,
-            );
-          },
-          child: MouseRegion(
-            onEnter: (_) {
-              _pressable.handleMouseEnter();
-              _visualEffects.hoverChanged(true);
-            },
-            onExit: (_) {
-              _pressable.handleMouseExit();
-              _visualEffects.hoverChanged(false);
-            },
-            cursor: widget.isDisabled
-                ? SystemMouseCursors.forbidden
-                : (widget.mouseCursor ?? SystemMouseCursors.click),
-            child: content,
-          ),
-        ),
-      ),
-    );
-  }
-
-  RenderOverrides? _mergeStyleIntoOverrides() {
-    return mergeOverridesWithFallbacks(
-      base: widget.overrides,
-      fallbacks: [
-        if (widget.style != null)
-          RenderOverrides.only(widget.style!.toOverrides()),
-        if (widget.thumbIcon != null)
-          RenderOverrides.only(
-            RSwitchOverrides.tokens(thumbIcon: widget.thumbIcon),
-          ),
-      ],
-    );
-  }
-
-  RSwitchSpec _createSpec() {
-    return RSwitchSpec(
+    return RSwitchInteractionShell(
+      isDisabled: widget.isDisabled,
       value: widget.value,
       semanticLabel: widget.semanticLabel,
       dragStartBehavior: widget.dragStartBehavior,
-    );
-  }
-
-  RSwitchState _createState() {
-    final p = _pressable.state;
-    return RSwitchState(
-      isPressed: p.isPressed,
-      isHovered: p.isHovered,
-      isFocused: p.isFocused,
-      isDisabled: widget.isDisabled,
-      isSelected: widget.value,
-      dragT: _dragT,
-      dragVisualValue: _dragVisualValue,
-    );
-  }
-
-  BoxConstraints _createBaseConstraints() {
-    return BoxConstraints(
-      minWidth: WcagConstants.kMinTouchTargetSize.width,
-      minHeight: WcagConstants.kMinTouchTargetSize.height,
-    );
-  }
-
-  BoxConstraints _resolveConstraints(
-    BoxConstraints base,
-    RSwitchResolvedTokens? tokens,
-  ) {
-    if (tokens == null) return base;
-    return BoxConstraints(
-      minWidth: math.max(base.minWidth, tokens.minTapTargetSize.width),
-      minHeight: math.max(base.minHeight, tokens.minTapTargetSize.height),
+      controller: _pressable,
+      focusNode: _focusNodeOwner.node,
+      autofocus: widget.autofocus,
+      mouseCursor: widget.mouseCursor,
+      onActivate: _activate,
+      onFocusChange: (focused) {
+        _pressable.handleFocusChange(focused);
+        _visualEffects.focusChanged(focused);
+      },
+      onKeyEvent: (node, event) {
+        if (widget.isDisabled) return KeyEventResult.ignored;
+        return handlePressableKeyEvent(
+          controller: _pressable,
+          event: event,
+          onActivate: _activate,
+        );
+      },
+      onMouseEnter: (_) {
+        _pressable.handleMouseEnter();
+        _visualEffects.hoverChanged(true);
+      },
+      onMouseExit: (_) {
+        _pressable.handleMouseExit();
+        _visualEffects.hoverChanged(false);
+      },
+      onTapDown: _handleTapDown,
+      onTapUp: _handleTapUp,
+      onCancel: _handleCancel,
+      onDragStart: _handleDragStart,
+      onDragUpdate: _handleDragUpdate,
+      onDragEnd: _handleDragEnd,
+      child: content,
     );
   }
 }

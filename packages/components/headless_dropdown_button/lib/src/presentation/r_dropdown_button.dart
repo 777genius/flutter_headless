@@ -4,9 +4,11 @@ import 'package:headless_contracts/headless_contracts.dart';
 import 'package:headless_theme/headless_theme.dart';
 
 import '../logic/dropdown_menu_keyboard_controller.dart';
+import 'dropdown_anchor_rect_resolver.dart';
 import 'dropdown_menu_key_event_adapter.dart';
 import 'dropdown_overlay_controller.dart';
 import 'dropdown_selection_controller.dart';
+import 'missing_dropdown_button_renderer_widget.dart';
 import '../render_request/r_dropdown_request_composer.dart';
 import 'render_overrides_debug.dart';
 import 'r_dropdown_request_factory.dart';
@@ -14,6 +16,7 @@ import 'r_dropdown_style.dart';
 import 'r_dropdown_options_resolver.dart';
 import 'r_dropdown_option.dart';
 import 'r_dropdown_button_host.dart';
+import 'r_dropdown_trigger_shell.dart';
 
 /// Headless dropdown button (single selection).
 class RDropdownButton<T> extends StatefulWidget {
@@ -160,27 +163,13 @@ class _RDropdownButtonState<T> extends State<RDropdownButton<T>> {
     _overlay.openMenu();
   }
 
-  void closeMenu() {
-    _host.closeMenu();
-  }
+  void closeMenu() => _host.closeMenu();
 
-  void navigateUp() => _selection.navigateUp();
-  void navigateDown() => _selection.navigateDown();
-  void navigateToFirst() => _selection.navigateToFirst();
-  void navigateToLast() => _selection.navigateToLast();
-  void selectHighlighted() => _selection.selectHighlighted();
-  void handleTypeahead(String char) => _selection.handleTypeahead(char);
-
-  Rect _anchorRect() {
-    final renderBox =
-        _triggerKey.currentContext?.findRenderObject() as RenderBox?;
-    if (renderBox == null || !renderBox.hasSize) {
-      return _lastAnchorRect ?? Rect.zero;
-    }
-    final topLeft = renderBox.localToGlobal(Offset.zero);
-    _lastAnchorRect = topLeft & renderBox.size;
-    return _lastAnchorRect!;
-  }
+  Rect _anchorRect() => resolveDropdownAnchorRect(
+        triggerKey: _triggerKey,
+        lastAnchorRect: _lastAnchorRect,
+        cacheRect: (rect) => _lastAnchorRect = rect,
+      );
 
   void _toggleMenu() => _overlay.toggleMenu();
 
@@ -192,27 +181,7 @@ class _RDropdownButtonState<T> extends State<RDropdownButton<T>> {
       componentName: 'RDropdownButton',
     );
     if (renderer == null) {
-      final hasTheme = HeadlessThemeProvider.of(context) != null;
-      final exception = hasTheme
-          ? const MissingCapabilityException(
-              capabilityType: 'RDropdownButtonRenderer',
-              componentName: 'RDropdownButton',
-            )
-          : const MissingThemeException();
-      FlutterError.reportError(
-        FlutterErrorDetails(
-          exception: exception,
-          stack: StackTrace.current,
-          library: 'headless_dropdown_button',
-          context: ErrorDescription('while building RDropdownButton'),
-        ),
-      );
-      return HeadlessMissingCapabilityWidget(
-        componentName: 'RDropdownButton',
-        message: headlessMissingCapabilityWidgetMessage(
-          missingCapabilityType: 'RDropdownButtonRenderer',
-        ),
-      );
+      return buildMissingDropdownButtonRenderer(context: context);
     }
 
     final overrides = trackRenderOverrides(mergeStyleIntoOverrides(
@@ -220,45 +189,30 @@ class _RDropdownButtonState<T> extends State<RDropdownButton<T>> {
       overrides: widget.overrides,
       toOverride: (s) => s.toOverrides(),
     ));
-    final request = _createTriggerRequest(context, overrides);
-    final content = renderer.render(request);
+    final content = renderer.render(_createTriggerRequest(context, overrides));
     reportUnconsumedRenderOverrides('RDropdownButton', overrides);
 
-    // Semantics must be reachable from the widget's root for tests and accessibility.
-    return Semantics(
-      button: true,
-      enabled: !widget.isDisabled,
-      expanded: _overlay.isMenuOpen,
-      label: widget.semanticLabel,
-      // Accessibility activation: screen readers should be able to "tap" the trigger.
-      // Component owns activation; renderers must not add a second activation path.
-      onTap: widget.isDisabled ? null : _toggleMenu,
-      child: HeadlessPressableRegion(
-        key: _triggerKey,
-        controller: _pressable,
-        focusNode: _focusNode,
-        autofocus: widget.autofocus,
-        enabled: !widget.isDisabled,
-        cursorWhenEnabled: SystemMouseCursors.click,
-        cursorWhenDisabled: SystemMouseCursors.forbidden,
-        onActivate: _toggleMenu,
-        onArrowDown: openMenu,
-        onFocusChanged: (focused) {
-          if (!focused) _selection.resetTypeahead();
-        },
-        visualEffects: _visualEffects,
-        child: content,
-      ),
+    return RDropdownTriggerShell(
+      triggerKey: _triggerKey,
+      isDisabled: widget.isDisabled,
+      isExpanded: _overlay.isMenuOpen,
+      semanticLabel: widget.semanticLabel,
+      controller: _pressable,
+      focusNode: _focusNode,
+      autofocus: widget.autofocus,
+      onToggleMenu: _toggleMenu,
+      onArrowDown: openMenu,
+      onFocusLost: _selection.resetTypeahead,
+      visualEffects: _visualEffects,
+      child: content,
     );
   }
 
-  List<RDropdownOption<T>> _options() {
-    return _optionsResolver.resolve(
-      items: widget.items,
-      itemAdapter: widget.itemAdapter,
-      options: widget.options,
-    );
-  }
+  List<RDropdownOption<T>> _options() => _optionsResolver.resolve(
+        items: widget.items,
+        itemAdapter: widget.itemAdapter,
+        options: widget.options,
+      );
 
   ListboxItemId? _selectedId() => _optionsResolver.selectedId(
         value: widget.value,
@@ -267,13 +221,12 @@ class _RDropdownButtonState<T> extends State<RDropdownButton<T>> {
         options: widget.options,
       );
 
-  List<HeadlessListItemModel> _itemsForRender() {
-    return _optionsResolver.itemsForRender(
-      items: widget.items,
-      itemAdapter: widget.itemAdapter,
-      options: widget.options,
-    );
-  }
+  List<HeadlessListItemModel> _itemsForRender() =>
+      _optionsResolver.itemsForRender(
+        items: widget.items,
+        itemAdapter: widget.itemAdapter,
+        options: widget.options,
+      );
 
   RDropdownButtonStateSnapshot _stateSnapshot() {
     final p = _pressable.state;
@@ -288,14 +241,12 @@ class _RDropdownButtonState<T> extends State<RDropdownButton<T>> {
     );
   }
 
-  RDropdownButtonSpec _createSpec() {
-    return RDropdownButtonSpec(
-      placeholder: widget.placeholder,
-      semanticLabel: widget.semanticLabel,
-      variant: widget.variant,
-      size: widget.size,
-    );
-  }
+  RDropdownButtonSpec _createSpec() => RDropdownButtonSpec(
+        placeholder: widget.placeholder,
+        semanticLabel: widget.semanticLabel,
+        variant: widget.variant,
+        size: widget.size,
+      );
 
   RDropdownTriggerRenderRequest _createTriggerRequest(
     BuildContext context,
