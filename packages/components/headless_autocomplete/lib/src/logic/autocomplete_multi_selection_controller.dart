@@ -2,12 +2,9 @@ import 'package:flutter/widgets.dart';
 import 'package:headless_foundation/headless_foundation.dart';
 
 import 'autocomplete_selection_controller.dart';
+import 'autocomplete_selection_listbox_helpers.dart';
 import 'autocomplete_selection_mode.dart';
 
-/// Multiple selection controller for Autocomplete.
-///
-/// Owns highlight navigation via listbox, but delegates selection ownership to
-/// the widget (controlled list + callback).
 final class AutocompleteMultipleSelectionController<T>
     implements AutocompleteSelectionController<T> {
   AutocompleteMultipleSelectionController({
@@ -159,17 +156,15 @@ final class AutocompleteMultipleSelectionController<T>
             ),
       );
 
-    final metas = List<ListboxItemMeta>.generate(
-      items.length,
-      (index) => ListboxItemMeta(
-        id: items[index].id,
-        isDisabled: items[index].isDisabled,
-        typeaheadLabel: items[index].typeaheadLabel,
+    setAutocompleteListboxMetas(_listbox, items);
+    _listbox.setSelectedId(null);
+    _listbox.setHighlightedId(
+      resolveAutocompleteHighlightId(
+        listbox: _listbox,
+        indexById: _indexById,
+        items: _items,
       ),
     );
-    _listbox.setMetas(metas);
-    _listbox.setSelectedId(null);
-    _listbox.setHighlightedId(_resolveHighlightId());
     return true;
   }
 
@@ -192,8 +187,6 @@ final class AutocompleteMultipleSelectionController<T>
       nextSelectedIds.add(selectedId);
     }
 
-    // Optimistic UI update: reflect selection immediately (checkboxes, indices),
-    // then revert at end of frame unless parent rebuild confirms the new list.
     setSelectedIdsOptimistic(nextSelectedIds);
 
     final next = List<T>.from(_selectedValues);
@@ -223,13 +216,23 @@ final class AutocompleteMultipleSelectionController<T>
 
   @override
   void navigateUp() {
-    _syncHighlightedId();
+    syncAutocompleteHighlightedId(
+      listbox: _listbox,
+      highlightedIndex: highlightedIndex,
+      indexById: _indexById,
+      items: _items,
+    );
     _listbox.highlightPrevious();
   }
 
   @override
   void navigateDown() {
-    _syncHighlightedId();
+    syncAutocompleteHighlightedId(
+      listbox: _listbox,
+      highlightedIndex: highlightedIndex,
+      indexById: _indexById,
+      items: _items,
+    );
     _listbox.highlightNext();
   }
 
@@ -268,73 +271,19 @@ final class AutocompleteMultipleSelectionController<T>
   }
 
   void _rebuildSelectedIds() {
-    _selectedIds.clear();
-    for (final v in _selectedValues) {
-      final id = _itemAdapter.id(v);
-      assert(() {
-        final again = _itemAdapter.id(v);
-        if (again != id) {
-          debugPrint(
-            '[headless_autocomplete] RAutocomplete.multiple: unstable itemAdapter.id detected. '
-            'Value: $v, first: $id, second: $again.',
-          );
-        }
-        return true;
-      }());
-      _selectedIds.add(id);
-    }
-    if (_selectedIds.length != _selectedValues.length) {
-      assert(() {
-        debugPrint(
-          '[headless_autocomplete] RAutocomplete.multiple: selectedValues contains duplicate ids. '
-          'Selection behavior may be ambiguous. Ensure itemAdapter.id(value) is unique.',
-        );
-        return true;
-      }());
-    }
+    rebuildAutocompleteSelectedIds(
+      selectedValues: _selectedValues,
+      itemAdapter: _itemAdapter,
+      selectedIds: _selectedIds,
+    );
   }
 
   void _applyQueryText(String text) {
-    _lastText = text;
-    _isApplyingSelectionText = true;
-    try {
-      _controller.value = TextEditingValue(
-        text: text,
-        selection: TextSelection.collapsed(offset: text.length),
-        composing: TextRange.empty,
-      );
-    } finally {
-      _isApplyingSelectionText = false;
-    }
-  }
-
-  void _syncHighlightedId() {
-    final currentIndex = highlightedIndex;
-    if (currentIndex != null &&
-        currentIndex >= 0 &&
-        currentIndex < _items.length) {
-      _listbox.setHighlightedId(_items[currentIndex].id);
-      return;
-    }
-    final fallback = _resolveHighlightId();
-    if (fallback != null) {
-      _listbox.setHighlightedId(fallback);
-    }
-  }
-
-  ListboxItemId? _resolveHighlightId() {
-    final current = _listbox.highlightedId;
-    final currentIndex = current == null ? null : _indexById[current];
-    if (currentIndex != null && !_items[currentIndex].isDisabled) {
-      return current;
-    }
-    return _firstEnabledId();
-  }
-
-  ListboxItemId? _firstEnabledId() {
-    for (final item in _items) {
-      if (!item.isDisabled) return item.id;
-    }
-    return null;
+    applyAutocompleteQueryText(
+      controller: _controller,
+      text: text,
+      updateLastText: (value) => _lastText = value,
+      setApplyingSelectionText: (value) => _isApplyingSelectionText = value,
+    );
   }
 }

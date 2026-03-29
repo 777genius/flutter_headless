@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:headless_foundation/headless_foundation.dart';
 
+import 'autocomplete_selection_listbox_helpers.dart';
 import 'autocomplete_selection_mode.dart';
 
-/// Selection + highlight state for Autocomplete.
 abstract interface class AutocompleteSelectionController<T> {
   bool get isApplyingSelectionText;
   int? get selectedIndex;
@@ -12,8 +12,6 @@ abstract interface class AutocompleteSelectionController<T> {
   Iterable<ListboxItemId> get selectedIds;
   String? get committedText;
 
-  /// Optimistically overrides selected ids (used to keep UI responsive while
-  /// awaiting external controlled state to rebuild).
   void setSelectedIdsOptimistic(Set<ListboxItemId> ids);
 
   void updateItemAdapter(HeadlessItemAdapter<T> adapter);
@@ -45,15 +43,11 @@ abstract interface class AutocompleteSelectionController<T> {
   void navigateToLast();
   void resetTypeahead();
 
-  /// Multiple mode: remove the last selected value when query is empty.
-  ///
-  /// Returns true if selection changed.
   bool removeLastSelected();
 
   void dispose();
 }
 
-/// Single selection controller (classic Autocomplete behavior).
 final class AutocompleteSingleSelectionController<T>
     implements AutocompleteSelectionController<T> {
   AutocompleteSingleSelectionController({
@@ -159,9 +153,6 @@ final class AutocompleteSingleSelectionController<T>
         _lastSelectedText = null;
         _listbox.setSelectedId(null);
       } else {
-        // Material-like behavior for editable combobox:
-        // keep the committed selection while the user is narrowing by prefix.
-        // This prevents "checkmark disappears on first character" regressions.
         final keepSelected =
             committed.toLowerCase().startsWith(text.toLowerCase());
         if (!keepSelected) {
@@ -195,17 +186,22 @@ final class AutocompleteSingleSelectionController<T>
             ),
       );
 
-    final metas = List<ListboxItemMeta>.generate(
-      items.length,
-      (index) => ListboxItemMeta(
-        id: items[index].id,
-        isDisabled: items[index].isDisabled,
-        typeaheadLabel: items[index].typeaheadLabel,
+    setAutocompleteListboxMetas(_listbox, items);
+    _listbox.setSelectedId(
+      resolveAutocompleteSelectableId(
+        id: _selectedId,
+        indexById: _indexById,
+        items: _items,
       ),
     );
-    _listbox.setMetas(metas);
-    _listbox.setSelectedId(_resolveSelectableId(_selectedId));
-    _listbox.setHighlightedId(_resolveHighlightId());
+    _listbox.setHighlightedId(
+      resolveAutocompleteHighlightId(
+        listbox: _listbox,
+        indexById: _indexById,
+        items: _items,
+        preferredId: _selectedId,
+      ),
+    );
     return true;
   }
 
@@ -242,13 +238,25 @@ final class AutocompleteSingleSelectionController<T>
 
   @override
   void navigateUp() {
-    _syncHighlightedId();
+    syncAutocompleteHighlightedId(
+      listbox: _listbox,
+      highlightedIndex: highlightedIndex,
+      indexById: _indexById,
+      items: _items,
+      preferredId: _selectedId,
+    );
     _listbox.highlightPrevious();
   }
 
   @override
   void navigateDown() {
-    _syncHighlightedId();
+    syncAutocompleteHighlightedId(
+      listbox: _listbox,
+      highlightedIndex: highlightedIndex,
+      indexById: _indexById,
+      items: _items,
+      preferredId: _selectedId,
+    );
     _listbox.highlightNext();
   }
 
@@ -267,20 +275,6 @@ final class AutocompleteSingleSelectionController<T>
     _listbox.resetTypeahead();
   }
 
-  void _syncHighlightedId() {
-    final currentIndex = highlightedIndex;
-    if (currentIndex != null &&
-        currentIndex >= 0 &&
-        currentIndex < _items.length) {
-      _listbox.setHighlightedId(_items[currentIndex].id);
-      return;
-    }
-    final fallback = _resolveHighlightId();
-    if (fallback != null) {
-      _listbox.setHighlightedId(fallback);
-    }
-  }
-
   @override
   bool removeLastSelected() => false;
 
@@ -290,44 +284,11 @@ final class AutocompleteSingleSelectionController<T>
   }
 
   void _applyQueryText(String text) {
-    _lastText = text;
-    _isApplyingSelectionText = true;
-    try {
-      final selection = TextSelection.collapsed(offset: text.length);
-      _controller.value = TextEditingValue(
-        text: text,
-        selection: selection,
-        composing: TextRange.empty,
-      );
-    } finally {
-      _isApplyingSelectionText = false;
-    }
-  }
-
-  ListboxItemId? _resolveSelectableId(ListboxItemId? id) {
-    if (id == null) return null;
-    final index = _indexById[id];
-    if (index == null) return null;
-    if (_items[index].isDisabled) return null;
-    return id;
-  }
-
-  ListboxItemId? _resolveHighlightId() {
-    final current = _listbox.highlightedId;
-    final currentIndex = current == null ? null : _indexById[current];
-    if (currentIndex != null && !_items[currentIndex].isDisabled) {
-      return current;
-    }
-
-    final selected = _resolveSelectableId(_selectedId);
-    if (selected != null) return selected;
-    return _firstEnabledId();
-  }
-
-  ListboxItemId? _firstEnabledId() {
-    for (final item in _items) {
-      if (!item.isDisabled) return item.id;
-    }
-    return null;
+    applyAutocompleteQueryText(
+      controller: _controller,
+      text: text,
+      updateLastText: (value) => _lastText = value,
+      setApplyingSelectionText: (value) => _isApplyingSelectionText = value,
+    );
   }
 }

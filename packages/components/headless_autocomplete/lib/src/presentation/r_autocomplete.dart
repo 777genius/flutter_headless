@@ -9,40 +9,11 @@ import '../logic/autocomplete_selection_mode_computer.dart';
 import '../sources/sources.dart';
 import 'a11y/r_autocomplete_combobox_semantics.dart';
 import 'autocomplete_field_slots_resolver.dart';
+import 'autocomplete_widget_config_factory.dart';
 import 'r_autocomplete_field.dart';
 import 'r_autocomplete_style.dart';
 
 /// Headless autocomplete (input + menu).
-///
-/// Supports three source modes:
-/// - **Local**: synchronous, in-memory filtering via [source]
-/// - **Remote**: asynchronous API calls with debouncing and error handling
-/// - **Hybrid**: combines local and remote sources for instant + async results
-///
-/// Example (local with source):
-/// ```dart
-/// RAutocomplete<Country>(
-///   source: RAutocompleteLocalSource(
-///     options: (q) => countries.where((c) => c.name.contains(q.text)),
-///   ),
-///   itemAdapter: countryAdapter,
-///   onSelected: (v) => setState(() => selected = v),
-/// )
-/// ```
-///
-/// Example (remote):
-/// ```dart
-/// RAutocomplete<User>(
-///   source: RAutocompleteRemoteSource(
-///     load: (q) => api.searchUsers(q.text),
-///     policy: RAutocompleteRemotePolicy(
-///       query: RAutocompleteQueryPolicy(minQueryLength: 2),
-///     ),
-///   ),
-///   itemAdapter: userAdapter,
-///   onSelected: selectUser,
-/// )
-/// ```
 class RAutocomplete<T> extends StatefulWidget {
   /// Creates an autocomplete with the given [source].
   const RAutocomplete({
@@ -126,7 +97,6 @@ class RAutocomplete<T> extends StatefulWidget {
           'initialValue is only supported when controller is null.',
         );
 
-  /// Data source for autocomplete options.
   final RAutocompleteSource<T> source;
   final HeadlessItemAdapter<T> itemAdapter;
   final ValueChanged<T>? onSelected;
@@ -160,19 +130,9 @@ class RAutocomplete<T> extends StatefulWidget {
   final bool closeOnSelected;
   final int? maxOptions;
 
-  /// Multiple mode: hides already-selected options from the menu.
   final bool hideSelectedOptions;
-
-  /// Multiple mode: pins selected options to the top of the menu.
   final bool pinSelectedOptions;
-
-  /// Multiple mode: presentation of selected values inside the field.
-  ///
-  /// This is interpreted by preset renderers. Headless core only exposes the data
-  /// and commands through the renderer capability.
   final RAutocompleteSelectedValuesPresentation? selectedValuesPresentation;
-
-  /// Multiple mode: whether to clear the query text after a successful selection.
   final bool clearQueryOnSelection;
 
   bool get isMultiple => onSelectionChanged != null;
@@ -195,45 +155,8 @@ class _RAutocompleteState<T> extends State<RAutocomplete<T>> {
       AutocompleteSelectionModeComputer<T>();
   Rect? _lastAnchorRect;
 
-  Iterable<T> Function(TextEditingValue) get _localOptionsBuilder {
-    final source = widget.source;
-    final local = switch (source) {
-      RAutocompleteLocalSource<T>() => source,
-      RAutocompleteHybridSource<T>(:final local) => local,
-      _ => null,
-    };
-    if (local == null) return (_) => const Iterable.empty();
-
-    return (query) {
-      final normalizedText = local.policy.query.normalize(query.text);
-      if (normalizedText == null) return const Iterable.empty();
-      if (normalizedText == query.text) return local.options(query);
-
-      final newLen = normalizedText.length;
-      final base = query.selection.baseOffset.clamp(0, newLen);
-      final extent = query.selection.extentOffset.clamp(0, newLen);
-      final normalizedQuery = query.copyWith(
-        text: normalizedText,
-        selection: TextSelection(baseOffset: base, extentOffset: extent),
-        composing: TextRange.empty,
-      );
-      return local.options(normalizedQuery);
-    };
-  }
-
-  bool get _localCacheEnabled {
-    final source = widget.source;
-    final local = switch (source) {
-      RAutocompleteLocalSource<T>() => source,
-      RAutocompleteHybridSource<T>(:final local) => local,
-      _ => null,
-    };
-    return local?.policy.cache ?? true;
-  }
-
-  AutocompleteConfig<T> get _config => AutocompleteConfig(
-        optionsBuilder: _localOptionsBuilder,
-        localCacheEnabled: _localCacheEnabled,
+  AutocompleteConfig<T> get _config => createAutocompleteConfig(
+        source: widget.source,
         itemAdapter: widget.itemAdapter,
         disabled: widget.disabled,
         selectionMode: _selectionMode,
@@ -245,12 +168,13 @@ class _RAutocompleteState<T> extends State<RAutocomplete<T>> {
         placeholder: widget.placeholder,
         semanticLabel: widget.semanticLabel,
         menuSlots: widget.menuSlots,
-        menuOverrides: _effectiveMenuOverrides(),
-        clearQueryOnSelection:
-            _selectionMode.isMultiple ? widget.clearQueryOnSelection : false,
+        menuOverrides: resolveAutocompleteMenuOverrides(
+          widget.style,
+          widget.menuOverrides,
+        ),
+        clearQueryOnSelection: widget.clearQueryOnSelection,
         hideSelectedOptions: widget.hideSelectedOptions,
         pinSelectedOptions: widget.pinSelectedOptions,
-        source: widget.source,
       );
   AutocompleteSelectionMode<T> _computeSelectionMode() =>
       _selectionModeComputer.compute(
@@ -301,19 +225,16 @@ class _RAutocompleteState<T> extends State<RAutocomplete<T>> {
   bool get _isDisabled => _coordinator.isDisabled;
 
   Rect _anchorRect() {
-    final renderBox =
-        _fieldKey.currentContext?.findRenderObject() as RenderBox?;
-    if (renderBox == null || !renderBox.hasSize) {
-      return _lastAnchorRect ?? Rect.zero;
-    }
-    final topLeft = renderBox.localToGlobal(Offset.zero);
-    _lastAnchorRect = topLeft & renderBox.size;
+    _lastAnchorRect = resolveAutocompleteAnchorRect(_fieldKey, _lastAnchorRect);
     return _lastAnchorRect!;
   }
 
   @override
   Widget build(BuildContext context) {
-    final fieldOverrides = _effectiveFieldOverrides();
+    final fieldOverrides = resolveAutocompleteFieldOverrides(
+      widget.style,
+      widget.fieldOverrides,
+    );
     final effectiveSlots = resolveAutocompleteFieldSlots<T>(
       context: context,
       baseSlots: widget.fieldSlots,
@@ -346,22 +267,6 @@ class _RAutocompleteState<T> extends State<RAutocomplete<T>> {
         onKeyEvent: _coordinator.handleKeyEvent,
         onTapContainer: _coordinator.handleTapContainer,
       ),
-    );
-  }
-
-  RenderOverrides? _effectiveFieldOverrides() {
-    return mergeStyleIntoOverrides(
-      style: widget.style?.field,
-      overrides: widget.fieldOverrides,
-      toOverride: (s) => s.toOverrides(),
-    );
-  }
-
-  RenderOverrides? _effectiveMenuOverrides() {
-    return mergeStyleIntoOverrides(
-      style: widget.style?.options,
-      overrides: widget.menuOverrides,
-      toOverride: (s) => s.toOverrides(),
     );
   }
 }
