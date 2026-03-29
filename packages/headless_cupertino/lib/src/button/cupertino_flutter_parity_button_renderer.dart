@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:headless_contracts/headless_contracts.dart';
 
+import 'cupertino_button_parity_sizing.dart';
 import 'cupertino_button_parity_constants.dart';
 
 /// Cupertino parity renderer — visual port of Flutter's [CupertinoButton].
@@ -127,7 +128,7 @@ class _CupertinoParityButtonShellState
     final isFilled = variant == RButtonVariant.filled;
     final isOutlined = variant == RButtonVariant.outlined;
 
-    final sizeStyle = _mapSizeStyle(request.spec.size);
+    final sizeStyle = mapCupertinoButtonSize(request.spec.size);
     final themeData = CupertinoTheme.of(context);
     final brightness = CupertinoTheme.brightnessOf(context);
 
@@ -165,7 +166,7 @@ class _CupertinoParityButtonShellState
                   )));
 
     final BorderRadius borderRadius = overrides?.borderRadius ??
-        BorderRadius.circular(_borderRadius(sizeStyle));
+        BorderRadius.circular(cupertinoButtonBorderRadius(sizeStyle));
 
     final Color outlinedBorderColor = overrides?.borderColor ??
         (enabled
@@ -216,10 +217,11 @@ class _CupertinoParityButtonShellState
     );
 
     final EdgeInsetsGeometry padding =
-        overrides?.padding ?? _padding(sizeStyle);
+        overrides?.padding ?? cupertinoButtonPadding(sizeStyle);
 
     final Size? minimumSizeOverride = overrides?.minSize;
-    final double minH = minimumSizeOverride?.height ?? _minHeight(sizeStyle);
+    final double minH =
+        minimumSizeOverride?.height ?? cupertinoButtonMinHeight(sizeStyle);
 
     final animated = FadeTransition(
       opacity: _opacityAnimation,
@@ -257,49 +259,5 @@ class _CupertinoParityButtonShellState
         child: animated,
       ),
     );
-  }
-}
-
-CupertinoButtonSize _mapSizeStyle(RButtonSize size) {
-  switch (size) {
-    case RButtonSize.small:
-      return CupertinoButtonSize.small;
-    case RButtonSize.medium:
-      return CupertinoButtonSize.medium;
-    case RButtonSize.large:
-      return CupertinoButtonSize.large;
-  }
-}
-
-double _minHeight(CupertinoButtonSize sizeStyle) {
-  switch (sizeStyle) {
-    case CupertinoButtonSize.small:
-      return CupertinoButtonParityConstants.kSmallMinHeight;
-    case CupertinoButtonSize.medium:
-      return CupertinoButtonParityConstants.kMediumMinHeight;
-    case CupertinoButtonSize.large:
-      return CupertinoButtonParityConstants.kLargeMinHeight;
-  }
-}
-
-EdgeInsetsGeometry _padding(CupertinoButtonSize sizeStyle) {
-  switch (sizeStyle) {
-    case CupertinoButtonSize.small:
-      return CupertinoButtonParityConstants.kSmallPadding;
-    case CupertinoButtonSize.medium:
-      return CupertinoButtonParityConstants.kMediumPadding;
-    case CupertinoButtonSize.large:
-      return CupertinoButtonParityConstants.kLargePadding;
-  }
-}
-
-double _borderRadius(CupertinoButtonSize sizeStyle) {
-  switch (sizeStyle) {
-    case CupertinoButtonSize.small:
-      return CupertinoButtonParityConstants.kSmallBorderRadius;
-    case CupertinoButtonSize.medium:
-      return CupertinoButtonParityConstants.kMediumBorderRadius;
-    case CupertinoButtonSize.large:
-      return CupertinoButtonParityConstants.kLargeBorderRadius;
   }
 }

@@ -1,9 +1,8 @@
-import 'dart:math' as math;
-
 import 'package:flutter/cupertino.dart';
 import 'package:headless_contracts/headless_contracts.dart';
 import 'package:headless_theme/headless_theme.dart';
 
+import 'cupertino_dropdown_density.dart';
 import '../overrides/cupertino_dropdown_overrides.dart';
 import '../overrides/cupertino_override_types.dart';
 
@@ -106,7 +105,7 @@ class CupertinoDropdownTokenResolver implements RDropdownTokenResolver {
     final padding = density == null
         ? overrides?.triggerPadding ??
             const EdgeInsets.symmetric(horizontal: 12, vertical: 10)
-        : _applyDensityToPadding(
+        : CupertinoDropdownDensity.applyPadding(
             const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             density,
           );
@@ -148,7 +147,7 @@ class CupertinoDropdownTokenResolver implements RDropdownTokenResolver {
   ) {
     final menuPadding = density == null
         ? overrides?.menuPadding ?? const EdgeInsets.symmetric(vertical: 6)
-        : _applyDensityToMenuPadding(
+        : CupertinoDropdownDensity.applyMenuPadding(
             const EdgeInsets.symmetric(vertical: 6),
             density,
           );
@@ -192,13 +191,13 @@ class CupertinoDropdownTokenResolver implements RDropdownTokenResolver {
     final itemPadding = density == null
         ? overrides?.itemPadding ??
             const EdgeInsets.symmetric(horizontal: 16, vertical: 12)
-        : _applyDensityToPadding(
+        : CupertinoDropdownDensity.applyPadding(
             const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             density,
           );
     final minHeight = density == null
         ? overrides?.itemMinHeight ?? 44
-        : _densityMinHeight(density);
+        : CupertinoDropdownDensity.minHeight(density);
 
     return RDropdownItemTokens(
       textStyle: overrides?.itemTextStyle ??
@@ -225,7 +224,9 @@ class CupertinoDropdownTokenResolver implements RDropdownTokenResolver {
     required Size? override,
   }) {
     const base = Size(44, 44);
-    final size = density == null ? base : _applyDensityToMinSize(base, density);
+    final size = density == null
+        ? base
+        : CupertinoDropdownDensity.applyMinSize(base, density);
     return override ?? size;
   }
 
@@ -240,69 +241,5 @@ class CupertinoDropdownTokenResolver implements RDropdownTokenResolver {
       case null:
         return null;
     }
-  }
-
-  EdgeInsets _applyDensityToPadding(
-    EdgeInsets padding,
-    CupertinoComponentDensity density,
-  ) {
-    final deltaH = switch (density) {
-      CupertinoComponentDensity.compact => -4.0,
-      CupertinoComponentDensity.standard => 0.0,
-      CupertinoComponentDensity.comfortable => 4.0,
-    };
-    final deltaV = switch (density) {
-      CupertinoComponentDensity.compact => -2.0,
-      CupertinoComponentDensity.standard => 0.0,
-      CupertinoComponentDensity.comfortable => 2.0,
-    };
-
-    return EdgeInsets.fromLTRB(
-      math.max(0, padding.left + deltaH),
-      math.max(0, padding.top + deltaV),
-      math.max(0, padding.right + deltaH),
-      math.max(0, padding.bottom + deltaV),
-    );
-  }
-
-  EdgeInsets _applyDensityToMenuPadding(
-    EdgeInsets padding,
-    CupertinoComponentDensity density,
-  ) {
-    final deltaV = switch (density) {
-      CupertinoComponentDensity.compact => -2.0,
-      CupertinoComponentDensity.standard => 0.0,
-      CupertinoComponentDensity.comfortable => 2.0,
-    };
-
-    return EdgeInsets.fromLTRB(
-      padding.left,
-      math.max(0, padding.top + deltaV),
-      padding.right,
-      math.max(0, padding.bottom + deltaV),
-    );
-  }
-
-  Size _applyDensityToMinSize(
-    Size base,
-    CupertinoComponentDensity density,
-  ) {
-    final delta = switch (density) {
-      CupertinoComponentDensity.compact => -6.0,
-      CupertinoComponentDensity.standard => 0.0,
-      CupertinoComponentDensity.comfortable => 6.0,
-    };
-    return Size(
-      math.max(0, base.width + delta),
-      math.max(0, base.height + delta),
-    );
-  }
-
-  double _densityMinHeight(CupertinoComponentDensity density) {
-    return switch (density) {
-      CupertinoComponentDensity.compact => 40,
-      CupertinoComponentDensity.standard => 44,
-      CupertinoComponentDensity.comfortable => 52,
-    };
   }
 }

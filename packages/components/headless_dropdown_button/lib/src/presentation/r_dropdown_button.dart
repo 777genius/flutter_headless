@@ -9,6 +9,7 @@ import 'dropdown_overlay_controller.dart';
 import 'dropdown_selection_controller.dart';
 import '../render_request/r_dropdown_request_composer.dart';
 import 'render_overrides_debug.dart';
+import 'r_dropdown_request_factory.dart';
 import 'r_dropdown_style.dart';
 import 'r_dropdown_options_resolver.dart';
 import 'r_dropdown_option.dart';
@@ -274,6 +275,19 @@ class _RDropdownButtonState<T> extends State<RDropdownButton<T>> {
     );
   }
 
+  RDropdownButtonStateSnapshot _stateSnapshot() {
+    final p = _pressable.state;
+    return RDropdownButtonStateSnapshot(
+      overlayPhase: _overlay.overlayPhase,
+      isMenuOpen: _overlay.isMenuOpen,
+      selectedIndex: _selection.findSelectedIndex(),
+      highlightedIndex: _overlay.highlightedIndex,
+      isTriggerPressed: p.isPressed,
+      isTriggerHovered: p.isHovered,
+      isTriggerFocused: p.isFocused,
+    );
+  }
+
   RDropdownButtonSpec _createSpec() {
     return RDropdownButtonSpec(
       placeholder: widget.placeholder,
@@ -283,37 +297,24 @@ class _RDropdownButtonState<T> extends State<RDropdownButton<T>> {
     );
   }
 
-  RDropdownCommands _createCommands() {
-    return RDropdownCommands(
-      open: openMenu,
-      close: closeMenu,
-      selectIndex: _selection.selectByIndex,
-      highlight: _selection.highlightIndex,
-      completeClose: _overlay.completeClose,
-    );
-  }
-
   RDropdownTriggerRenderRequest _createTriggerRequest(
     BuildContext context,
     RenderOverrides? overrides,
   ) {
-    final p = _pressable.state;
-    final spec = _createSpec();
-    final commands = _createCommands();
-
-    return _requestComposer.createTriggerRequest(
+    return createDropdownTriggerRequest(
+      composer: _requestComposer,
       context: context,
-      spec: spec,
-      overlayPhase: _overlay.overlayPhase,
-      selectedIndex: _selection.findSelectedIndex(),
-      highlightedIndex: _overlay.highlightedIndex,
-      isTriggerPressed: p.isPressed,
-      isTriggerHovered: p.isHovered,
-      isTriggerFocused: p.isFocused,
+      spec: _createSpec(),
+      state: _stateSnapshot(),
       isDisabled: widget.isDisabled,
-      isExpanded: _overlay.isMenuOpen,
       items: _itemsForRender(),
-      commands: commands,
+      commands: createDropdownCommands(
+        openMenu: openMenu,
+        closeMenu: closeMenu,
+        selectIndex: _selection.selectByIndex,
+        highlight: _selection.highlightIndex,
+        completeClose: _overlay.completeClose,
+      ),
       visualEffects: _visualEffects,
       slots: widget.slots,
       overrides: overrides,
@@ -321,28 +322,26 @@ class _RDropdownButtonState<T> extends State<RDropdownButton<T>> {
   }
 
   RDropdownMenuRenderRequest _createMenuRequest(BuildContext context) {
-    final p = _pressable.state;
-    final spec = _createSpec();
-    final commands = _createCommands();
     final overrides = trackRenderOverrides(mergeStyleIntoOverrides(
       style: widget.style,
       overrides: widget.overrides,
       toOverride: (s) => s.toOverrides(),
     ));
 
-    return _requestComposer.createMenuRequest(
+    return createDropdownMenuRequest(
+      composer: _requestComposer,
       context: context,
-      spec: spec,
-      overlayPhase: _overlay.overlayPhase,
-      selectedIndex: _selection.findSelectedIndex(),
-      highlightedIndex: _overlay.highlightedIndex,
-      isTriggerPressed: p.isPressed,
-      isTriggerHovered: p.isHovered,
-      isTriggerFocused: p.isFocused,
+      spec: _createSpec(),
+      state: _stateSnapshot(),
       isDisabled: widget.isDisabled,
-      isExpanded: _overlay.isMenuOpen,
       items: _itemsForRender(),
-      commands: commands,
+      commands: createDropdownCommands(
+        openMenu: openMenu,
+        closeMenu: closeMenu,
+        selectIndex: _selection.selectByIndex,
+        highlight: _selection.highlightIndex,
+        completeClose: _overlay.completeClose,
+      ),
       slots: widget.slots,
       overrides: overrides,
     );

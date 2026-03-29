@@ -1,9 +1,9 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:headless_contracts/headless_contracts.dart';
 import 'package:headless_theme/headless_theme.dart';
 
+import 'material_dropdown_density.dart';
+import 'material_dropdown_geometry.dart';
 import '../overrides/material_dropdown_overrides.dart';
 import '../overrides/material_override_types.dart';
 
@@ -84,7 +84,6 @@ class MaterialDropdownTokenResolver implements RDropdownTokenResolver {
 
     // Resolve menu tokens
     final menu = _resolveMenuTokens(
-      spec: spec,
       scheme: scheme,
       overrides: dropdownOverrides,
       density: density,
@@ -94,7 +93,6 @@ class MaterialDropdownTokenResolver implements RDropdownTokenResolver {
 
     // Resolve item tokens
     final item = _resolveItemTokens(
-      spec: spec,
       scheme: scheme,
       text: text,
       overrides: dropdownOverrides,
@@ -160,20 +158,21 @@ class MaterialDropdownTokenResolver implements RDropdownTokenResolver {
     }
 
     // Size-based tokens
-    final sizeTokens = _triggerSizeTokens(spec.size, text);
+    final sizeTokens = materialDropdownTriggerSizeTokens(spec.size, text);
 
     // Resolve minimum size
-    final minSize = _resolveMinSize(
+    final minSize = materialDropdownResolveMinSize(
       constraints: constraints,
       density: density,
       override: density == null ? overrides?.triggerMinSize : null,
     );
     final triggerPadding = density == null
         ? overrides?.triggerPadding ?? sizeTokens.padding
-        : _applyDensityToPadding(sizeTokens.padding, density);
-    final triggerBorderRadius = _resolveCornerRadius(cornerStyle) ??
-        overrides?.triggerBorderRadius ??
-        const BorderRadius.all(Radius.circular(4));
+        : MaterialDropdownDensity.applyPadding(sizeTokens.padding, density);
+    final triggerBorderRadius =
+        materialDropdownResolveCornerRadius(cornerStyle) ??
+            overrides?.triggerBorderRadius ??
+            const BorderRadius.all(Radius.circular(4));
 
     return RDropdownTriggerTokens(
       textStyle: overrides?.triggerTextStyle ?? sizeTokens.textStyle,
@@ -189,30 +188,8 @@ class MaterialDropdownTokenResolver implements RDropdownTokenResolver {
     );
   }
 
-  /// Get trigger size-dependent tokens.
-  _TriggerSizeTokens _triggerSizeTokens(RDropdownSize size, TextTheme text) {
-    switch (size) {
-      case RDropdownSize.small:
-        return _TriggerSizeTokens(
-          textStyle: text.bodySmall ?? const TextStyle(fontSize: 12),
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        );
-      case RDropdownSize.medium:
-        return _TriggerSizeTokens(
-          textStyle: text.bodyMedium ?? const TextStyle(fontSize: 14),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        );
-      case RDropdownSize.large:
-        return _TriggerSizeTokens(
-          textStyle: text.bodyLarge ?? const TextStyle(fontSize: 16),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        );
-    }
-  }
-
   /// Resolve menu surface tokens.
   RDropdownMenuTokens _resolveMenuTokens({
-    required RDropdownButtonSpec spec,
     required ColorScheme scheme,
     RDropdownOverrides? overrides,
     MaterialComponentDensity? density,
@@ -221,11 +198,11 @@ class MaterialDropdownTokenResolver implements RDropdownTokenResolver {
   }) {
     final menuPadding = density == null
         ? overrides?.menuPadding ?? const EdgeInsets.symmetric(vertical: 8)
-        : _applyDensityToMenuPadding(
+        : MaterialDropdownDensity.applyMenuPadding(
             const EdgeInsets.symmetric(vertical: 8),
             density,
           );
-    final menuBorderRadius = _resolveCornerRadius(cornerStyle) ??
+    final menuBorderRadius = materialDropdownResolveCornerRadius(cornerStyle) ??
         overrides?.menuBorderRadius ??
         const BorderRadius.all(Radius.circular(4));
 
@@ -248,7 +225,6 @@ class MaterialDropdownTokenResolver implements RDropdownTokenResolver {
 
   /// Resolve menu item tokens.
   RDropdownItemTokens _resolveItemTokens({
-    required RDropdownButtonSpec spec,
     required ColorScheme scheme,
     required TextTheme text,
     RDropdownOverrides? overrides,
@@ -257,13 +233,13 @@ class MaterialDropdownTokenResolver implements RDropdownTokenResolver {
     final itemPadding = density == null
         ? overrides?.itemPadding ??
             const EdgeInsets.symmetric(horizontal: 16, vertical: 12)
-        : _applyDensityToPadding(
+        : MaterialDropdownDensity.applyPadding(
             const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             density,
           );
     final itemMinHeight = density == null
         ? overrides?.itemMinHeight ?? 48
-        : _densityMinHeight(density);
+        : MaterialDropdownDensity.minHeight(density);
 
     return RDropdownItemTokens(
       textStyle: overrides?.itemTextStyle ??
@@ -279,122 +255,4 @@ class MaterialDropdownTokenResolver implements RDropdownTokenResolver {
       selectedMarkerColor: scheme.primary,
     );
   }
-
-  /// Resolve minimum size respecting constraints and overrides.
-  Size _resolveMinSize({
-    required BoxConstraints? constraints,
-    required MaterialComponentDensity? density,
-    required Size? override,
-  }) {
-    const defaultMinSize = Size(48, 48);
-    final base = density == null
-        ? defaultMinSize
-        : _applyDensityToMinSize(defaultMinSize, density);
-    final withOverride = override ?? base;
-
-    if (constraints != null) {
-      return Size(
-        math.max(
-          withOverride.width,
-          constraints.minWidth > 0 ? constraints.minWidth : withOverride.width,
-        ),
-        math.max(
-          withOverride.height,
-          constraints.minHeight > 0
-              ? constraints.minHeight
-              : withOverride.height,
-        ),
-      );
-    }
-
-    return withOverride;
-  }
-
-  BorderRadius? _resolveCornerRadius(MaterialCornerStyle? style) {
-    switch (style) {
-      case MaterialCornerStyle.sharp:
-        return const BorderRadius.all(Radius.circular(4));
-      case MaterialCornerStyle.rounded:
-        return const BorderRadius.all(Radius.circular(12));
-      case MaterialCornerStyle.pill:
-        return const BorderRadius.all(Radius.circular(999));
-      case null:
-        return null;
-    }
-  }
-
-  EdgeInsets _applyDensityToPadding(
-    EdgeInsets padding,
-    MaterialComponentDensity density,
-  ) {
-    final deltaH = switch (density) {
-      MaterialComponentDensity.compact => -4.0,
-      MaterialComponentDensity.standard => 0.0,
-      MaterialComponentDensity.comfortable => 4.0,
-    };
-    final deltaV = switch (density) {
-      MaterialComponentDensity.compact => -2.0,
-      MaterialComponentDensity.standard => 0.0,
-      MaterialComponentDensity.comfortable => 2.0,
-    };
-
-    return EdgeInsets.fromLTRB(
-      math.max(0, padding.left + deltaH),
-      math.max(0, padding.top + deltaV),
-      math.max(0, padding.right + deltaH),
-      math.max(0, padding.bottom + deltaV),
-    );
-  }
-
-  EdgeInsets _applyDensityToMenuPadding(
-    EdgeInsets padding,
-    MaterialComponentDensity density,
-  ) {
-    final deltaV = switch (density) {
-      MaterialComponentDensity.compact => -2.0,
-      MaterialComponentDensity.standard => 0.0,
-      MaterialComponentDensity.comfortable => 2.0,
-    };
-
-    return EdgeInsets.fromLTRB(
-      padding.left,
-      math.max(0, padding.top + deltaV),
-      padding.right,
-      math.max(0, padding.bottom + deltaV),
-    );
-  }
-
-  Size _applyDensityToMinSize(
-    Size base,
-    MaterialComponentDensity density,
-  ) {
-    final delta = switch (density) {
-      MaterialComponentDensity.compact => -8.0,
-      MaterialComponentDensity.standard => 0.0,
-      MaterialComponentDensity.comfortable => 8.0,
-    };
-    return Size(
-      math.max(0, base.width + delta),
-      math.max(0, base.height + delta),
-    );
-  }
-
-  double _densityMinHeight(MaterialComponentDensity density) {
-    return switch (density) {
-      MaterialComponentDensity.compact => 40,
-      MaterialComponentDensity.standard => 48,
-      MaterialComponentDensity.comfortable => 56,
-    };
-  }
-}
-
-/// Internal helper for trigger size tokens.
-class _TriggerSizeTokens {
-  const _TriggerSizeTokens({
-    required this.textStyle,
-    required this.padding,
-  });
-
-  final TextStyle textStyle;
-  final EdgeInsets padding;
 }

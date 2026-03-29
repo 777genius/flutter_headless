@@ -3,6 +3,8 @@ import 'package:headless_foundation/headless_foundation.dart';
 import 'package:headless_contracts/headless_contracts.dart';
 import 'package:headless_theme/headless_theme.dart';
 
+import 'r_button_interaction_shell.dart';
+import 'render_overrides_debug.dart';
 import 'r_button_style.dart';
 
 /// A headless text button component.
@@ -203,7 +205,7 @@ class _RTextButtonState extends State<RTextButton> {
     }
     final tokenResolver =
         usesResolvedTokens ? theme.capability<RButtonTokenResolver>() : null;
-    final overrides = _trackOverrides(mergeStyleIntoOverrides(
+    final overrides = trackButtonOverrides(mergeStyleIntoOverrides(
       style: widget.style,
       overrides: widget.overrides,
       toOverride: (s) => s.toOverrides(),
@@ -242,8 +244,18 @@ class _RTextButtonState extends State<RTextButton> {
     );
 
     final rendererOutput = renderer.render(request);
-    _reportUnconsumedOverrides('RTextButton', overrides);
-    return _wrapWithInteraction(context: context, child: rendererOutput);
+    reportUnconsumedButtonOverrides('RTextButton', overrides);
+    return RButtonInteractionShell(
+      context: context,
+      isDisabled: widget.isDisabled,
+      semanticLabel: widget.semanticLabel,
+      controller: _pressable,
+      focusNode: _focusNodeOwner.node,
+      autofocus: widget.autofocus,
+      onActivate: _activate,
+      visualEffects: _visualEffects,
+      child: rendererOutput,
+    );
   }
 
   RButtonSpec _createSpec() {
@@ -266,83 +278,4 @@ class _RTextButtonState extends State<RTextButton> {
       isDisabled: widget.isDisabled,
     );
   }
-
-  Size _resolveTapTargetSize(BuildContext context) {
-    final policy = HeadlessThemeProvider.of(context)
-        ?.capability<HeadlessTapTargetPolicy>();
-    if (policy != null) {
-      return policy.minTapTargetSize(
-        context: context,
-        component: HeadlessTapTargetComponent.button,
-      );
-    }
-    return WcagConstants.kMinTouchTargetSize;
-  }
-
-  Widget _wrapWithInteraction({
-    required BuildContext context,
-    required Widget child,
-  }) {
-    final tapTargetSize = _resolveTapTargetSize(context);
-
-    return Semantics(
-      button: true,
-      enabled: !widget.isDisabled,
-      label: widget.semanticLabel,
-      onTap: widget.isDisabled ? null : _activate,
-      child: HeadlessPressableRegion(
-        controller: _pressable,
-        focusNode: _focusNodeOwner.node,
-        autofocus: widget.autofocus,
-        enabled: !widget.isDisabled,
-        cursorWhenEnabled: SystemMouseCursors.click,
-        cursorWhenDisabled: SystemMouseCursors.forbidden,
-        onActivate: _activate,
-        visualEffects: _visualEffects,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            minWidth: tapTargetSize.width,
-            minHeight: tapTargetSize.height,
-          ),
-          child: Center(
-            widthFactor: 1.0,
-            heightFactor: 1.0,
-            child: child,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-RenderOverrides? _trackOverrides(RenderOverrides? overrides) {
-  if (overrides == null) return null;
-  final tracker = RenderOverridesDebugTracker();
-  return RenderOverrides.debugTrack(overrides, tracker);
-}
-
-void _reportUnconsumedOverrides(
-  String componentName,
-  RenderOverrides? overrides,
-) {
-  assert(() {
-    if (overrides == null) return true;
-    final provided = overrides.debugProvidedTypes();
-    if (provided.isEmpty) return true;
-    final consumed = overrides.debugConsumedTypes();
-    final unconsumed = provided.difference(consumed);
-    if (unconsumed.isEmpty) return true;
-
-    final message = StringBuffer()
-      ..writeln('[Headless] Unconsumed RenderOverrides detected')
-      ..writeln('Component: $componentName')
-      ..writeln('Provided: ${provided.join(', ')}')
-      ..writeln('Consumed: ${consumed.join(', ')}')
-      ..writeln('Unconsumed: ${unconsumed.join(', ')}')
-      ..write(
-          'Hint: Your preset may not support these overrides for this component.');
-
-    debugPrint(message.toString());
-    return true;
-  }());
 }

@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'overlay_show_once.dart';
+
 /// Conformance suite for `anchored_overlay_engine` primitives.
 ///
 /// Goal: make the overlay lifecycle + policies verifiable and stable.
@@ -35,7 +37,7 @@ void overlayFoundationConformance({
         wrapApp(
           AnchoredOverlayEngineHost(
             controller: controller,
-            child: _OverlayShowOnce(
+            child: OverlayShowOnce(
               controller: controller,
               onHandle: (h) => handle = h,
               builder: (_) => const SizedBox(key: Key('overlay_content')),
@@ -66,7 +68,7 @@ void overlayFoundationConformance({
         wrapApp(
           AnchoredOverlayEngineHost(
             controller: controller,
-            child: _OverlayShowOnce(
+            child: OverlayShowOnce(
               controller: controller,
               onHandle: (h) => handle = h,
               builder: (_) => const SizedBox(key: Key('overlay_content')),
@@ -101,7 +103,7 @@ void overlayFoundationConformance({
         wrapApp(
           AnchoredOverlayEngineHost(
             controller: controller,
-            child: _OverlayShowOnce(
+            child: OverlayShowOnce(
               controller: controller,
               onHandle: (h) => handle = h,
               builder: (_) => const SizedBox(key: Key('overlay_content')),
@@ -128,7 +130,7 @@ void overlayFoundationConformance({
         wrapApp(
           AnchoredOverlayEngineHost(
             controller: controller,
-            child: _OverlayShowOnce(
+            child: OverlayShowOnce(
               controller: controller,
               onHandle: (h) => handle = h,
               builder: (_) => const SizedBox(key: Key('overlay_content')),
@@ -164,7 +166,7 @@ void overlayFoundationConformance({
         wrapApp(
           AnchoredOverlayEngineHost(
             controller: controller,
-            child: _OverlayShowOnce(
+            child: OverlayShowOnce(
               controller: controller,
               onHandle: (h) => handle = h,
               builder: (_) => const SizedBox(key: Key('overlay_content')),
@@ -226,7 +228,7 @@ void overlayFoundationConformance({
             child: Focus(
               focusNode: triggerFocus,
               autofocus: true,
-              child: _OverlayShowOnce(
+              child: OverlayShowOnce(
                 controller: controller,
                 onHandle: (h) => handle = h,
                 restoreFocus: triggerFocus,
@@ -261,49 +263,4 @@ void overlayFoundationConformance({
       expect(triggerFocus.hasFocus, isTrue);
     });
   });
-}
-
-final class _OverlayShowOnce extends StatefulWidget {
-  const _OverlayShowOnce({
-    required this.controller,
-    required this.onHandle,
-    required this.builder,
-    this.dismissPolicy = DismissPolicy.modal,
-    this.focusPolicy = const NonModalFocusPolicy(),
-    this.restoreFocus,
-  });
-
-  final OverlayController controller;
-  final ValueChanged<OverlayHandle> onHandle;
-  final WidgetBuilder builder;
-  final DismissPolicy dismissPolicy;
-  final FocusPolicy focusPolicy;
-  final FocusNode? restoreFocus;
-
-  @override
-  State<_OverlayShowOnce> createState() => _OverlayShowOnceState();
-}
-
-class _OverlayShowOnceState extends State<_OverlayShowOnce> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      final handle = widget.controller.show(
-        OverlayRequest(
-          overlayBuilder: widget.builder,
-          dismiss: widget.dismissPolicy,
-          focus: widget.focusPolicy,
-          restoreFocus: widget.restoreFocus,
-        ),
-      );
-      widget.onHandle(handle);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return const SizedBox.shrink();
-  }
 }

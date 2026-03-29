@@ -5,6 +5,7 @@ import 'package:headless_contracts/headless_contracts.dart';
 import 'package:headless_foundation/headless_foundation.dart';
 import 'package:headless_theme/headless_theme.dart';
 
+import 'render_overrides_debug.dart';
 import 'r_checkbox_style.dart';
 
 /// A headless checkbox component.
@@ -173,7 +174,7 @@ class _RCheckboxState extends State<RCheckbox> {
 
     final theme = HeadlessThemeProvider.themeOf(context);
     final tokenResolver = theme.capability<RCheckboxTokenResolver>();
-    final overrides = _trackOverrides(mergeStyleIntoOverrides(
+    final overrides = trackCheckboxOverrides(mergeStyleIntoOverrides(
       style: widget.style,
       overrides: widget.overrides,
       toOverride: (s) => s.toOverrides(),
@@ -211,7 +212,7 @@ class _RCheckboxState extends State<RCheckbox> {
     );
 
     final content = renderer.render(request);
-    _reportUnconsumedOverrides('RCheckbox', overrides);
+    reportUnconsumedCheckboxOverrides('RCheckbox', overrides);
 
     final checked = widget.value == true;
     final mixed = widget.tristate && widget.value == null;
@@ -272,36 +273,4 @@ class _RCheckboxState extends State<RCheckbox> {
       minHeight: math.max(base.minHeight, tokens.minTapTargetSize.height),
     );
   }
-}
-
-RenderOverrides? _trackOverrides(RenderOverrides? overrides) {
-  if (overrides == null) return null;
-  final tracker = RenderOverridesDebugTracker();
-  return RenderOverrides.debugTrack(overrides, tracker);
-}
-
-void _reportUnconsumedOverrides(
-  String componentName,
-  RenderOverrides? overrides,
-) {
-  assert(() {
-    if (overrides == null) return true;
-    final provided = overrides.debugProvidedTypes();
-    if (provided.isEmpty) return true;
-    final consumed = overrides.debugConsumedTypes();
-    final unconsumed = provided.difference(consumed);
-    if (unconsumed.isEmpty) return true;
-
-    final message = StringBuffer()
-      ..writeln('[Headless] Unconsumed RenderOverrides detected')
-      ..writeln('Component: $componentName')
-      ..writeln('Provided: ${provided.join(', ')}')
-      ..writeln('Consumed: ${consumed.join(', ')}')
-      ..writeln('Unconsumed: ${unconsumed.join(', ')}')
-      ..write(
-          'Hint: Your preset may not support these overrides for this component.');
-
-    debugPrint(message.toString());
-    return true;
-  }());
 }

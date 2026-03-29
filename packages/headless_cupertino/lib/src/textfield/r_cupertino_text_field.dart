@@ -15,14 +15,6 @@ import '../overrides/cupertino_text_field_overrides.dart';
 /// - [prefixMode] = [RTextFieldOverlayVisibilityMode.always]
 /// - [suffixMode] = [RTextFieldOverlayVisibilityMode.always]
 /// - [isBorderless] = false
-///
-/// Example:
-/// ```dart
-/// RCupertinoTextField(
-///   placeholder: 'Enter text',
-///   clearButtonMode: RTextFieldOverlayVisibilityMode.whileEditing,
-/// )
-/// ```
 class RCupertinoTextField extends StatelessWidget {
   RCupertinoTextField({
     super.key,
@@ -80,13 +72,6 @@ class RCupertinoTextField extends StatelessWidget {
   /// Creates a borderless Cupertino text field.
   ///
   /// This is a convenience constructor that sets [isBorderless] to true.
-  ///
-  /// Example:
-  /// ```dart
-  /// RCupertinoTextField.borderless(
-  ///   placeholder: 'Search...',
-  /// )
-  /// ```
   factory RCupertinoTextField.borderless({
     Key? key,
     String? value,

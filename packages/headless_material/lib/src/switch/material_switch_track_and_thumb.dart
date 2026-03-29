@@ -2,7 +2,8 @@ import 'package:flutter/widgets.dart';
 import 'package:headless_contracts/headless_contracts.dart';
 
 import 'material_switch_thumb_animation.dart';
-import 'material_switch_track.dart';
+import 'material_switch_thumb_state_layer.dart';
+import 'material_switch_track_surface.dart';
 
 /// Internal widget that renders the track + thumb (with animations) and provides
 /// the thumb center for state-layer positioning.
@@ -208,7 +209,7 @@ final class _MaterialSwitchTrackAndThumbState
               )
             : defaultThumb;
 
-        final defaultTrack = _MaterialSwitchTrackSurface(
+        final defaultTrack = MaterialSwitchTrackSurface(
           tokens: widget.tokens,
           trackColor: widget.trackColor,
           outlineColor: widget.outlineColor,
@@ -218,7 +219,7 @@ final class _MaterialSwitchTrackAndThumbState
           child: Stack(
             clipBehavior: Clip.none,
             children: [
-              _MaterialSwitchThumbStateLayer(
+              MaterialSwitchThumbStateLayer(
                 thumbCenterX: thumbCircleCenterX,
                 thumbCenterY: thumbCircleCenterY,
                 radius: widget.tokens.stateLayerRadius,
@@ -244,82 +245,6 @@ final class _MaterialSwitchTrackAndThumbState
 
         return track;
       },
-    );
-  }
-}
-
-final class _MaterialSwitchTrackSurface extends StatelessWidget {
-  const _MaterialSwitchTrackSurface({
-    required this.tokens,
-    required this.trackColor,
-    required this.outlineColor,
-    required this.outlineWidth,
-    required this.isDragging,
-    required this.animationDuration,
-    required this.child,
-  });
-
-  final RSwitchResolvedTokens tokens;
-  final Color trackColor;
-  final Color outlineColor;
-  final double outlineWidth;
-  final bool isDragging;
-  final Duration animationDuration;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialSwitchTrack(
-      size: tokens.trackSize,
-      borderRadius: tokens.trackBorderRadius,
-      trackColor: trackColor,
-      outlineColor: outlineColor,
-      outlineWidth: outlineWidth,
-      isDragging: isDragging,
-      animationDuration: animationDuration,
-      child: child,
-    );
-  }
-}
-
-final class _MaterialSwitchThumbStateLayer extends StatelessWidget {
-  const _MaterialSwitchThumbStateLayer({
-    required this.thumbCenterX,
-    required this.thumbCenterY,
-    required this.radius,
-    required this.showStateLayer,
-    required this.animationDuration,
-    required this.stateLayerColor,
-  });
-
-  final double thumbCenterX;
-  final double thumbCenterY;
-  final double radius;
-  final bool showStateLayer;
-  final Duration animationDuration;
-  final Color? stateLayerColor;
-
-  @override
-  Widget build(BuildContext context) {
-    final diameter = radius * 2;
-
-    return Positioned(
-      left: thumbCenterX - radius,
-      top: thumbCenterY - radius,
-      child: IgnorePointer(
-        child: AnimatedOpacity(
-          opacity: showStateLayer ? 1.0 : 0.0,
-          duration: animationDuration,
-          child: Container(
-            width: diameter,
-            height: diameter,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: stateLayerColor,
-            ),
-          ),
-        ),
-      ),
     );
   }
 }
