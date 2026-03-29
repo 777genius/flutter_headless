@@ -1,14 +1,14 @@
-import 'dart:math' as math;
-
-import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:headless_contracts/headless_contracts.dart';
 import 'package:headless_foundation/headless_foundation.dart';
 import 'package:headless_theme/headless_theme.dart';
 
 import '_debug_utils.dart';
-import 'logic/switch_drag_decider.dart';
+import 'logic/switch_drag_state.dart';
+import 'missing_switch_renderer_widget.dart';
 import 'r_switch_indicator.dart';
+import 'r_switch_list_tile_request_factory.dart';
+import 'r_switch_list_tile_switch_shell.dart';
 import 'r_switch_list_tile_style.dart';
 
 /// A headless switch list tile component.
@@ -75,11 +75,7 @@ class _RSwitchListTileState extends State<RSwitchListTile> {
   late final HeadlessFocusNodeOwner _focusNodeOwner;
   late HeadlessPressableController _pressable;
   late final HeadlessPressableVisualEffectsController _visualEffects;
-
-  double? _dragT;
-  bool? _dragVisualValue;
-  double _travelPx = 0;
-  bool _needsDrag = false;
+  final SwitchDragState _drag = SwitchDragState();
 
   bool _switchHovered = false;
   bool _switchPressed = false;
@@ -130,77 +126,45 @@ class _RSwitchListTileState extends State<RSwitchListTile> {
     widget.onChanged?.call(!widget.value);
   }
 
-  bool get _isDragging => _dragT != null;
-
   void _handleDragStart(DragStartDetails details) {
     if (widget.isDisabled) return;
     final isRtl = Directionality.of(context) == TextDirection.rtl;
     setState(() {
-      _dragT = initialDragT(value: widget.value, isRtl: isRtl);
-      _dragVisualValue = widget.value;
-      _needsDrag = true;
+      _drag.begin(value: widget.value, isRtl: isRtl);
       _switchPressed = true;
     });
   }
 
   void _handleDragUpdate(DragUpdateDetails details) {
-    if (!_isDragging || widget.isDisabled) return;
+    if (!_drag.isDragging || widget.isDisabled) return;
     final isRtl = Directionality.of(context) == TextDirection.rtl;
-    final newT = updateDragT(
-      currentT: _dragT!,
-      deltaX: details.delta.dx,
-      travelPx: _travelPx,
-      isRtl: isRtl,
-    );
-    final newVisualValue = computeDragVisualValue(dragT: newT);
-    setState(() {
-      _dragT = newT;
-      _dragVisualValue = newVisualValue;
-    });
+    setState(() => _drag.update(deltaX: details.delta.dx, isRtl: isRtl));
   }
 
   void _handleDragEnd(DragEndDetails details) {
-    if (!_isDragging || widget.isDisabled) {
+    if (!_drag.isDragging || widget.isDisabled) {
       _cancelDrag();
       return;
     }
 
     final isRtl = Directionality.of(context) == TextDirection.rtl;
-    final velocity = details.velocity.pixelsPerSecond.dx;
-    final nextValue = computeNextValue(
-      dragT: _dragT!,
-      velocity: velocity,
+    final nextValue = _drag.resolveNextValue(
+      velocity: details.velocity.pixelsPerSecond.dx,
       isRtl: isRtl,
     );
 
     _cancelDrag();
 
-    if (nextValue != widget.value) {
+    if (nextValue != null && nextValue != widget.value) {
       widget.onChanged?.call(nextValue);
     }
   }
 
   void _cancelDrag() {
-    if (_dragT == null && !_needsDrag) return;
+    if (!_drag.clear()) return;
     setState(() {
-      _dragT = null;
-      _dragVisualValue = null;
-      _needsDrag = false;
       _switchPressed = false;
     });
-  }
-
-  void _onSwitchPointerDown(PointerDownEvent _) {
-    if (widget.isDisabled) return;
-    if (mounted) setState(() => _switchPressed = true);
-  }
-
-  void _onSwitchPointerUp(PointerUpEvent _) {
-    if (mounted) setState(() => _switchPressed = false);
-  }
-
-  void _onSwitchPointerCancel(PointerCancelEvent _) {
-    if (mounted) setState(() => _switchPressed = false);
   }
 
   @override
@@ -211,137 +175,63 @@ class _RSwitchListTileState extends State<RSwitchListTile> {
       componentName: 'RSwitchListTile',
     );
     if (renderer == null) {
-      final hasTheme = HeadlessThemeProvider.of(context) != null;
-      final exception = hasTheme
-          ? const MissingCapabilityException(
-              capabilityType: 'RSwitchListTileRenderer',
-              componentName: 'RSwitchListTile',
-            )
-          : const MissingThemeException();
-      FlutterError.reportError(
-        FlutterErrorDetails(
-          exception: exception,
-          stack: StackTrace.current,
-          library: 'headless_switch',
-          context: ErrorDescription('while building RSwitchListTile'),
-        ),
-      );
-      return HeadlessMissingCapabilityWidget(
+      return buildMissingSwitchRenderer(
+        context: context,
+        capabilityType: 'RSwitchListTileRenderer',
         componentName: 'RSwitchListTile',
-        message: headlessMissingCapabilityWidgetMessage(
-          missingCapabilityType: 'RSwitchListTileRenderer',
-        ),
       );
     }
 
-    final overrides = trackSwitchOverrides(mergeStyleIntoOverrides(
+    final pressableState = _pressable.state;
+    final renderData = resolveSwitchListTileRenderData(
+      context: context,
+      value: widget.value,
+      isDisabled: widget.isDisabled,
+      subtitle: widget.subtitle,
+      controlAffinity: widget.controlAffinity,
+      dense: widget.dense,
+      isThreeLine: widget.isThreeLine,
+      selected: widget.selected,
+      selectedColor: widget.selectedColor,
+      contentPadding: widget.contentPadding,
+      semanticLabel: widget.semanticLabel,
       style: widget.style,
       overrides: widget.overrides,
-      toOverride: (s) => s.toOverrides(),
-    ));
-    final spec = _createSpec();
-    final state = _createState(spec: spec);
-    final baseConstraints = _createBaseConstraints();
-
-    final theme = HeadlessThemeProvider.themeOf(context);
-    final tokenResolver = theme.capability<RSwitchListTileTokenResolver>();
-    final resolvedTokens = tokenResolver?.resolve(
-      context: context,
-      spec: spec,
-      states: state.toWidgetStates(),
-      constraints: baseConstraints,
-      overrides: overrides,
+      isPressed: pressableState.isPressed,
+      isHovered: pressableState.isHovered,
+      isFocused: pressableState.isFocused,
+      switchHovered: _switchHovered,
+      switchPressed: _switchPressed,
+      dragT: _drag.dragT,
+      dragVisualValue: _drag.dragVisualValue,
     );
+    _drag.travelPx = renderData.travelPx;
 
-    final constraints = _resolveConstraints(baseConstraints, resolvedTokens);
-
-    final switchState = RSwitchState(
-      // IMPORTANT: ListTile hover/press should not make the switch indicator
-      // look hovered/pressed. Flutter's SwitchListTile highlights the tile,
-      // while the Switch reacts to hover only when the pointer is over it.
-      //
-      // We still forward focus so Tab navigation shows the correct focus visuals.
-      isFocused: _pressable.state.isFocused,
-      isHovered: _switchHovered,
-      isPressed: _switchPressed,
+    final switchWidget = RSwitchListTileSwitchShell(
       isDisabled: widget.isDisabled,
-      isSelected: widget.value,
-      dragT: _dragT,
-      dragVisualValue: _dragVisualValue,
-    );
-
-    final switchTokenResolver = theme.capability<RSwitchTokenResolver>();
-    final switchTokens = switchTokenResolver?.resolve(
-      context: context,
-      spec:
-          RSwitchSpec(value: widget.value, semanticLabel: widget.semanticLabel),
-      states: switchState.toWidgetStates(),
-      constraints: BoxConstraints(
-        minWidth: WcagConstants.kMinTouchTargetSize.width,
-        minHeight: WcagConstants.kMinTouchTargetSize.height,
-      ),
-      overrides: overrides,
-    );
-
-    if (switchTokens != null) {
-      _travelPx = computeTravelPx(
-        trackWidth: switchTokens.trackSize.width,
-        trackHeight: switchTokens.trackSize.height,
-      );
-    }
-
-    final indicator = RSwitchIndicator(
-      spec: RSwitchSpec(
-        value: widget.value,
-        semanticLabel: widget.semanticLabel,
-      ),
-      state: switchState,
-      overrides: overrides,
-    );
-
-    final switchWidget = MouseRegion(
-      onEnter: (_) {
-        if (mounted) setState(() => _switchHovered = true);
+      mouseCursor: widget.mouseCursor,
+      onHoverChanged: (hovered) {
+        if (!mounted) return;
+        setState(() => _switchHovered = hovered);
       },
-      onExit: (_) {
-        if (mounted) {
-          setState(() {
-            _switchHovered = false;
-            _switchPressed = false;
-          });
-        }
+      onPressedChanged: (pressed) {
+        if (!mounted) return;
+        setState(() => _switchPressed = pressed);
       },
-      cursor: widget.isDisabled
-          ? SystemMouseCursors.forbidden
-          : (widget.mouseCursor ?? SystemMouseCursors.click),
-      child: Listener(
-        onPointerDown: _onSwitchPointerDown,
-        onPointerUp: _onSwitchPointerUp,
-        onPointerCancel: _onSwitchPointerCancel,
-        child: RawGestureDetector(
-          behavior: HitTestBehavior.opaque,
-          gestures: <Type, GestureRecognizerFactory>{
-            HorizontalDragGestureRecognizer:
-                GestureRecognizerFactoryWithHandlers<
-                    HorizontalDragGestureRecognizer>(
-              () => HorizontalDragGestureRecognizer(debugOwner: this),
-              (HorizontalDragGestureRecognizer instance) {
-                instance
-                  ..onStart = _handleDragStart
-                  ..onUpdate = _handleDragUpdate
-                  ..onEnd = _handleDragEnd;
-              },
-            ),
-          },
-          child: indicator,
-        ),
+      onDragStart: _handleDragStart,
+      onDragUpdate: _handleDragUpdate,
+      onDragEnd: _handleDragEnd,
+      child: RSwitchIndicator(
+        spec: renderData.switchSpec,
+        state: renderData.switchState,
+        overrides: renderData.overrides,
       ),
     );
 
     final request = RSwitchListTileRenderRequest(
       context: context,
-      spec: spec,
-      state: state,
+      spec: renderData.spec,
+      state: renderData.state,
       switchWidget: switchWidget,
       title: widget.title,
       subtitle: widget.subtitle,
@@ -353,16 +243,16 @@ class _RSwitchListTileState extends State<RSwitchListTile> {
       ),
       slots: widget.slots,
       visualEffects: _visualEffects,
-      resolvedTokens: resolvedTokens,
-      constraints: constraints,
-      overrides: overrides,
+      resolvedTokens: renderData.resolvedTokens,
+      constraints: renderData.constraints,
+      overrides: renderData.overrides,
     );
 
     final content = renderer.render(request);
-    reportUnconsumedSwitchOverrides('RSwitchListTile', overrides);
+    reportUnconsumedSwitchOverrides('RSwitchListTile', renderData.overrides);
 
-    final pressableSurfaceFactory =
-        theme.capability<HeadlessPressableSurfaceFactory>();
+    final pressableSurfaceFactory = HeadlessThemeProvider.themeOf(context)
+        .capability<HeadlessPressableSurfaceFactory>();
 
     Widget interactiveContent;
     if (pressableSurfaceFactory != null) {
@@ -371,7 +261,7 @@ class _RSwitchListTileState extends State<RSwitchListTile> {
         controller: _pressable,
         enabled: !widget.isDisabled,
         onActivate: _activate,
-        overrides: overrides,
+        overrides: renderData.overrides,
         visualEffects: _visualEffects,
         focusNode: _focusNodeOwner.node,
         autofocus: widget.autofocus,
@@ -399,48 +289,6 @@ class _RSwitchListTileState extends State<RSwitchListTile> {
       label: widget.semanticLabel,
       excludeSemantics: widget.semanticLabel != null,
       child: interactiveContent,
-    );
-  }
-
-  RSwitchListTileSpec _createSpec() {
-    return RSwitchListTileSpec(
-      value: widget.value,
-      semanticLabel: widget.semanticLabel,
-      selected: widget.selected,
-      selectedColor: widget.selectedColor,
-      contentPadding: widget.contentPadding,
-      controlAffinity: widget.controlAffinity,
-      isThreeLine: widget.isThreeLine,
-      dense: widget.dense,
-      hasSubtitle: widget.subtitle != null,
-    );
-  }
-
-  RSwitchListTileState _createState({required RSwitchListTileSpec spec}) {
-    final p = _pressable.state;
-    final isSelected = spec.selected;
-    return RSwitchListTileState(
-      isPressed: p.isPressed,
-      isHovered: p.isHovered,
-      isFocused: p.isFocused,
-      isDisabled: widget.isDisabled,
-      isSelected: isSelected,
-    );
-  }
-
-  BoxConstraints _createBaseConstraints() {
-    return BoxConstraints(
-      minHeight: WcagConstants.kMinTouchTargetSize.height,
-    );
-  }
-
-  BoxConstraints _resolveConstraints(
-    BoxConstraints base,
-    RSwitchListTileResolvedTokens? tokens,
-  ) {
-    if (tokens == null) return base;
-    return BoxConstraints(
-      minHeight: math.max(base.minHeight, tokens.minHeight),
     );
   }
 }

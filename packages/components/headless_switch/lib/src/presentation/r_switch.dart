@@ -5,21 +5,13 @@ import 'package:headless_foundation/headless_foundation.dart';
 import 'package:headless_theme/headless_theme.dart';
 
 import '_debug_utils.dart';
-import 'logic/switch_drag_decider.dart';
+import 'logic/switch_drag_state.dart';
 import 'missing_switch_renderer_widget.dart';
 import 'r_switch_interaction_shell.dart';
 import 'r_switch_request_factory.dart';
 import 'r_switch_style.dart';
 
 /// A headless switch component.
-///
-/// - State is controlled: the widget does NOT store value internally.
-/// - Interaction (pointer/keyboard/focus/drag) is handled by this component.
-/// - Visuals are delegated to [RSwitchRenderer] capability.
-///
-/// API is intentionally close to Flutter's Switch/CupertinoSwitch:
-/// [value], [onChanged], [focusNode], [autofocus], [mouseCursor],
-/// [semanticLabel], [thumbIcon], [dragStartBehavior].
 class RSwitch extends StatefulWidget {
   const RSwitch({
     super.key,
@@ -59,20 +51,7 @@ class RSwitch extends StatefulWidget {
   /// Semantic label for accessibility.
   final String? semanticLabel;
 
-  /// {@template flutter.cupertino.CupertinoSwitch.dragStartBehavior}
-  /// Determines the way that drag start behavior is handled.
-  ///
-  /// If set to [DragStartBehavior.start], the drag behavior used to move the
-  /// switch from on to off will begin at the position where the drag gesture won
-  /// the arena. If set to [DragStartBehavior.down] it will begin at the position
-  /// where a down event was first detected.
-  ///
-  /// In general, setting this to [DragStartBehavior.start] will make drag
-  /// animation smoother and setting it to [DragStartBehavior.down] will make
-  /// drag behavior feel slightly more reactive.
-  ///
-  /// By default, the drag start behavior is [DragStartBehavior.start].
-  /// {@endtemplate}
+  /// Determines when horizontal drag tracking starts.
   final DragStartBehavior dragStartBehavior;
 
   /// Simple, Flutter-like styling sugar.
@@ -97,11 +76,7 @@ class _RSwitchState extends State<RSwitch> {
   late final HeadlessFocusNodeOwner _focusNodeOwner;
   late HeadlessPressableController _pressable;
   late final HeadlessPressableVisualEffectsController _visualEffects;
-
-  double? _dragT;
-  bool? _dragVisualValue;
-  double _travelPx = 0;
-  bool _needsDrag = false;
+  final SwitchDragState _drag = SwitchDragState();
 
   @override
   void initState() {
@@ -149,8 +124,6 @@ class _RSwitchState extends State<RSwitch> {
     widget.onChanged?.call(!widget.value);
   }
 
-  bool get _isDragging => _dragT != null;
-
   void _handleTapDown(TapDragDownDetails details) {
     if (widget.isDisabled) return;
     _pressable.handleTapDown();
@@ -170,7 +143,7 @@ class _RSwitchState extends State<RSwitch> {
   }
 
   void _handleCancel() {
-    if (_isDragging) {
+    if (_drag.isDragging) {
       _cancelDrag();
     } else {
       _pressable.handleTapCancel();
@@ -181,11 +154,7 @@ class _RSwitchState extends State<RSwitch> {
   void _handleDragStart(TapDragStartDetails details) {
     if (widget.isDisabled) return;
     final isRtl = Directionality.of(context) == TextDirection.rtl;
-    setState(() {
-      _dragT = initialDragT(value: widget.value, isRtl: isRtl);
-      _dragVisualValue = widget.value;
-      _needsDrag = true;
-    });
+    setState(() => _drag.begin(value: widget.value, isRtl: isRtl));
     _pressable.handleTapDown();
     _visualEffects.pointerDown(
       localPosition: details.localPosition,
@@ -194,49 +163,33 @@ class _RSwitchState extends State<RSwitch> {
   }
 
   void _handleDragUpdate(TapDragUpdateDetails details) {
-    if (!_isDragging || widget.isDisabled) return;
+    if (!_drag.isDragging || widget.isDisabled) return;
     final isRtl = Directionality.of(context) == TextDirection.rtl;
-    final newT = updateDragT(
-      currentT: _dragT!,
-      deltaX: details.delta.dx,
-      travelPx: _travelPx,
-      isRtl: isRtl,
-    );
-    final newVisualValue = computeDragVisualValue(dragT: newT);
-    setState(() {
-      _dragT = newT;
-      _dragVisualValue = newVisualValue;
-    });
+    setState(() => _drag.update(deltaX: details.delta.dx, isRtl: isRtl));
   }
 
   void _handleDragEnd(TapDragEndDetails details) {
-    if (!_isDragging || widget.isDisabled) {
+    if (!_drag.isDragging || widget.isDisabled) {
       _cancelDrag();
       return;
     }
 
     final isRtl = Directionality.of(context) == TextDirection.rtl;
-    final velocity = details.velocity.pixelsPerSecond.dx;
-    final nextValue = computeNextValue(
-      dragT: _dragT!,
-      velocity: velocity,
+    final nextValue = _drag.resolveNextValue(
+      velocity: details.velocity.pixelsPerSecond.dx,
       isRtl: isRtl,
     );
 
     _cancelDrag();
 
-    if (nextValue != widget.value) {
+    if (nextValue != null && nextValue != widget.value) {
       widget.onChanged?.call(nextValue);
     }
   }
 
   void _cancelDrag() {
-    if (_dragT == null && !_needsDrag) return;
-    setState(() {
-      _dragT = null;
-      _dragVisualValue = null;
-      _needsDrag = false;
-    });
+    if (!_drag.clear()) return;
+    setState(() {});
     _pressable.handleTapCancel();
     _visualEffects.pointerCancel();
   }
@@ -255,66 +208,28 @@ class _RSwitchState extends State<RSwitch> {
       );
     }
 
-    final theme = HeadlessThemeProvider.themeOf(context);
-    final tokenResolver = theme.capability<RSwitchTokenResolver>();
-    final overrides = trackSwitchOverrides(mergeSwitchStyleIntoOverrides(
-      overrides: widget.overrides,
-      style: widget.style,
-      thumbIcon: widget.thumbIcon,
-    ));
-    final spec = createSwitchSpec(
+    final pressableState = _pressable.state;
+    final renderData = resolveSwitchRenderData(
+      context: context,
       value: widget.value,
+      isDisabled: widget.isDisabled,
       semanticLabel: widget.semanticLabel,
       dragStartBehavior: widget.dragStartBehavior,
-    );
-    final pressableState = _pressable.state;
-    final state = createSwitchState(
+      style: widget.style,
+      overrides: widget.overrides,
+      thumbIcon: widget.thumbIcon,
+      slots: widget.slots,
+      visualEffects: _visualEffects,
       isPressed: pressableState.isPressed,
       isHovered: pressableState.isHovered,
       isFocused: pressableState.isFocused,
-      isDisabled: widget.isDisabled,
-      value: widget.value,
-      dragT: _dragT,
-      dragVisualValue: _dragVisualValue,
+      dragT: _drag.dragT,
+      dragVisualValue: _drag.dragVisualValue,
     );
-    final baseConstraints = createSwitchBaseConstraints();
+    _drag.travelPx = renderData.travelPx;
 
-    final resolvedTokens = tokenResolver?.resolve(
-      context: context,
-      spec: spec,
-      states: state.toWidgetStates(),
-      constraints: baseConstraints,
-      overrides: overrides,
-    );
-
-    if (resolvedTokens != null) {
-      _travelPx = computeTravelPx(
-        trackWidth: resolvedTokens.trackSize.width,
-        trackHeight: resolvedTokens.trackSize.height,
-      );
-    }
-
-    final constraints =
-        resolveSwitchConstraints(baseConstraints, resolvedTokens);
-
-    final request = RSwitchRenderRequest(
-      context: context,
-      spec: spec,
-      state: state,
-      semantics: RSwitchSemantics(
-        label: widget.semanticLabel,
-        isEnabled: !widget.isDisabled,
-        value: widget.value,
-      ),
-      slots: widget.slots,
-      visualEffects: _visualEffects,
-      resolvedTokens: resolvedTokens,
-      constraints: constraints,
-      overrides: overrides,
-    );
-
-    final content = renderer.render(request);
-    reportUnconsumedSwitchOverrides('RSwitch', overrides);
+    final content = renderer.render(renderData.request);
+    reportUnconsumedSwitchOverrides('RSwitch', renderData.overrides);
 
     return RSwitchInteractionShell(
       isDisabled: widget.isDisabled,
