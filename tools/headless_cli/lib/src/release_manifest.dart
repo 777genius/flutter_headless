@@ -6,9 +6,13 @@ const releasePackages = <ReleasePackage>[
   ReleasePackage('headless_foundation', 'packages/headless_foundation'),
   ReleasePackage('headless_contracts', 'packages/headless_contracts'),
   ReleasePackage('headless_theme', 'packages/headless_theme'),
-  ReleasePackage('headless_adaptive', 'packages/headless_adaptive'),
   ReleasePackage('headless_material', 'packages/headless_material'),
+  ReleasePackage(
+    'headless_textfield',
+    'packages/components/headless_textfield',
+  ),
   ReleasePackage('headless_cupertino', 'packages/headless_cupertino'),
+  ReleasePackage('headless_adaptive', 'packages/headless_adaptive'),
   ReleasePackage('headless_test', 'packages/headless_test'),
   ReleasePackage('headless_button', 'packages/components/headless_button'),
   ReleasePackage('headless_checkbox', 'packages/components/headless_checkbox'),
@@ -17,8 +21,6 @@ const releasePackages = <ReleasePackage>[
     'headless_dropdown_button',
     'packages/components/headless_dropdown_button',
   ),
-  ReleasePackage(
-      'headless_textfield', 'packages/components/headless_textfield'),
   ReleasePackage(
     'headless_autocomplete',
     'packages/components/headless_autocomplete',

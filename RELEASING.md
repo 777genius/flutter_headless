@@ -10,15 +10,15 @@ order below so downstream dependencies are already available on pub.dev.
 3. `headless_foundation`
 4. `headless_contracts`
 5. `headless_theme`
-6. `headless_adaptive`
-7. `headless_material`
+6. `headless_material`
+7. `headless_textfield`
 8. `headless_cupertino`
-9. `headless_test`
-10. `headless_button`
-11. `headless_checkbox`
-12. `headless_switch`
-13. `headless_dropdown_button`
-14. `headless_textfield`
+9. `headless_adaptive`
+10. `headless_test`
+11. `headless_button`
+12. `headless_checkbox`
+13. `headless_switch`
+14. `headless_dropdown_button`
 15. `headless_autocomplete`
 16. `headless`
 
