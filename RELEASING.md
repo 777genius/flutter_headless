@@ -42,7 +42,7 @@ This aggregate runs:
 - bootstrap
 - analyze
 - Dart and Flutter tests
-- browser tests (`apps/example/browser_test` on a Chrome-capable environment)
+- browser tests (`apps/example/test/browser` on a Chrome-capable environment)
 - golden tests
 - desktop integration tests
 - release guardrails
@@ -62,6 +62,13 @@ with:
 
 ```bash
 dart run melos run test:browser
+```
+
+If local macOS picks Brave instead of Google Chrome and the lane hangs during
+suite startup, force Chrome explicitly:
+
+```bash
+CHROME_EXECUTABLE="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" dart run melos run test:browser
 ```
 
 ## Tag the release

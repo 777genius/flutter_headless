@@ -23,7 +23,7 @@ scripts:
       flutter: false
 
   test:flutter:
-    run: melos exec --fail-fast --concurrency=1 -- "flutter test --exclude-tags golden"
+    run: melos exec --fail-fast --concurrency=1 -- "flutter test --exclude-tags golden,browser"
     packageFilters:
       flutter: true
 
@@ -37,7 +37,7 @@ scripts:
     run: dart run tools/headless_cli/bin/run_integration_tests.dart chrome --include-web
 
   test:browser:
-    run: melos exec --scope headless_example -- "flutter test --platform chrome browser_test"
+    run: melos exec --scope headless_example -- "flutter test --platform chrome --tags browser test/browser"
 
   test:
     run: melos run test:dart && melos run test:flutter

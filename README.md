@@ -9,7 +9,14 @@ accessibility, while letting you swap visuals (Material, Cupertino, or your own)
 
 ## Install
 
-This repo is a monorepo. Bootstrap once:
+Application install:
+
+```yaml
+dependencies:
+  headless: ^1.0.0
+```
+
+If you are working inside this monorepo, bootstrap once:
 
 ```bash
 melos bootstrap

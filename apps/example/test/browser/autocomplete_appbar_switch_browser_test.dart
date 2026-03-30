@@ -1,3 +1,4 @@
+@Tags(['browser'])
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -9,13 +10,13 @@ Future<void> _focusPrimaryAutocomplete(WidgetTester tester) async {
   final field = find.bySemanticsLabel('Country search');
   expect(field, findsOneWidget);
   await tester.tap(field);
-  await tester.pumpAndSettle();
+  await pumpBrowserUi(tester);
 }
 
 Future<void> _openAutocompleteMenu(WidgetTester tester, String query) async {
   await _focusPrimaryAutocomplete(tester);
   await tester.enterText(find.byType(EditableText).first, query);
-  await tester.pumpAndSettle();
+  await pumpBrowserUi(tester, duration: const Duration(milliseconds: 400));
 }
 
 void main() {
@@ -23,7 +24,7 @@ void main() {
     'Browser: theme switch stays tappable while autocomplete menu is open',
     (tester) async {
       await tester.pumpWidget(const HeadlessExampleApp());
-      await tester.pumpAndSettle();
+      await pumpBrowserUi(tester, duration: const Duration(milliseconds: 400));
 
       await openExampleDemo(tester, 'Autocomplete Demo');
       await _openAutocompleteMenu(tester, 'fi');
@@ -36,7 +37,7 @@ void main() {
 
       final beforeToggle = browserSwitchValue(tester, modeLabel);
       await tester.tap(themeSwitch);
-      await tester.pumpAndSettle();
+      await pumpBrowserUi(tester);
       final afterToggle = browserSwitchValue(tester, modeLabel);
 
       expect(afterToggle, isNot(equals(beforeToggle)));
@@ -49,7 +50,7 @@ void main() {
     'Browser: light/dark switch stays tappable after reopening autocomplete menu',
     (tester) async {
       await tester.pumpWidget(const HeadlessExampleApp());
-      await tester.pumpAndSettle();
+      await pumpBrowserUi(tester, duration: const Duration(milliseconds: 400));
 
       await openExampleDemo(tester, 'Autocomplete Demo');
       await _openAutocompleteMenu(tester, 'fi');
@@ -60,7 +61,7 @@ void main() {
 
       final beforeFirstToggle = browserSwitchValue(tester, brightnessLabel);
       await tester.tap(brightnessSwitch);
-      await tester.pumpAndSettle();
+      await pumpBrowserUi(tester);
       final afterFirstToggle = browserSwitchValue(tester, brightnessLabel);
       expect(afterFirstToggle, isNot(equals(beforeFirstToggle)));
 
@@ -69,7 +70,7 @@ void main() {
 
       final beforeSecondToggle = browserSwitchValue(tester, brightnessLabel);
       await tester.tap(brightnessSwitch);
-      await tester.pumpAndSettle();
+      await pumpBrowserUi(tester);
       final afterSecondToggle = browserSwitchValue(tester, brightnessLabel);
 
       expect(afterSecondToggle, isNot(equals(beforeSecondToggle)));

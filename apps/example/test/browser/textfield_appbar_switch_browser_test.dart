@@ -1,3 +1,4 @@
+@Tags(['browser'])
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -10,7 +11,7 @@ void main() {
     'Browser: light/dark AppBar switch stays tappable across focused and scrolled text fields',
     (tester) async {
       await tester.pumpWidget(const HeadlessExampleApp());
-      await tester.pumpAndSettle();
+      await pumpBrowserUi(tester, duration: const Duration(milliseconds: 400));
 
       await openExampleDemo(tester, 'TextField Demo');
 
@@ -21,11 +22,11 @@ void main() {
       final editable = find.byType(EditableText).first;
       expect(editable, findsOneWidget);
       await tester.tap(editable);
-      await tester.pumpAndSettle();
+      await pumpBrowserUi(tester);
 
       final beforeFirstToggle = browserSwitchValue(tester, brightnessLabel);
       await tester.tap(brightnessSwitch);
-      await tester.pumpAndSettle();
+      await pumpBrowserUi(tester);
       final afterFirstToggle = browserSwitchValue(tester, brightnessLabel);
       expect(afterFirstToggle, isNot(equals(beforeFirstToggle)));
 
@@ -35,16 +36,16 @@ void main() {
         300,
         scrollable: find.byType(Scrollable).first,
       );
-      await tester.pumpAndSettle();
+      await pumpBrowserUi(tester);
 
       final lowerEditable = find.byType(EditableText).last;
       expect(lowerEditable, findsOneWidget);
       await tester.tap(lowerEditable);
-      await tester.pumpAndSettle();
+      await pumpBrowserUi(tester);
 
       final beforeSecondToggle = browserSwitchValue(tester, brightnessLabel);
       await tester.tap(brightnessSwitch);
-      await tester.pumpAndSettle();
+      await pumpBrowserUi(tester);
       final afterSecondToggle = browserSwitchValue(tester, brightnessLabel);
 
       expect(afterSecondToggle, isNot(equals(beforeSecondToggle)));
