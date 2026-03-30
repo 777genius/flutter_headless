@@ -36,6 +36,9 @@ scripts:
   test:integration:web:
     run: dart run tools/headless_cli/bin/run_integration_tests.dart chrome --include-web
 
+  test:browser:
+    run: melos exec --scope headless_example -- "flutter test --platform chrome browser_test"
+
   test:
     run: melos run test:dart && melos run test:flutter
 
@@ -62,4 +65,4 @@ scripts:
     run: dart run tools/headless_cli/bin/publish_release.dart
 
   release:check:
-    run: dart run melos bootstrap && dart run melos run analyze && dart run melos run test && dart run melos run test:golden && dart run melos run test:integration && dart run melos run release:guardrails && dart run melos run release:dry-run
+    run: dart run melos bootstrap && dart run melos run analyze && dart run melos run test && dart run melos run test:browser && dart run melos run test:golden && dart run melos run test:integration && dart run melos run release:guardrails && dart run melos run release:dry-run

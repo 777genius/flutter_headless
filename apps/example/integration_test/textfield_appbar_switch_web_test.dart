@@ -1,8 +1,31 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:headless_switch/headless_switch.dart';
 
 import 'package:headless_example/main.dart' show HeadlessExampleApp;
+
+bool _switchValue(WidgetTester tester, String semanticLabel) {
+  return tester
+      .widget<RSwitch>(
+        find.byWidgetPredicate(
+          (widget) =>
+              widget is RSwitch && widget.semanticLabel == semanticLabel,
+        ),
+      )
+      .value;
+}
+
+Future<void> _openTextFieldDemo(WidgetTester tester) async {
+  final tile = find.text('TextField Demo');
+  await tester.scrollUntilVisible(
+    tile,
+    200,
+    scrollable: find.byType(Scrollable).first,
+  );
+  await tester.tap(tile);
+  await tester.pumpAndSettle();
+}
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -13,15 +36,7 @@ void main() {
       await tester.pumpWidget(const HeadlessExampleApp());
       await tester.pumpAndSettle();
 
-      // Navigate to TextField demo.
-      final tile = find.text('TextField Demo');
-      await tester.scrollUntilVisible(
-        tile,
-        200,
-        scrollable: find.byType(Scrollable).first,
-      );
-      await tester.tap(tile);
-      await tester.pumpAndSettle();
+      await _openTextFieldDemo(tester);
 
       // Focus the first field.
       final editable = find.byType(EditableText).first;
@@ -65,6 +80,53 @@ void main() {
       // We validate indirectly by ensuring the semantics node is still present
       // and no exceptions were thrown.
       expect(find.bySemanticsLabel(modeLabel), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets(
+    'WEB: Light/dark AppBar switch stays tappable across focused and scrolled fields',
+    (tester) async {
+      await tester.pumpWidget(const HeadlessExampleApp());
+      await tester.pumpAndSettle();
+
+      await _openTextFieldDemo(tester);
+
+      const brightnessLabel = 'Switch between light and dark theme';
+      final brightnessSwitch = find.bySemanticsLabel(brightnessLabel);
+      expect(brightnessSwitch, findsOneWidget);
+
+      final editable = find.byType(EditableText).first;
+      expect(editable, findsOneWidget);
+      await tester.tap(editable);
+      await tester.pumpAndSettle();
+
+      final beforeFirstToggle = _switchValue(tester, brightnessLabel);
+      await tester.tap(brightnessSwitch);
+      await tester.pumpAndSettle();
+      final afterFirstToggle = _switchValue(tester, brightnessLabel);
+
+      expect(afterFirstToggle, isNot(equals(beforeFirstToggle)));
+
+      final searchField = find.text('Search');
+      await tester.scrollUntilVisible(
+        searchField,
+        300,
+        scrollable: find.byType(Scrollable).first,
+      );
+      await tester.pumpAndSettle();
+
+      final lowerEditable = find.byType(EditableText).last;
+      expect(lowerEditable, findsOneWidget);
+      await tester.tap(lowerEditable);
+      await tester.pumpAndSettle();
+
+      final beforeSecondToggle = _switchValue(tester, brightnessLabel);
+      await tester.tap(brightnessSwitch);
+      await tester.pumpAndSettle();
+      final afterSecondToggle = _switchValue(tester, brightnessLabel);
+
+      expect(afterSecondToggle, isNot(equals(beforeSecondToggle)));
       expect(tester.takeException(), isNull);
     },
   );

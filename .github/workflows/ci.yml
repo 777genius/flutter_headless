@@ -42,6 +42,9 @@ jobs:
       - name: Test
         run: melos run test
 
+      - name: Browser tests
+        run: melos run test:browser
+
       - name: Release guardrails
         run: melos run release:guardrails
 

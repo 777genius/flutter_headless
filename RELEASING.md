@@ -42,6 +42,7 @@ This aggregate runs:
 - bootstrap
 - analyze
 - Dart and Flutter tests
+- browser tests (`apps/example/browser_test` on a Chrome-capable environment)
 - golden tests
 - desktop integration tests
 - release guardrails
@@ -53,6 +54,14 @@ requires a running WebDriver server. When you want to include that lane, start
 
 ```bash
 dart run melos run test:integration:web
+```
+
+Chrome-based browser tests do not require `chromedriver`, but they do require
+an environment where Flutter can start its local Chrome test harness. Run them
+with:
+
+```bash
+dart run melos run test:browser
 ```
 
 ## Tag the release
