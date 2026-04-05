@@ -12,8 +12,8 @@ Future<void> main(List<String> args) async {
     '[headless_cli] Found ${targets.length} integration targets.',
   );
   if (!config.includeWeb) {
-    final skippedWebTargets = _integrationTargets(includeWeb: true).length -
-        targets.length;
+    final skippedWebTargets =
+        _integrationTargets(includeWeb: true).length - targets.length;
     if (skippedWebTargets > 0) {
       stdout.writeln(
         '[headless_cli] Skipping $skippedWebTargets web-only integration target(s). Run with --include-web on a webdriver-enabled Chrome setup to include them.',
