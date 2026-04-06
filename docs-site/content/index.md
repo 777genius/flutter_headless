@@ -19,16 +19,13 @@ features:
     details: Behavior, keyboard handling, and accessibility are separated from visuals. Swap renderers without forking logic.
   - icon: "\U0001F3A8"
     title: Fully Customizable
-    details: Ship Material, Cupertino, or a completely custom look from the same component set. Users restyle everything without forking your logic.
+    details: Ship Material, Cupertino, or a completely custom look from the same component set. Perfect for package authors - your users restyle everything via renderers, tokens, and slots without forking your code.
   - icon: "\u2328\uFE0F"
     title: Keyboard & A11y
     details: Focus management, keyboard navigation, and state transitions live in headless_foundation. Semantics contracts are defined in headless_contracts and implemented by each renderer.
   - icon: "\U0001F527"
     title: Slots & Overrides
     details: Customize any part of a component per-instance via slots, style overrides, or scoped themes without touching the source.
-  - icon: "\U0001F4E6"
-    title: Great for Package Authors
-    details: Build widget libraries that users can adapt to any app design. Your package provides the behavior - they plug in their own visuals via renderers, tokens, and slots.
 ---
 
 ## Install
