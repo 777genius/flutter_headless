@@ -55,9 +55,7 @@ jobs:
       # --- Demo app ---
 
       - name: Install workspace tooling
-        run: |
-          dart pub global activate melos
-          dart pub get
+        run: dart pub global activate melos
 
       - name: Bootstrap workspace
         run: melos bootstrap
