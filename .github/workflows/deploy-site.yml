@@ -32,7 +32,7 @@ jobs:
       # --- Docs (needs workspace: key temporarily) ---
 
       - name: Install dartdoc_modern
-        run: dart pub global activate dartdoc_modern
+        run: dart pub global activate --source git https://github.com/777genius/dartdoc_modern.git
 
       - name: Add workspace key for docs generation
         run: |
