@@ -70,19 +70,31 @@ class DocsHomeHero extends StatelessComponent {
             div(classes: 'docs-home-renderer r-material', [
               div(classes: 'docs-home-renderer-icon', [Component.text('M')]),
               div(classes: 'docs-home-renderer-name', [
-                Component.text('Material'),
+                Component.text('Material UI'),
               ]),
             ]),
             div(classes: 'docs-home-renderer r-cupertino', [
               div(classes: 'docs-home-renderer-icon', [Component.text('C')]),
               div(classes: 'docs-home-renderer-name', [
-                Component.text('Cupertino'),
+                Component.text('Cupertino UI'),
               ]),
             ]),
-            div(classes: 'docs-home-renderer r-custom', [
-              div(classes: 'docs-home-renderer-icon', [Component.text('*')]),
+            div(classes: 'docs-home-renderer r-custom r-custom-1', [
+              div(classes: 'docs-home-renderer-icon', [Component.text('1')]),
               div(classes: 'docs-home-renderer-name', [
-                Component.text('Custom'),
+                Component.text('Custom UI 1'),
+              ]),
+            ]),
+            div(classes: 'docs-home-renderer r-custom r-custom-2', [
+              div(classes: 'docs-home-renderer-icon', [Component.text('2')]),
+              div(classes: 'docs-home-renderer-name', [
+                Component.text('Custom UI 2'),
+              ]),
+            ]),
+            div(classes: 'docs-home-renderer r-custom r-custom-3', [
+              div(classes: 'docs-home-renderer-icon', [Component.text('3')]),
+              div(classes: 'docs-home-renderer-name', [
+                Component.text('Custom UI 3'),
               ]),
             ]),
           ]),
@@ -167,23 +179,6 @@ class DocsHomeHero extends StatelessComponent {
         flexDirection: FlexDirection.column,
         alignItems: AlignItems.start,
         raw: {'min-width': '0'},
-      ),
-      css('.docs-home-hero-eyebrow').styles(
-        display: Display.inlineFlex,
-        alignItems: AlignItems.center,
-        padding: Padding.symmetric(horizontal: 0.8.rem, vertical: 0.38.rem),
-        margin: Margin.only(bottom: 1.rem),
-        radius: BorderRadius.circular(999.px),
-        border: Border.all(
-          width: 1.px,
-          color: Color('var(--docs-shell-border-strong)'),
-        ),
-        color: Color('var(--docs-shell-accent-strong)'),
-        backgroundColor: Color('var(--docs-shell-accent-soft)'),
-        fontWeight: FontWeight.w700,
-        fontSize: 0.76.rem,
-        textTransform: TextTransform.upperCase,
-        letterSpacing: 0.12.rem,
       ),
       css('.docs-home-hero-name').styles(
         margin: Margin.zero,
@@ -326,7 +321,7 @@ class DocsHomeHero extends StatelessComponent {
           left: Unit.zero,
         ),
         raw: {
-          'animation': 'docs-home-orbit-spin 18s linear infinite',
+          'animation': 'docs-home-orbit-spin 24s linear infinite',
         },
       ),
       css('.docs-home-renderer').styles(
@@ -336,7 +331,7 @@ class DocsHomeHero extends StatelessComponent {
         alignItems: AlignItems.center,
         gap: Gap.all(0.3.rem),
         raw: {
-          'animation': 'docs-home-orbit-counter 18s linear infinite',
+          'animation': 'docs-home-orbit-counter 24s linear infinite',
         },
       ),
       css('.docs-home-renderer-icon').styles(
@@ -362,7 +357,7 @@ class DocsHomeHero extends StatelessComponent {
         color: Color('var(--docs-shell-muted)'),
       ),
       css('.docs-home-renderer.r-material').styles(
-        raw: {'top': '2%', 'left': '50%', 'transform': 'translateX(-50%)'},
+        raw: {'top': '0%', 'left': '50%', 'transform': 'translateX(-50%)'},
       ),
       css('.docs-home-renderer.r-material .docs-home-renderer-icon').styles(
         color: Color('var(--docs-shell-accent-strong)'),
@@ -372,7 +367,7 @@ class DocsHomeHero extends StatelessComponent {
         },
       ),
       css('.docs-home-renderer.r-cupertino').styles(
-        raw: {'bottom': '8%', 'left': '8%'},
+        raw: {'top': '28%', 'right': '0%'},
       ),
       css('.docs-home-renderer.r-cupertino .docs-home-renderer-icon').styles(
         color: const Color('#007aff'),
@@ -381,14 +376,34 @@ class DocsHomeHero extends StatelessComponent {
           'background': 'linear-gradient(135deg, var(--docs-shell-surface-elevated) 60%, #007aff14 100%)',
         },
       ),
-      css('.docs-home-renderer.r-custom').styles(
-        raw: {'bottom': '8%', 'right': '8%'},
+      css('.docs-home-renderer.r-custom-1').styles(
+        raw: {'bottom': '2%', 'right': '12%'},
       ),
-      css('.docs-home-renderer.r-custom .docs-home-renderer-icon').styles(
+      css('.docs-home-renderer.r-custom-1 .docs-home-renderer-icon').styles(
         color: const Color('#a855f7'),
         raw: {
           'border-color': '#a855f744',
           'background': 'linear-gradient(135deg, var(--docs-shell-surface-elevated) 60%, #a855f714 100%)',
+        },
+      ),
+      css('.docs-home-renderer.r-custom-2').styles(
+        raw: {'bottom': '2%', 'left': '12%'},
+      ),
+      css('.docs-home-renderer.r-custom-2 .docs-home-renderer-icon').styles(
+        color: const Color('#f97316'),
+        raw: {
+          'border-color': '#f9731644',
+          'background': 'linear-gradient(135deg, var(--docs-shell-surface-elevated) 60%, #f9731614 100%)',
+        },
+      ),
+      css('.docs-home-renderer.r-custom-3').styles(
+        raw: {'top': '28%', 'left': '0%'},
+      ),
+      css('.docs-home-renderer.r-custom-3 .docs-home-renderer-icon').styles(
+        color: const Color('#10b981'),
+        raw: {
+          'border-color': '#10b98144',
+          'background': 'linear-gradient(135deg, var(--docs-shell-surface-elevated) 60%, #10b98114 100%)',
         },
       ),
       css('.docs-home-particle').styles(

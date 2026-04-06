@@ -1,3 +1,7 @@
+---
+sidebar_position: 2
+sidebar_label: "Getting Started"
+---
 # Users Guide
 
 This guide is for people who want to ship UI quickly. If you are building

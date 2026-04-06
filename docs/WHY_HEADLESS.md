@@ -1,166 +1,167 @@
-### Зачем вообще Headless, если можно “написать свои виджеты”?
+---
+sidebar_position: 1
+sidebar_label: "Why Headless?"
+---
+### Why Headless when you can "just write your own widgets"?
 
-Этот документ отвечает на вопрос: **почему Headless имеет смысл как библиотека**, даже если Flutter позволяет легко кастомизировать UI и писать свои компоненты.
+This document answers the question: **why Headless makes sense as a library**, even though Flutter makes it easy to customize UI and write your own components.
 
-Ссылки на связанные документы:
-- `docs/MUST.md` — список ключевых улучшений и принципов.
-- `docs/ARCHITECTURE.md` — целевая архитектура monorepo + DDD + SOLID.
-- `docs/SPEC_V1.md` — спецификация для совместимых компонентов/пакетов.
-- `docs/CONFORMANCE.md` — как заявлять Headless‑совместимость и минимальные проверки.
+Related documents:
+- [`docs/MUST.md`](https://github.com/777genius/flutter_headless/blob/main/docs/MUST.md) - key improvements and principles.
+- [`docs/ARCHITECTURE.md`](https://github.com/777genius/flutter_headless/blob/main/docs/ARCHITECTURE.md) - target architecture: monorepo + DDD + SOLID.
+- [`docs/SPEC_V1.md`](https://github.com/777genius/flutter_headless/blob/main/docs/SPEC_V1.md) - specification for compatible components/packages.
+- [`docs/CONFORMANCE.md`](https://github.com/777genius/flutter_headless/blob/main/docs/CONFORMANCE.md) - how to declare Headless compatibility and the minimum checks required.
 
 ---
 
-### Главная мысль
+### The core idea
 
-**Headless — это не “набор кнопок”.**  
-Headless — это **система контрактов и механизмов**, которая позволяет:
+**Headless is not "a set of buttons".**  
+Headless is a **system of contracts and mechanisms** that lets you:
 
-- держать **единое поведение** и **единый язык дизайна** на масштабе команды/продукта,
-- менять визуал/бренд **без форков и копипасты**,
-- избегать “магии” и неожиданных эффектов (POLA),
-- проверять корректность через тесты поведения, а не пиксели.
+- maintain **consistent behavior** and a **unified design language** across a team/product at scale,
+- change visuals/branding **without forks or copy-paste**,
+- avoid "magic" and unexpected side effects (POLA),
+- verify correctness through behavioral tests rather than pixel comparisons.
 
-Писать кастомные виджеты можно всегда. Вопрос в том, **какова цена поддержки** и **насколько предсказуемой** останется система через 6–12 месяцев.
+You can always write custom widgets. The real question is **what does maintenance cost** and **how predictable** the system remains after 6-12 months.
 
 ---
 
-### Какие реальные проблемы решает Headless
+### Real problems Headless solves
 
-#### 1) Согласованность UI на масштабе
+#### 1) UI consistency at scale
 
-Когда каждый пишет “свои” виджеты, быстро появляются расхождения:
+When everyone writes their "own" widgets, inconsistencies creep in fast:
 
-- разные состояния (hover/pressed/focus/disabled) реализованы по‑разному,
-- разные размеры/touch target,
-- разные “правила” фокуса и клавиатуры,
-- разные отступы и типографика,
-- разные контракты (то `isLoading`, то `loading`, то отдельный `Spinner`).
+- different states (hover/pressed/focus/disabled) implemented differently,
+- different sizes/touch targets,
+- different focus and keyboard "rules",
+- different spacing and typography,
+- different contracts (sometimes `isLoading`, sometimes `loading`, sometimes a separate `Spinner`).
 
-Headless фиксирует **контракт** (variants/spec/state/resolved) и делает расхождения “сложнее случайно сделать”.
+Headless locks down the **contract** (variants/spec/state/resolved) and makes inconsistencies "harder to introduce by accident".
 
-#### 2) Multi‑brand / white‑label без ветвления кода
+#### 2) Multi-brand / white-label without code branching
 
-“Кастомизировать виджет” в приложении часто заканчивается:
+"Customizing a widget" in an app often ends up as:
 
-- `if (brand == ...)` внутри UI,
-- дублирующимися компонентами `ButtonA/ButtonB`,
-- копированием файлов “под бренд”.
+- `if (brand == ...)` inside the UI,
+- duplicated components like `ButtonA/ButtonB`,
+- copying files "per brand".
 
-Headless позволяет держать **один компонент** и менять:
+Headless lets you keep **a single component** and swap:
 
-- токены (raw + semantic),
-- политику состояний,
-- renderer (структуру/визуал),
+- tokens (raw + semantic),
+- state policies,
+- renderer (structure/visuals),
 
-не меняя бизнес‑код и не создавая параллельные реализации.
+without touching business code or creating parallel implementations.
 
-#### 3) POLA (Principle of Least Astonishment) как системное правило
+#### 3) POLA (Principle of Least Astonishment) as a systemic rule
 
-В UI‑системе дорого не “нарисовать”, а “не удивлять”.
+In a UI system, the expensive part is not "drawing" but "not surprising".
 
-Headless закрепляет предсказуемость:
+Headless enforces predictability:
 
-- controlled/uncontrolled модель (как у `TextField`),
-- понятные дефолты (disabled/loading/focus),
-- отсутствие скрытых сайд‑эффектов (не меняем фокус/не закрываем overlay “по магии”),
-- единые правила приоритетов состояний.
+- controlled/uncontrolled model (like `TextField`),
+- clear defaults (disabled/loading/focus),
+- no hidden side effects (no stealing focus / no closing overlays "by magic"),
+- unified state priority rules.
 
-#### 4) Сложные компоненты и “краевые” сценарии
+#### 4) Complex components and edge cases
 
-Сложные интерактивные компоненты (`Select/Menu/Combobox/Dialog`) ломаются не в happy‑path, а на краях:
+Complex interactive components (`Select/Menu/Combobox/Dialog`) break not on the happy path but at the edges:
 
-- фокус‑трап и возврат фокуса,
-- клавиатурная навигация,
-- закрытие по клику снаружи/esc,
+- focus trapping and focus return,
+- keyboard navigation,
+- closing on outside click / Esc,
 - nested overlays,
-- scroll/позиционирование,
-- конкуренция событий (gesture vs focus vs dismiss).
+- scroll/positioning,
+- event contention (gesture vs focus vs dismiss).
 
-Headless выносит общие механизмы в `foundation` (overlay/focus/FSM/state resolution), чтобы поведение было единообразным во всех компонентах.
+Headless extracts shared mechanisms into `foundation` (overlay/focus/FSM/state resolution) so that behavior is uniform across all components.
 
-#### 5) Тестируемость правильного уровня
+#### 5) Testing at the right level
 
-В headless подходе критично проверять не пиксели, а **поведение**:
+In the headless approach, what matters is testing **behavior**, not pixels:
 
-- переходы состояний,
-- корректность callbacks,
-- a11y семантику,
-- клавиатурные сценарии,
-- инварианты состояния.
+- state transitions,
+- callback correctness,
+- a11y semantics,
+- keyboard scenarios,
+- state invariants.
 
-Если каждый пишет свои виджеты “как получится”, тесты становятся разрозненными, а регрессии — неизбежными.
+When everyone writes their widgets "however it works", tests become fragmented and regressions become inevitable.
 
-#### 6) API стабильность и масштабирование библиотеки
+#### 6) API stability and library scalability
 
-“Набор кастомных виджетов” обычно эволюционирует хаотично.
+A "set of custom widgets" typically evolves chaotically.
 
-Headless (см. `docs/ARCHITECTURE.md`) делает ставку на:
+Headless (see [`docs/ARCHITECTURE.md`](https://github.com/777genius/flutter_headless/blob/main/docs/ARCHITECTURE.md)) relies on:
 
-- capability‑контракты (ISP) вместо одного гигантского интерфейса,
-- renderer contracts для визуала,
-- lockstep SemVer для пакетов monorepo,
-- deprecation policy вместо внезапных breaking changes.
-
----
-
-### Уроки из web-экосистемы (2025–2026), которые нам полезны
-
-В web мире headless UI часто завязан на hooks/render‑props и упирается в server/client границы (например, React Server Components).  
-В Flutter такого разрыва нет, но урок важен: **не строить core API на хрупких runtime‑механизмах**. Поэтому Headless фиксирует поведение через чистые контракты (events/state/effects) и renderer contracts, а не через “магические” паттерны.
+- capability contracts (ISP) instead of a single giant interface,
+- renderer contracts for visuals,
+- lockstep SemVer for monorepo packages,
+- deprecation policy instead of sudden breaking changes.
 
 ---
 
-### Что Headless НЕ делает (и почему это важно)
+### Lessons from the web ecosystem (2025-2026) that apply here
 
-- **Не навязывает стейтменеджер** (Riverpod/BLoC/MobX) — библиотека должна быть совместима со всеми подходами.
-- **Не навязывает DI** (`get_it/injectable/modularity_dart`) — DI остаётся на уровне приложения.
-- **Не пытается быть “ещё одним Material”** — цель не “сделать набор готовых красивых компонентов”, а дать архитектуру для разных брендов и систем.
-
----
-
-### DX сегодня (коротко)
-
-Чтобы снизить порог входа без потери headless-архитектуры:
-- есть **simple sugar** (`style: R*Style`) → компилируется в overrides,
-- есть **theme defaults** (`MaterialHeadlessDefaults`) для общих политик,
-- есть **Headless*Scope** для локальной подмены capability,
-- документация разделена на Users/Contributors + golden path.
+In the web world, headless UI often depends on hooks/render-props and runs into server/client boundaries (e.g., React Server Components).  
+Flutter doesn't have that split, but the lesson still applies: **don't build core APIs on fragile runtime mechanisms**. That's why Headless defines behavior through clean contracts (events/state/effects) and renderer contracts rather than "magical" patterns.
 
 ---
 
-### Когда Headless не нужен (честно)
+### What Headless does NOT do (and why that matters)
 
-Headless может быть overkill, если:
-
-- один бренд,
-- небольшая команда,
-- нет требований к a11y/keyboard/overlay‑сложности,
-- UI меняется редко и не является продуктовой ценностью,
-- вы не планируете поддерживать дизайн‑систему как библиотеку.
+- **Does not impose a state manager** (Riverpod/BLoC/MobX) - the library must be compatible with all approaches.
+- **Does not impose DI** (`get_it/injectable/modularity_dart`) - DI stays at the application level.
+- **Does not try to be "yet another Material"** - the goal is not "a set of pretty ready-made components" but an architecture for different brands and systems.
 
 ---
 
-### Когда Headless особенно оправдан
+### DX today (in brief)
 
-Headless имеет максимальный ROI, если:
-
-- 2+ бренда (white‑label) или разные продуктовые линии,
-- несколько команд параллельно пилят UI,
-- много сложных компонентов (select/menu/dialog),
-- важны POLA и предсказуемое поведение,
-- библиотека должна жить годами без “археологии” и переписываний.
+To lower the barrier to entry without sacrificing headless architecture:
+- there is **simple sugar** (`style: R*Style`) that compiles into overrides,
+- there are **theme defaults** (`MaterialHeadlessDefaults`) for common policies,
+- there is **Headless*Scope** for local capability overrides,
+- documentation is split into Users/Contributors + golden path.
 
 ---
 
-### Практическая проверка: стоит ли это вашей команде
+### When Headless is NOT needed (honestly)
 
-Если на большинство вопросов ответ “да” — Headless почти наверняка окупится:
+Headless can be overkill if:
 
-- У нас регулярно расходятся реализации одинаковых компонентов.
-- Мы уже делали копии “под бренд” или условные ветки по бренду.
-- У нас часто бывают регрессии в состояниях/фокусе/оверлеях.
-- Мы хотим выпускать новые компоненты быстрее и предсказуемее.
-- Мы хотим архитектуру, где “правильный путь” проще, чем “случайный”.
+- single brand,
+- small team,
+- no requirements for a11y/keyboard/overlay complexity,
+- UI changes rarely and is not a product differentiator,
+- you don't plan to maintain a design system as a library.
 
+---
 
+### When Headless is especially justified
 
+Headless delivers maximum ROI when:
+
+- 2+ brands (white-label) or different product lines,
+- multiple teams building UI in parallel,
+- many complex components (select/menu/dialog),
+- POLA and predictable behavior are important,
+- the library needs to live for years without "archaeology" and rewrites.
+
+---
+
+### Practical check: is it worth it for your team?
+
+If you answer "yes" to most of these, Headless will almost certainly pay off:
+
+- Our implementations of the same components regularly diverge.
+- We've already made copies "per brand" or added conditional branches by brand.
+- We frequently hit regressions in states/focus/overlays.
+- We want to ship new components faster and more predictably.
+- We want an architecture where "the right way" is easier than "the accidental way".

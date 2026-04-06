@@ -1,3 +1,7 @@
+---
+sidebar_position: 7
+sidebar_label: "Customization Guardrails"
+---
 # Guardrails for customization
 
 This page explains the rules that keep behavior and accessibility correct when you customize visuals.
@@ -56,10 +60,10 @@ Fix:
 - ensure there is exactly one activation source: the component.
 - remove tap handlers from renderer roots and primitives.
 
-## Repo hygiene (локальные артефакты)
+## Repo hygiene (local artifacts)
 
-Локальные build/IDE артефакты **могут** появляться во время разработки (например после `flutter test`),
-но **не должны** попадать в git.
+Local build/IDE artifacts **may** appear during development (e.g. after `flutter test`),
+but **must not** end up in git.
 
-- **MUST**: `build/`, `.dart_tool/`, `*.iml`, `.idea/`, `.vscode/` должны быть в `.gitignore`.
-- **MUST**: перед PR/коммитом убедиться, что в diff нет артефактов сборки/IDE.
+- **MUST**: `build/`, `.dart_tool/`, `*.iml`, `.idea/`, `.vscode/` must be listed in `.gitignore`.
+- **MUST**: before a PR/commit, verify that the diff contains no build/IDE artifacts.

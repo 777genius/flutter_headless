@@ -2,12 +2,8 @@ import 'package:jaspr/dom.dart';
 import 'package:jaspr/server.dart';
 import 'package:jaspr_content/src/page_parser/page_parser.dart';
 
-import '../vendor/highlighting/highlighting.dart' as highlighting;
-
-/// Jaspr-safe replacement for `jaspr_content`'s default `CodeBlock`.
-///
-/// Uses a vendored multi-language highlighter so static generation remains
-/// deterministic while supporting common documentation fence languages.
+/// Code block component that outputs plain `<pre><code>` for client-side
+/// highlighting via highlight.js CDN.
 class DocsCodeBlock extends CustomComponent {
   DocsCodeBlock({this.defaultLanguage = 'dart'}) : super.base();
 
@@ -33,18 +29,7 @@ class DocsCodeBlock extends CustomComponent {
       final normalizedLanguage = _normalizeLanguage(rawLanguage);
       final source = children?.map((child) => child.innerText).join(' ') ?? '';
 
-      if (normalizedLanguage == null) {
-        return _DocsCodeBlock(source: source);
-      }
-
-      return _DocsCodeBlock(
-        source: source,
-        language: normalizedLanguage,
-        highlighted: highlighting.docsHighlight.highlight(
-          source,
-          languageId: normalizedLanguage,
-        ),
-      );
+      return _DocsCodeBlock(source: source, language: normalizedLanguage);
     }
 
     return null;
@@ -62,16 +47,15 @@ class DocsCodeBlock extends CustomComponent {
   String? _normalizeLanguage(String? language) {
     final normalized = language?.trim().toLowerCase() ?? '';
     if (_plainLanguages.contains(normalized)) return null;
-    return highlighting.docsHighlight.canonicalize(normalized);
+    return normalized;
   }
 }
 
 class _DocsCodeBlock extends StatelessComponent {
-  const _DocsCodeBlock({required this.source, this.language, this.highlighted});
+  const _DocsCodeBlock({required this.source, this.language});
 
   final String source;
   final String? language;
-  final highlighting.Result? highlighted;
 
   @override
   Component build(BuildContext context) {
@@ -88,51 +72,11 @@ class _DocsCodeBlock extends StatelessComponent {
       pre([
         code(
           attributes: {
-            if (language != null) 'class': 'hljs language-$language',
+            if (language != null) 'class': 'language-$language',
           },
-          [
-            if (highlighted != null)
-              _buildHighlightedNode(highlighted!.rootNode, isRoot: true)
-            else
-              Component.text(source),
-          ],
+          [Component.text(source)],
         ),
       ]),
     ]);
-  }
-
-  Component _buildHighlightedNode(
-    highlighting.Node node, {
-    bool isRoot = false,
-  }) {
-    if (node.value case final String text?) {
-      return Component.text(text);
-    }
-
-    final children = [
-      for (final child in node.children) _buildHighlightedNode(child),
-    ];
-
-    if (isRoot) {
-      return span(children);
-    }
-
-    final classes = <String>[];
-    if (node.sublanguage == true && node.language != null) {
-      classes.add('language-${node.language}');
-    } else if (node.className case final String className?) {
-      classes.addAll(
-        highlighting.docsHighlight
-            .scopeToCssClasses(className)
-            .split(' ')
-            .where((value) => value.isNotEmpty),
-      );
-    }
-
-    if (classes.isEmpty) {
-      return span(children);
-    }
-
-    return span(classes: classes.join(' '), children);
   }
 }

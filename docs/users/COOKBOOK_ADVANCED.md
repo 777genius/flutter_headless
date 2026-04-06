@@ -1,3 +1,7 @@
+---
+sidebar_position: 6
+sidebar_label: "Advanced Patterns"
+---
 # Cookbook — Advanced recipes
 
 These recipes are useful when you are wiring presets into a large app.

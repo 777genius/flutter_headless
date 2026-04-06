@@ -96,7 +96,7 @@ Component buildDocsApp({
               DocsSidebarGroup(
                 items: [DocsSidebarItem(text: 'Overview', href: overviewHref)],
               ),
-            for (final group in guide.guideSidebarGroups) _mapGuideGroup(group),
+            ..._buildGuideGroups(guide.guideSidebarGroups),
           ],
           apiGroups: [
             for (final group in api.apiSidebarGroups) _mapApiGroup(group),
@@ -158,12 +158,40 @@ List<Component> _buildHeaderItems({required String repositoryUrl}) {
   ];
 }
 
-DocsSidebarGroup _mapGuideGroup(guide.SidebarGroup group) {
-  final title = group.title == 'headless_workspace' ? 'headless' : group.title;
-  return DocsSidebarGroup(
-    title: title,
-    items: [for (final item in group.items) _mapGuideItem(item)],
-  );
+/// Links that belong to the "Getting Started" guide group.
+const _gettingStartedPatterns = ['WHY_HEADLESS', 'users/README'];
+
+/// Splits generated guide sidebar groups into logical sections.
+///
+/// Items whose links match [_gettingStartedPatterns] go into
+/// "Getting Started"; everything else goes into "Recipes & Reference".
+List<DocsSidebarGroup> _buildGuideGroups(
+  List<guide.SidebarGroup> generatedGroups,
+) {
+  final gettingStarted = <DocsSidebarItem>[];
+  final recipesAndReference = <DocsSidebarItem>[];
+
+  for (final group in generatedGroups) {
+    for (final item in group.items) {
+      final mapped = _mapGuideItem(item);
+      final link = item.link ?? '';
+      if (_gettingStartedPatterns.any((p) => link.contains(p))) {
+        gettingStarted.add(mapped);
+      } else {
+        recipesAndReference.add(mapped);
+      }
+    }
+  }
+
+  return [
+    if (gettingStarted.isNotEmpty)
+      DocsSidebarGroup(title: 'Getting Started', items: gettingStarted),
+    if (recipesAndReference.isNotEmpty)
+      DocsSidebarGroup(
+        title: 'Recipes & Reference',
+        items: recipesAndReference,
+      ),
+  ];
 }
 
 DocsSidebarItem _mapGuideItem(guide.SidebarItem item) {

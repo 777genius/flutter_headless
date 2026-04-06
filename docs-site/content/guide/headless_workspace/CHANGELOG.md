@@ -1,37 +1,41 @@
+---
+sidebar_position: 8
+sidebar_label: "Changelog"
+---
 # Documentation Changelog
 
-Здесь логируются заметные изменения в документации (не в коде).
+Notable documentation changes are logged here (not code changes).
 
 ## [Unreleased]
 
 ### 2026-01-17 — DX docs sync (HIGH)
 
-- Синхронизированы entrypoints и DX‑формулы:
-  - `README.md`, `docs/en/README.md` — добавлены `style:`/priority/defaults/scopes.
-  - `docs/users/README.md` — единая формулировка для `style:` и приоритетов.
-- Актуализированы внутренние RU‑доки:
+- Synchronized entrypoints and DX formulas:
+  - `README.md`, `docs/en/README.md` - added `style:`/priority/defaults/scopes.
+  - `docs/users/README.md` - unified wording for `style:` and priorities.
+- Updated internal RU docs:
   - `docs/ru/README.md`, `docs/ru/README_INTERNAL.md`, `docs/WHY_HEADLESS.md`.
-- Унифицированы формулировки в README/LLM компонентных пакетов:
+- Unified wording in README/LLM files across component packages:
   - `headless_button`, `headless_dropdown_button`, `headless_textfield`,
     `headless_checkbox`, `headless_autocomplete`.
 
-### 2026-01-11 — Spec-first слой документации (CRITICAL)
+### 2026-01-11 — Spec-first documentation layer (CRITICAL)
 
-- Добавлены нормативные документы для экосистемы:
-  - `docs/SPEC_V1.md` — Headless Component Spec v1 (MUST/SHOULD/MAY).
-  - `docs/CONFORMANCE.md` — как заявлять Headless‑совместимость + минимальный чеклист/тесты.
-- Усилена архитектурная фиксация “делаем только так”:
-  - `docs/ARCHITECTURE.md` — Spec-first секция + Definition of Done для Headless‑совместимого package + обновлённое дерево `docs/`.
-- Обновлены кросс‑ссылки:
-  - `README.md` — позиционирование spec-first + ссылки на SPEC/CONFORMANCE.
-  - `docs/V1_DECISIONS.md` — добавлена ссылка на `docs/CONFORMANCE.md`.
+- Added normative documents for the ecosystem:
+  - `docs/SPEC_V1.md` - Headless Component Spec v1 (MUST/SHOULD/MAY).
+  - `docs/CONFORMANCE.md` - how to declare Headless compatibility + minimum checklist/tests.
+- Strengthened architectural constraints (“this is the only way we do it”):
+  - `docs/ARCHITECTURE.md` - Spec-first section + Definition of Done for a Headless-compatible package + updated `docs/` tree.
+- Updated cross-references:
+  - `README.md` - spec-first positioning + links to SPEC/CONFORMANCE.
+  - `docs/V1_DECISIONS.md` - added link to `docs/CONFORMANCE.md`.
 
 ---
 
-## Формат
+## Format
 
-Каждая запись включает:
-- **Дата**
-- **Категория** (CRITICAL/HIGH/MEDIUM/LOW)
-- **Краткое описание**
-- **Список затронутых файлов**
+Each entry includes:
+- **Date**
+- **Category** (CRITICAL/HIGH/MEDIUM/LOW)
+- **Brief description**
+- **List of affected files**

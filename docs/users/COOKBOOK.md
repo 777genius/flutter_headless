@@ -1,3 +1,7 @@
+---
+sidebar_position: 3
+sidebar_label: "Common Recipes"
+---
 # Users Cookbook
 
 This cookbook contains copy-paste ready recipes. Each example is minimal and can be dropped into a Flutter project that already uses a Headless preset.

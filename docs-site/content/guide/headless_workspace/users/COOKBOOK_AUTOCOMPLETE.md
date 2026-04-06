@@ -1,3 +1,7 @@
+---
+sidebar_position: 5
+sidebar_label: "Autocomplete Recipes"
+---
 # Cookbook — Autocomplete recipes
 
 Copy-paste ready recipes for `RAutocomplete<T>`.
