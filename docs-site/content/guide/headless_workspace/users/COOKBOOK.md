@@ -1,12 +1,16 @@
+---
+sidebar_position: 3
+sidebar_label: "Common Recipes"
+---
 # Users Cookbook
 
 This cookbook contains copy-paste ready recipes. Each example is minimal and can be dropped into a Flutter project that already uses a Headless preset.
 
 If you need more:
-- TextField: `docs/users/COOKBOOK_TEXTFIELD.md`
-- Autocomplete: `docs/users/COOKBOOK_AUTOCOMPLETE.md`
-- Advanced (scopes + defaults): `docs/users/COOKBOOK_ADVANCED.md`
-- Guardrails: `docs/users/GUARDRAILS.md`
+- [TextField](/guide/headless_workspace/users/COOKBOOK_TEXTFIELD)
+- [Autocomplete](/guide/headless_workspace/users/COOKBOOK_AUTOCOMPLETE)
+- [Advanced (scopes + defaults)](/guide/headless_workspace/users/COOKBOOK_ADVANCED)
+- [Guardrails](/guide/headless_workspace/users/GUARDRAILS)
 
 ## Button style
 

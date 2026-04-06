@@ -1,7 +1,11 @@
+---
+sidebar_position: 2
+sidebar_label: "Getting Started"
+---
 # Users Guide
 
 This guide is for people who want to ship UI quickly. If you are building
-new components or presets, go to `docs/contributors/README.md`.
+new components or presets, see the [contributors guide on GitHub](https://github.com/777genius/flutter_headless/tree/main/docs/contributors).
 
 ## One-screen quick start
 
@@ -109,15 +113,15 @@ void main() {
 
 ## Most common recipes
 
-- Button style: `docs/users/COOKBOOK.md#button-style`
-- Dropdown with items: `docs/users/COOKBOOK.md#dropdown-with-items`
-- Dropdown multi-select row: `docs/users/COOKBOOK.md#dropdown-multi-select-item-row-checkbox--label`
-- CheckboxListTile tile slot: `docs/users/COOKBOOK.md#checkboxlisttile-tile-slot-decorate`
-- SafeDropdownRenderer template: `docs/users/COOKBOOK.md#safedropdownrenderer-full-takeover-minimal-template`
-- TextField recipes: `docs/users/COOKBOOK_TEXTFIELD.md`
-- Autocomplete recipes: `docs/users/COOKBOOK_AUTOCOMPLETE.md`
-- Advanced recipes (scopes + defaults): `docs/users/COOKBOOK_ADVANCED.md`
-- Guardrails: `docs/users/GUARDRAILS.md`
+- [Button style](/guide/headless_workspace/users/COOKBOOK#button-style)
+- [Dropdown with items](/guide/headless_workspace/users/COOKBOOK#dropdown-with-items)
+- [Dropdown multi-select row](/guide/headless_workspace/users/COOKBOOK#dropdown-multi-select-item-row-checkbox--label)
+- [CheckboxListTile tile slot](/guide/headless_workspace/users/COOKBOOK#checkboxlisttile-tile-slot-decorate)
+- [SafeDropdownRenderer template](/guide/headless_workspace/users/COOKBOOK#safedropdownrenderer-full-takeover-minimal-template)
+- [TextField recipes](/guide/headless_workspace/users/COOKBOOK_TEXTFIELD)
+- [Autocomplete recipes](/guide/headless_workspace/users/COOKBOOK_AUTOCOMPLETE)
+- [Advanced recipes (scopes + defaults)](/guide/headless_workspace/users/COOKBOOK_ADVANCED)
+- [Guardrails](/guide/headless_workspace/users/GUARDRAILS)
 - Select-like control: use `RDropdownButton<T>` (no separate Select component).
 
 ## Troubleshooting
@@ -131,9 +135,9 @@ void main() {
 
 ## Where to go next
 
-- Users Cookbook: `docs/users/COOKBOOK.md`
+- [Users Cookbook](/guide/headless_workspace/users/COOKBOOK)
 - Example app: `apps/example`
-- Contributors guide: `docs/contributors/README.md`
+- [Contributors guide on GitHub](https://github.com/777genius/flutter_headless/tree/main/docs/contributors)
 
 ## Example screens (code)
 
