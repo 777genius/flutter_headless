@@ -126,6 +126,12 @@ RTextButton(
 
 Wrap any subtree with a scoped theme to swap renderers, tokens, or interaction policies without touching individual widgets.
 
+## Live Demo (WIP)
+
+See Headless components in action with Material and Cupertino renderers side by side:
+
+[Open Demo App](https://777genius.github.io/flutter_headless/demo/) - *Work in progress, more components and examples coming soon.*
+
 ## When Headless Is a Good Fit
 
 - 2+ brands (white-label) or product lines sharing a component set
