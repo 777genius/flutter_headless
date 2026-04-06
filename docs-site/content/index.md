@@ -44,6 +44,8 @@ flutter pub add headless
 <Tabs defaultValue="material">
   <TabItem label="Material" value="material">
 
+Ready-to-use Material 3 theme out of the box. Just wrap your app and start building - all components get Material styling automatically. Switch to a custom theme later without changing any widget code.
+
 ```dart
 import 'package:flutter/material.dart';
 import 'package:headless/headless.dart';
@@ -84,6 +86,8 @@ class Demo extends StatelessWidget {
   </TabItem>
   <TabItem label="Cupertino" value="cupertino">
 
+Same components, iOS look. Replace `HeadlessMaterialApp` with `HeadlessCupertinoApp` - every widget automatically renders with Cupertino styling. Your code stays the same.
+
 ```dart
 import 'package:flutter/cupertino.dart';
 import 'package:headless/headless.dart';
@@ -119,7 +123,7 @@ class Demo extends StatelessWidget {
   </TabItem>
   <TabItem label="Gradient Button" value="gradient">
 
-Per-instance visual override with slots - no custom renderer needed:
+Customize a single widget without creating a renderer. Slots let you override any visual part (surface, icon, spinner) per-instance while keeping all behavior intact.
 
 ```dart
 RTextButton(
@@ -144,7 +148,7 @@ RTextButton(
   </TabItem>
   <TabItem label="Brand Override" value="brand">
 
-Material base with scoped overrides for specific components:
+Start with Material as a base and swap renderers for specific components. Perfect when you want Material defaults but need a custom look for buttons or dropdowns in certain screens.
 
 ```dart
 void main() => runApp(HeadlessMaterialApp(
@@ -161,7 +165,7 @@ void main() => runApp(HeadlessMaterialApp(
   </TabItem>
   <TabItem label="Own Renderer" value="renderer">
 
-Full control - build a custom theme with your own renderers:
+Full control from scratch. Create your own theme by implementing `HeadlessTheme` - register custom renderers and token resolvers for every component. The same `RTextButton`, `RCheckbox` widgets render with your design.
 
 ```dart
 class NeonTheme extends HeadlessTheme {
