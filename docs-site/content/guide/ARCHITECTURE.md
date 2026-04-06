@@ -1,8 +1,3 @@
 # Monorepo архитектура (feature-first + DDD + SOLID)
 
-Этот документ автоматически разбит на части, чтобы соблюдать лимит **≤ 300 строк на файл**.
-
-## Части
-
-- [Monorepo архитектура (feature-first + DDD + SOLID) (part 1)](./ARCHITECTURE_part_01.md)
-
+Полная версия этого документа доступна в [репозитории на GitHub](https://github.com/777genius/flutter_headless/tree/main/docs/implementation/other).

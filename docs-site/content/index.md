@@ -28,15 +28,18 @@ features:
     details: Customize any part of a component per-instance via slots, style overrides, or scoped themes without touching the source.
 ---
 
-## Why Headless?
+## Install
 
-When every team member writes custom widgets, behavior drifts fast: different hover/focus/disabled states, inconsistent keyboard handling, duplicated overlay logic. Headless fixes this by providing **contracts and mechanisms** rather than just a set of styled buttons.
+```bash
+flutter pub add headless
+```
 
-- One component, many brands - swap renderers, tokens, or the entire theme without forking.
-- Edge cases handled once - focus traps, nested overlays, dismiss-on-outside-click live in `headless_foundation`.
-- Predictable by design - POLA (Principle of Least Astonishment) is enforced through controlled/uncontrolled models and explicit state priorities.
+[View on pub.dev](https://pub.dev/packages/headless)
 
-## 60-Second Quick Start
+## Quick Start
+
+<Tabs defaultValue="material">
+  <TabItem label="Material" value="material">
 
 ```dart
 import 'package:flutter/material.dart';
@@ -50,45 +53,157 @@ class Demo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: RTextButton(
+      body: Column(children: [
+        RTextButton(
           onPressed: () {},
-          child: const Text('Hello Headless'),
+          child: const Text('Save'),
         ),
+        RDropdownButton<String>(
+          items: const ['Paris', 'Berlin', 'Tokyo'],
+          itemAdapter: HeadlessItemAdapter.simple(
+            id: (v) => ListboxItemId(v),
+            titleText: (v) => v,
+          ),
+          value: 'Paris',
+          onChanged: (_) {},
+        ),
+        RCheckboxListTile(
+          value: true,
+          onChanged: (_) {},
+          title: const Text('I agree'),
+        ),
+      ]),
+    );
+  }
+}
+```
+
+  </TabItem>
+  <TabItem label="Cupertino" value="cupertino">
+
+```dart
+import 'package:flutter/cupertino.dart';
+import 'package:headless/headless.dart';
+
+void main() => runApp(const HeadlessCupertinoApp(home: Demo()));
+
+class Demo extends StatelessWidget {
+  const Demo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoPageScaffold(
+      navigationBar: const CupertinoNavigationBar(middle: Text('Headless')),
+      child: SafeArea(
+        child: Column(children: [
+          RTextButton(onPressed: () {}, child: const Text('Save')),
+          RDropdownButton<String>(
+            items: const ['Paris', 'Berlin', 'Tokyo'],
+            itemAdapter: HeadlessItemAdapter.simple(
+              id: (v) => ListboxItemId(v),
+              titleText: (v) => v,
+            ),
+            value: 'Paris',
+            onChanged: (_) {},
+          ),
+        ]),
       ),
     );
   }
 }
 ```
 
+  </TabItem>
+  <TabItem label="Gradient Button" value="gradient">
+
+Per-instance visual override with slots - no custom renderer needed:
+
+```dart
+RTextButton(
+  onPressed: () {},
+  slots: RButtonSlots(
+    surface: Decorate(
+      (ctx, child) => DecoratedBox(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF4B6FFF), Color(0xFF7B4BFF)],
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+        ),
+        child: child,
+      ),
+    ),
+  ),
+  child: const Text('Upgrade'),
+)
+```
+
+  </TabItem>
+  <TabItem label="Brand Override" value="brand">
+
+Material base with scoped overrides for specific components:
+
+```dart
+void main() => runApp(HeadlessMaterialApp(
+  home: HeadlessThemeOverridesScope(
+    overrides: CapabilityOverrides.build((b) {
+      b.set<RButtonRenderer>(MyBrandButtonRenderer());
+      b.set<RDropdownButtonRenderer>(MyBrandDropdownRenderer());
+    }),
+    child: const MyApp(),
+  ),
+));
+```
+
+  </TabItem>
+  <TabItem label="Own Renderer" value="renderer">
+
+Full control - build a custom theme with your own renderers:
+
+```dart
+class NeonTheme extends HeadlessTheme {
+  final _capabilities = <Type, Object>{
+    RButtonRenderer: NeonButtonRenderer(),
+    RButtonTokenResolver: NeonButtonTokenResolver(),
+    RCheckboxRenderer: NeonCheckboxRenderer(),
+    RCheckboxTokenResolver: NeonCheckboxTokenResolver(),
+  };
+
+  @override
+  T? capability<T>() => _capabilities[T] as T?;
+}
+
+void main() => runApp(HeadlessApp(
+  theme: NeonTheme(),
+  appBuilder: (overlayBuilder) => MaterialApp(
+    builder: overlayBuilder,
+    home: const MyApp(),
+  ),
+));
+
+// Same RTextButton, RCheckbox widgets - completely different look
+```
+
+  </TabItem>
+</Tabs>
+
 ## Components
 
 | Component | Package | Description |
 |---|---|---|
-| Button | `headless_button` | Text, icon, and loading button variants |
-| Checkbox | `headless_checkbox` | Checkbox and checkbox list tile |
-| Switch | `headless_switch` | Toggle switch with interaction states |
-| Dropdown | `headless_dropdown_button` | Menu overlay with keyboard navigation and typeahead |
-| TextField | `headless_textfield` | Input field with validation and editing controllers |
-| Autocomplete | `headless_autocomplete` | Combobox with async sources and filtering |
+| [Button](/api/headless_button/library) | `headless_button` | Filled, outlined, tonal, and text variants with icon and loading support |
+| [Checkbox](/api/headless_checkbox/library) | `headless_checkbox` | Checkbox and checkbox list tile |
+| [Switch](/api/headless_switch/library) | `headless_switch` | Toggle switch with interaction states |
+| [Dropdown](/api/headless_dropdown_button/library) | `headless_dropdown_button` | Menu overlay with keyboard navigation and typeahead |
+| [TextField](/api/headless_textfield/library) | `headless_textfield` | Input field with validation and editing controllers |
+| [Autocomplete](/api/headless_autocomplete/library) | `headless_autocomplete` | Combobox with async sources and filtering |
 
-## Package Architecture
+## Customization
 
-```
-headless                  # Facade - single import for apps
-headless_foundation       # Overlay, focus, listbox, FSM, state resolution
-headless_contracts        # Renderer contracts and slot overrides
-headless_tokens           # Raw + semantic design tokens (pure Dart)
-headless_theme            # Capability-based theme runtime
-headless_material         # Material 3 preset (renderers + tokens)
-headless_cupertino        # Cupertino preset (renderers + tokens)
-headless_test             # A11y, overlay, focus, keyboard test helpers
-anchored_overlay_engine   # Overlay positioning, policies, lifecycle
-```
+<Tabs defaultValue="style">
+  <TabItem label="Style" value="style">
 
-## Customization Levels
-
-### 1. Style (quick visual tweak)
+Quick visual tweaks - colors, radii, spacing:
 
 ```dart
 RDropdownButton<String>(
@@ -101,7 +216,10 @@ RDropdownButton<String>(
 )
 ```
 
-### 2. Slots (structural override per-instance)
+  </TabItem>
+  <TabItem label="Slots" value="slots">
+
+Replace structure per-instance - wrap, decorate, or swap any part:
 
 ```dart
 RTextButton(
@@ -122,26 +240,100 @@ RTextButton(
 )
 ```
 
-### 3. Scoped Theme (override capabilities for a subtree)
+  </TabItem>
+  <TabItem label="Scoped Theme" value="scoped">
 
-Wrap any subtree with a scoped theme to swap renderers, tokens, or interaction policies without touching individual widgets.
+Override renderers, tokens, or policies for an entire subtree:
 
-## Live Demo (WIP)
+```dart
+HeadlessThemeOverridesScope(
+  overrides: HeadlessThemeOverrides(
+    buttonRenderer: MyBrandButtonRenderer(),
+  ),
+  child: MyFeatureScreen(),
+)
+```
 
-See Headless components in action with Material and Cupertino renderers side by side:
+:::info
+All buttons inside `MyFeatureScreen` will use `MyBrandButtonRenderer` without any per-widget changes.
+:::
 
-[Open Demo App](https://777genius.github.io/flutter_headless/demo/) - *Work in progress, more components and examples coming soon.*
+  </TabItem>
+</Tabs>
 
-## When Headless Is a Good Fit
+## Packages
 
-- 2+ brands (white-label) or product lines sharing a component set
-- Multiple teams building UI in parallel and needing consistent behavior
-- Complex interactive components (select, menu, dialog, autocomplete)
-- Apps where accessibility and keyboard support are requirements, not afterthoughts
-- A component library that needs to live and evolve for years
+| Package | Role |
+|---|---|
+| [`headless`](/api/headless/library) | All-in-one facade - single import for apps |
+| [`headless_foundation`](/api/headless_foundation/library) | Overlay, focus, listbox, FSM, state resolution |
+| [`headless_contracts`](/api/headless_contracts/library) | Renderer contracts and slot overrides |
+| [`headless_tokens`](/api/headless_tokens/library) | Raw + semantic design tokens (pure Dart) |
+| [`headless_theme`](/api/headless_theme/library) | Capability-based theme runtime |
+| [`headless_material`](/api/headless_material/library) | Material 3 preset (renderers + tokens) |
+| [`headless_cupertino`](/api/headless_cupertino/library) | Cupertino preset (renderers + tokens) |
+| [`headless_test`](/api/headless_test/library) | A11y, overlay, focus, keyboard test helpers |
 
-## When It Might Be Overkill
+## Why Headless?
 
-- One small app with default Material widgets
-- No need for keyboard/a11y or overlay-heavy components
-- No plans to customize visuals or share components across brands
+:::info The problem
+When every team member writes custom widgets, behavior drifts: different hover/focus/disabled states, inconsistent keyboard handling, duplicated overlay logic. Headless provides **contracts and mechanisms** so the right path is the easy path.
+:::
+
+- **One component, many brands** - swap renderers, tokens, or the entire theme without forking
+- **Edge cases handled once** - focus traps, nested overlays, dismiss-on-outside-click live in `headless_foundation`
+- **Predictable by design** - POLA is enforced through controlled/uncontrolled models and explicit state priorities
+- **Testable behavior** - test state transitions, callbacks, a11y semantics, and keyboard scenarios without pixel matching
+
+## Built-in Presets
+
+Headless ships with two ready-made renderer presets. Same components, different visuals:
+
+<Tabs defaultValue="material">
+  <TabItem label="Material 3" value="material">
+
+```dart
+import 'package:headless/headless.dart';
+
+// Material look out of the box
+void main() => runApp(const HeadlessMaterialApp(home: MyApp()));
+```
+
+  </TabItem>
+  <TabItem label="Cupertino" value="cupertino">
+
+```dart
+import 'package:headless/headless.dart';
+
+// iOS look - same components, different renderer
+void main() => runApp(const HeadlessCupertinoApp(home: MyApp()));
+```
+
+  </TabItem>
+</Tabs>
+
+:::tip
+Both presets use the exact same `RTextButton`, `RDropdownButton`, `RCheckbox` etc. - only the renderer changes.
+:::
+
+[Open Demo App](https://777genius.github.io/flutter_headless/demo/) - *WIP, more components coming soon.*
+
+## Inspired By
+
+| Project | What we borrowed |
+|---|---|
+| [React Aria](https://react-spectrum.adobe.com/react-aria/) | Parts/slots composition, unified press events across pointer/keyboard/assistive tech |
+| [Ark UI / Zag.js](https://ark-ui.com/) | Minimal FSM discipline - "impossible states are impossible" |
+| [Radix UI](https://www.radix-ui.com/) | Typed slots for point-wise overrides without full renderer rewrite |
+| [Downshift](https://www.downshift-js.com/) | Controlled/uncontrolled pattern, stateReducer for intercepting transitions |
+| [Angular CDK](https://material.angular.io/cdk/) | Overlay infrastructure - OverlayRef + positioning strategies |
+| [Floating UI](https://floating-ui.com/) | Middleware pipeline for offset/flip/shift/arrow composition |
+| [Forui](https://forui.dev/) | FWidgetStateMap for state combination handling |
+| [W3C Design Tokens](https://tr.designtokens.org/) | Token format standardization, group inheritance ($extends) |
+
+## Learn More
+
+- [Why Headless in depth](/guide/headless_workspace/WHY_HEADLESS) - detailed comparison with "just write custom widgets"
+- [Users Guide](/guide/headless_workspace/users/README) - complete walkthrough for app developers
+- [Cookbook](/guide/headless_workspace/users/COOKBOOK) - common recipes and patterns
+- [GitHub](https://github.com/777genius/flutter_headless) - source code, issues, contributing
