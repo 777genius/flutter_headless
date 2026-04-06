@@ -247,9 +247,9 @@ Override renderers, tokens, or policies for an entire subtree:
 
 ```dart
 HeadlessThemeOverridesScope(
-  overrides: HeadlessThemeOverrides(
-    buttonRenderer: MyBrandButtonRenderer(),
-  ),
+  overrides: CapabilityOverrides.build((b) {
+    b.set<RButtonRenderer>(MyBrandButtonRenderer());
+  }),
   child: MyFeatureScreen(),
 )
 ```
