@@ -29,10 +29,33 @@ jobs:
       - name: Setup Dart pub global path
         run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
 
-      # --- Docs ---
+      # --- Docs (needs workspace: key temporarily) ---
 
       - name: Install dartdoc_modern
         run: dart pub global activate dartdoc_modern
+
+      - name: Add workspace key for docs generation
+        run: |
+          cat >> pubspec.yaml << 'WORKSPACE'
+
+          workspace:
+            - packages/headless
+            - packages/headless_foundation
+            - packages/headless_contracts
+            - packages/headless_tokens
+            - packages/headless_theme
+            - packages/headless_material
+            - packages/headless_cupertino
+            - packages/headless_adaptive
+            - packages/headless_test
+            - packages/anchored_overlay_engine
+            - packages/components/headless_button
+            - packages/components/headless_checkbox
+            - packages/components/headless_switch
+            - packages/components/headless_dropdown_button
+            - packages/components/headless_textfield
+            - packages/components/headless_autocomplete
+          WORKSPACE
 
       - name: Generate docs
         run: >
@@ -42,6 +65,9 @@ jobs:
           --exclude-packages 'example,headless_cli,liquid_glass_apple'
           --guide-exclude='implementation/.*,competitors/.*,v1_decisions/.*,ru/.*,en/.*,contributors/.*,CONFORMANCE\.md,SPEC_V1\.md,MUST\.md,ARCHITECTURE\.md,RESEARCH\.md,ITERATION_PLAN.*,FLEXIBLE_PRESETS.*'
           --output docs-site
+
+      - name: Remove workspace key
+        run: git checkout pubspec.yaml
 
       - name: Install docs dependencies
         working-directory: docs-site

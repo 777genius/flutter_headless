@@ -3,27 +3,8 @@ description: Headless monorepo workspace (tooling only).
 publish_to: none
 
 environment:
-  sdk: ">=3.5.0 <4.0.0"
-
-workspace:
-  - packages/headless
-  - packages/headless_foundation
-  - packages/headless_contracts
-  - packages/headless_tokens
-  - packages/headless_theme
-  - packages/headless_material
-  - packages/headless_cupertino
-  - packages/headless_adaptive
-  - packages/headless_test
-  - packages/anchored_overlay_engine
-  - packages/components/headless_button
-  - packages/components/headless_checkbox
-  - packages/components/headless_switch
-  - packages/components/headless_dropdown_button
-  - packages/components/headless_textfield
-  - packages/components/headless_autocomplete
+  sdk: ">=3.3.0 <4.0.0"
 
 dev_dependencies:
   melos: ^6.3.0
   lints: ^5.0.0
-
