@@ -1,0 +1,11 @@
+# Build output
+build/
+
+# Dart tool files
+.dart_tool/
+
+# Dependencies
+.packages
+
+# Generated files
+lib/generated/

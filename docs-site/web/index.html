@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>headless API</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="generated/api_styles.css?v=1775465515749">
+    <script>
+      const storedTheme = window.localStorage.getItem('jaspr:theme');
+      const resolvedTheme = storedTheme ??
+          (window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light');
+      document.documentElement.setAttribute('data-theme', resolvedTheme);
+    </script>
+  </head>
+  <body>
+    <p>Loading documentation...</p>
+    <script src="main.client.dart.js?v=1775465515749" defer></script>
+  </body>
+</html>

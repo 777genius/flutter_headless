@@ -1,0 +1,93 @@
+name: Deploy Site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Setup Dart pub global path
+        run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+
+      # --- Docs ---
+
+      - name: Install dartdoc_modern
+        run: dart pub global activate dartdoc_modern
+
+      - name: Generate docs
+        run: >
+          dart pub global run dartdoc_modern
+          --format jaspr
+          --workspace-docs
+          --exclude-packages 'example,headless_cli,liquid_glass_apple'
+          --guide-exclude='implementation/.*,competitors/.*,v1_decisions/.*,ru/.*,en/.*,contributors/.*,CONFORMANCE\.md,SPEC_V1\.md,MUST\.md,ARCHITECTURE\.md,RESEARCH\.md,ITERATION_PLAN.*,FLEXIBLE_PRESETS.*'
+          --output docs-site
+
+      - name: Install docs dependencies
+        working-directory: docs-site
+        run: dart pub get
+
+      - name: Build docs (jaspr)
+        working-directory: docs-site
+        run: dart run jaspr_cli:jaspr build
+        timeout-minutes: 10
+
+      # --- Demo app ---
+
+      - name: Install workspace tooling
+        run: |
+          dart pub global activate melos
+          dart pub get
+
+      - name: Bootstrap workspace
+        run: melos bootstrap
+
+      - name: Build demo app
+        working-directory: apps/example
+        run: flutter build web --release --base-href /flutter_headless/demo/
+        timeout-minutes: 10
+
+      # --- Combine into single artifact ---
+
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          cp -r docs-site/build/jaspr/* _site/
+          mkdir -p _site/demo
+          cp -r apps/example/build/web/* _site/demo/
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

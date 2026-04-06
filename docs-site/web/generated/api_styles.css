@@ -1,0 +1,137 @@
+/* Member signature blocks with clickable type links */
+
+.member-signature {
+  margin: 4px 0 9px;
+}
+.member-signature .member-signature-code {
+  background: var(--content-pre-bg);
+  border-radius: 10px;
+  padding: 4px 12px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  margin: 0;
+  font-family: var(--content-code-font);
+  font-size: 0.92rem;
+  color: var(--content-pre-code);
+  line-height: 1.08;
+}
+.member-signature .member-signature-line {
+  display: block;
+}
+/* Shiki-matched syntax highlighting for member signatures.
+   Colors from --shiki-light / --shiki-dark CSS variables. */
+
+/* Keywords: const, factory, final, get, set, required, typedef, true, false, null */
+.member-signature .kw {
+  color: #D73A49;
+}
+/* Unlinked types: String, int, void, dynamic, type parameters */
+.member-signature .type {
+  color: #005CC5;
+}
+/* Linked types (clickable) — same color as .type, underline on hover */
+.member-signature .type-link {
+  color: #005CC5;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 400;
+  line-height: inherit;
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 2px;
+}
+.member-signature .type-link:hover {
+  text-decoration-thickness: 2px;
+}
+/* Function/method/constructor/field/property names */
+.member-signature .fn {
+  color: #6F42C1;
+}
+/* String literals in default values */
+.member-signature .str-lit {
+  color: #032F62;
+}
+/* Numeric literals in default values */
+.member-signature .num-lit {
+  color: #005CC5;
+}
+/* Dark mode overrides */
+.dark .member-signature .kw {
+  color: #F97583;
+}
+.dark .member-signature .type {
+  color: #79B8FF;
+}
+.dark .member-signature .type-link {
+  color: #79B8FF;
+  text-decoration-color: currentColor;
+}
+.dark .member-signature .type-link:hover {
+  text-decoration-thickness: 2px;
+}
+.dark .member-signature .fn {
+  color: #B392F0;
+}
+.dark .member-signature .str-lit {
+  color: #9ECBFF;
+}
+.dark .member-signature .num-lit {
+  color: #79B8FF;
+}
+
+.docs-badge {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  margin-left: 0.55rem;
+  padding: 0.26rem 0.82rem;
+  border-radius: 999px;
+  font-size: 0.72em;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.docs-badge-info {
+  background: #eef0f4;
+  color: #5f6773;
+}
+.docs-badge-tip {
+  background: #e9defe;
+  color: #6b4ff7;
+}
+.docs-badge-warning {
+  background: #fff0cf;
+  color: #966300;
+}
+.dark .docs-badge-info {
+  background: #3f3f46;
+  color: #d4d4d8;
+}
+.dark .docs-badge-tip {
+  background: #3f2f70;
+  color: #d5c6ff;
+}
+.dark .docs-badge-warning {
+  background: #5f4416;
+  color: #fde68a;
+}
+
+/* API auto-linker — inline code that links to API docs */
+
+a.api-link {
+  text-decoration: none;
+}
+
+a.api-link code {
+  color: var(--content-links);
+  border-bottom: 2px solid color-mix(in srgb, var(--content-links) 50%, transparent);
+  padding-bottom: 1px;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+a.api-link:hover code {
+  color: var(--content-headings);
+  border-bottom-color: var(--content-links);
+}
