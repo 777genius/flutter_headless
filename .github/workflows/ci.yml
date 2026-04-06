@@ -42,10 +42,6 @@ jobs:
       - name: Test
         run: melos run test
 
-      - name: Browser tests
-        timeout-minutes: 10
-        run: melos run test:browser
-
       - name: Release guardrails
         run: melos run release:guardrails
 

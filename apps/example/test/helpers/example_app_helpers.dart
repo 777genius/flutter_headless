@@ -2,17 +2,14 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:headless_switch/headless_switch.dart';
 
-Future<void> pumpBrowserUi(
+Future<void> pumpUi(
   WidgetTester tester, {
   Duration duration = const Duration(milliseconds: 300),
-  int frames = 3,
 }) async {
-  for (var i = 0; i < frames; i++) {
-    await tester.pump(duration);
-  }
+  await tester.pumpAndSettle(duration);
 }
 
-bool browserSwitchValue(WidgetTester tester, String semanticLabel) {
+bool switchValue(WidgetTester tester, String semanticLabel) {
   return tester
       .widget<RSwitch>(
         find.byWidgetPredicate(
@@ -30,7 +27,7 @@ Future<void> openExampleDemo(WidgetTester tester, String tileLabel) async {
     200,
     scrollable: find.byType(Scrollable).first,
   );
-  await pumpBrowserUi(tester);
+  await pumpUi(tester);
   await tester.tap(tile);
-  await pumpBrowserUi(tester, duration: const Duration(milliseconds: 400));
+  await pumpUi(tester, duration: const Duration(milliseconds: 400));
 }
