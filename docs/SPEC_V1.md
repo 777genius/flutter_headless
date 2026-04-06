@@ -1,122 +1,122 @@
 ## Headless Component Spec v1
 
-**Статус:** Draft (до первого релиза v1 может уточняться/дополняться, но изменения делаем только осознанно и с сохранением POLA).
+**Status:** Draft (may be refined/extended before the first v1 release, but changes are made deliberately and preserving POLA).
 
-Цель: сделать **единый, проверяемый стандарт**, по которому сторонние авторы могут создавать совместимые headless‑компоненты/пакеты для Flutter/Dart и делиться ими с сообществом.
+Goal: create a **single, verifiable standard** by which third-party authors can build compatible headless components/packages for Flutter/Dart and share them with the community.
 
-Этот документ — **нормативный**. Он описывает требования уровня “MUST/SHOULD/MAY”.
+This document is **normative**. It describes requirements at the "MUST/SHOULD/MAY" level.
 
-### Важно для community (внешние репозитории)
+### Important for community (external repositories)
 
-- Пакеты **не обязаны копировать** `docs/` из этого репозитория.
-- При заявлении совместимости пакет **ссылается на upstream**: на конкретный релиз/тег/коммит, где опубликованы `docs/SPEC_V1.md` и `docs/CONFORMANCE.md`.
+- Packages **are not required to copy** `docs/` from this repository.
+- When claiming compatibility, a package **references upstream**: a specific release/tag/commit where `docs/SPEC_V1.md` and `docs/CONFORMANCE.md` are published.
 
-### Чем это отличается от других документов
+### How this differs from other documents
 
-- `docs/ARCHITECTURE.md`: архитектура **этого репозитория** (границы пакетов, правила зависимостей, policy).
-- `docs/V1_DECISIONS.md`: зафиксированные **решения v1 для core контрактов** (overlay/listbox/effects/theme/tokens) и инварианты, на которые опирается совместимость.
-- `docs/SPEC_V1.md` (этот файл): требования к **сторонним пакетам**, чтобы они были “Headless‑совместимыми”.
-- `docs/CONFORMANCE.md`: как именно пакет **заявляет совместимость** и какой минимальный набор проверок/тестов обязателен.
+- `docs/ARCHITECTURE.md`: architecture of **this repository** (package boundaries, dependency rules, policy).
+- `docs/V1_DECISIONS.md`: documented **v1 decisions for core contracts** (overlay/listbox/effects/theme/tokens) and invariants that compatibility relies on.
+- `docs/SPEC_V1.md` (this file): requirements for **third-party packages** to be "Headless-compatible".
+- `docs/CONFORMANCE.md`: how exactly a package **claims compatibility** and what minimum set of checks/tests is required.
 
-### Термины
+### Terms
 
-- **Component package**: publishable пакет компонента (например, `packages/components/headless_<feature>` в этом репозитории), который предоставляет `R*` виджеты/контроллеры и использует core контракты.
-- **Core contracts**: пакеты `headless_tokens`, `headless_foundation`, `headless_contracts`.
-- **Renderer capability**: интерфейс рендера/возможности темы, который `R*` требует через capability discovery.
-- **Conformance**: набор проверок/тестов, подтверждающих соблюдение Spec v1.
+- **Component package**: a publishable component package (e.g., `packages/components/headless_<feature>` in this repository) that provides `R*` widgets/controllers and uses core contracts.
+- **Core contracts**: packages `headless_tokens`, `headless_foundation`, `headless_contracts`.
+- **Renderer capability**: a renderer/theme capability interface that `R*` requires through capability discovery.
+- **Conformance**: a set of checks/tests confirming compliance with Spec v1.
 
-### Не‑цели (Non-goals)
+### Non-goals
 
-- Spec v1 **не** стандартизирует визуал или “Material‑по‑умолчанию”.
-- Spec v1 **не** навязывает стейт‑менеджер приложения (Riverpod/BLoC/MobX/Redux).
-- Spec v1 **не** требует Navigator/Route для overlay‑паттернов.
+- Spec v1 **does not** standardize visuals or "Material-by-default".
+- Spec v1 **does not** impose an application state manager (Riverpod/BLoC/MobX/Redux).
+- Spec v1 **does not** require Navigator/Route for overlay patterns.
 
 ---
 
-## 1) Требования к пакету компонента (обязательные)
+## 1) Component package requirements (mandatory)
 
-### 1.1 Public API и нейминг
+### 1.1 Public API and naming
 
-- **MUST**: публичные виджеты headless‑компонента именуются `R*` (Flutter‑like POLA, без конфликтов имён).
-- **MUST**: пакет должен иметь чётко выделенный “entrypoint” (`lib/<package>.dart`) и экспортировать только публичное API.
-- **MUST NOT**: использовать или документировать импорты внутренних файлов `package:<pkg>/src/...` как публичный способ использования.
-- **SHOULD**: кросс‑пакетные импорты по возможности должны идти только через entrypoint (`package:<pkg>/<pkg>.dart`) — это упрощает миграции и снижает риск поломок.
-- **SHOULD**: публичный API быть минимальным, расширение — через опциональные параметры/slots/capabilities.
+- **MUST**: public widgets of a headless component are named `R*` (Flutter-like POLA, no name conflicts).
+- **MUST**: the package must have a clearly defined "entrypoint" (`lib/<package>.dart`) and export only the public API.
+- **MUST NOT**: use or document imports of internal files `package:<pkg>/src/...` as a public usage method.
+- **SHOULD**: cross-package imports should go through the entrypoint (`package:<pkg>/<pkg>.dart`) whenever possible - this simplifies migrations and reduces the risk of breakages.
+- **SHOULD**: public API should be minimal, extension - through optional parameters/slots/capabilities.
 
-### 1.2 Структура слоёв (DDD/Clean Architecture внутри пакета)
+### 1.2 Layer structure (DDD/Clean Architecture within the package)
 
-Компонентный пакет **MUST** быть организован как минимум так:
+A component package **MUST** be organized at minimum as follows:
 
 ```text
 lib/
   src/
-    domain/            # если нужно (value objects, events, variants)
+    domain/            # if needed (value objects, events, variants)
       variants/
       specs/
-      resolved/        # если нужно (но без UI типов)
+      resolved/        # if needed (but without UI types)
     presentation/
-      widgets/         # R* виджеты и glue для поведения/a11y
-      controllers/     # controllers/value listenables (если есть)
+      widgets/         # R* widgets and glue for behavior/a11y
+      controllers/     # controllers/value listenables (if any)
     infra/
-      adapters/        # интеграция с theme/foundation (без baseline UI)
+      adapters/        # integration with theme/foundation (no baseline UI)
 ```
 
-- **MUST**: `domain/` не зависит от Flutter UI типов (см. `docs/ARCHITECTURE.md` → “Где нельзя хранить состояние”).
-- **MUST**: `presentation/` отвечает за поведение/состояния/a11y и сбор spec/state.
-- **MUST NOT**: хранить baseline визуал внутри компонента; визуал делегируется renderer’у через `headless_contracts` (capability discovery — через `headless_theme`).
+- **MUST**: `domain/` does not depend on Flutter UI types (see `docs/ARCHITECTURE.md` - "Where state must not be stored").
+- **MUST**: `presentation/` is responsible for behavior/states/a11y and spec/state assembly.
+- **MUST NOT**: store baseline visuals inside the component; visuals are delegated to the renderer through `headless_contracts` (capability discovery - via `headless_theme`).
 
-#### Минимальный пакет (исключение для простых компонентов)
+#### Minimal package (exception for simple components)
 
-Для очень простых компонентов v1 (например, Button), где:
-- нет доменной модели кроме нескольких enum/параметров,
-- нет отдельной инфраструктуры кроме прямого доступа к capability,
+For very simple v1 components (e.g., Button), where:
+- there is no domain model beyond a few enums/parameters,
+- there is no separate infrastructure beyond direct capability access,
 
-допускается **не создавать пустые папки `domain/` и/или `infra/`**.
+it is acceptable to **not create empty `domain/` and/or `infra/` directories**.
 
-Инварианты при этом остаются:
-- headless separation соблюдён,
-- публичный API стабилен и минимален,
-- нет импорта renderer реализаций,
-- conformance тесты присутствуют.
+Invariants still hold:
+- headless separation is maintained,
+- public API is stable and minimal,
+- no import of renderer implementations,
+- conformance tests are present.
 
-### 1.3 Зависимости (DAG)
+### 1.3 Dependencies (DAG)
 
-- **MUST**: пакет компонента **не** зависит от других компонентных пакетов (`packages/components/*` политика).
-- **MUST**: зависимости соответствуют таблице из `docs/ARCHITECTURE.md` (“что кому можно импортить”).
-- **MUST**: граф зависимостей пакетов остаётся DAG (без циклов).
+- **MUST**: a component package **does not** depend on other component packages (`packages/components/*` policy).
+- **MUST**: dependencies conform to the table from `docs/ARCHITECTURE.md` ("what can import what").
+- **MUST**: the package dependency graph remains a DAG (no cycles).
 
 ---
 
-## 2) Headless‑контракт: поведение отдельно от визуала
+## 2) Headless contract: behavior separate from visuals
 
-### 2.1 Renderer contract и capability discovery
+### 2.1 Renderer contract and capability discovery
 
-- **MUST**: `R*` компонент получает renderer capability из темы/композиции (capability discovery), а не импортирует конкретные renderer реализации.
-- **MUST**: отсутствие capability должно приводить к понятной диагностике (assert/throw с инструкцией подключения).
+- **MUST**: an `R*` component obtains the renderer capability from the theme/composition (capability discovery), and does not import specific renderer implementations.
+- **MUST**: absence of a capability must result in clear diagnostics (assert/throw with instructions for connecting).
 
-См. `docs/V1_DECISIONS.md`:
+See `docs/V1_DECISIONS.md`:
 - 0.1 Renderer contracts
-- “Отсутствие renderer’а = явная ошибка”
+- "Absence of a renderer = explicit error"
 
 ### 2.1.1 Scoped capability overrides (SHOULD)
 
-- **SHOULD**: приложения/пресеты могут переопределять renderer/token resolver capabilities на subtree через композицию темы (nested theme scopes).
-- **SHOULD**: поведение override должно быть POLA: override-wins, иначе fallback к базовой теме.
-- **MUST NOT**: не требовать “слияния тем” как обязательной семантики (никакой auto-merge preset конфигов).
-- **SHOULD**: capability контракты, используемые для discovery, должны быть non-generic (стабильная type identity).
+- **SHOULD**: applications/presets can override renderer/token resolver capabilities on a subtree through theme composition (nested theme scopes).
+- **SHOULD**: override behavior must be POLA: override-wins, otherwise fallback to the base theme.
+- **MUST NOT**: require "theme merging" as mandatory semantics (no auto-merge of preset configs).
+- **SHOULD**: capability contracts used for discovery should be non-generic (stable type identity).
 
 ### 2.1.2 App-level motion theme (SHOULD)
 
-Цель: дать людям один понятный “рычаг” для единых длительностей/кривых анимаций на уровне приложения, без правок renderer’ов.
+Goal: give people one clear "lever" for unified animation durations/curves at the application level, without modifying renderers.
 
-- **SHOULD**: приложения могут предоставлять `HeadlessMotionTheme` как capability и переопределять его на subtree.
-- **MUST**: renderer должен уважать motion tokens в resolved tokens.
-- **MUST**: приоритет разрешения motion (высокий → низкий):
-  - per-instance motion tokens (`resolvedTokens.*.motion`, если заданы),
+- **SHOULD**: applications can provide `HeadlessMotionTheme` as a capability and override it on a subtree.
+- **MUST**: the renderer must respect motion tokens in resolved tokens.
+- **MUST**: motion resolution priority (high to low):
+  - per-instance motion tokens (`resolvedTokens.*.motion`, if set),
   - `HeadlessMotionTheme` capability (app/subtree),
-  - preset defaults (например `HeadlessMotionTheme.material`/`HeadlessMotionTheme.cupertino`).
+  - preset defaults (e.g., `HeadlessMotionTheme.material`/`HeadlessMotionTheme.cupertino`).
 
-Пример: глобально задать motion профиль для всего приложения:
+Example: globally set a motion profile for the entire application:
 
 ```dart
 HeadlessThemeProvider(
@@ -130,7 +130,7 @@ HeadlessThemeProvider(
 )
 ```
 
-Пример: локально “ускорить” motion только на одном экране:
+Example: locally "speed up" motion on a single screen only:
 
 ```dart
 HeadlessThemeOverridesScope.only<HeadlessMotionTheme>(
@@ -150,17 +150,17 @@ HeadlessThemeOverridesScope.only<HeadlessMotionTheme>(
 )
 ```
 
-### 2.1.3 Tokens-only визуальные параметры (MUST)
+### 2.1.3 Tokens-only visual parameters (MUST)
 
-- **MUST**: renderer **не** вычисляет визуальные параметры из констант; все значения берутся из `resolvedTokens`.
-- **MUST**: для прозрачных поверхностей opacity хранится отдельным token’ом (чтобы не терять `CupertinoDynamicColor`).
+- **MUST**: the renderer **does not** compute visual parameters from constants; all values are taken from `resolvedTokens`.
+- **MUST**: for transparent surfaces, opacity is stored as a separate token (to avoid losing `CupertinoDynamicColor`).
 
 ### 2.1.4 Strict tokens policy (MAY)
 
-- **MAY**: приложение может предоставить capability `HeadlessRendererPolicy` с `requireResolvedTokens=true`,
-  чтобы в debug/test режиме падать при отсутствии `resolvedTokens`.
+- **MAY**: an application can provide a `HeadlessRendererPolicy` capability with `requireResolvedTokens=true`,
+  to crash in debug/test mode when `resolvedTokens` are missing.
 
-Пример:
+Example:
 
 ```dart
 HeadlessThemeOverridesScope.only<HeadlessRendererPolicy>(
@@ -169,87 +169,86 @@ HeadlessThemeOverridesScope.only<HeadlessRendererPolicy>(
 )
 ```
 
-Пример (dropdown menu):
+Example (dropdown menu):
 - `backgroundOpacity`, `backdropBlurSigma`, `shadowColor`, `shadowBlurRadius`, `shadowOffset`.
 
-### 2.2 Slots/Parts для точечного override
+### 2.2 Slots/Parts for targeted override
 
-- **SHOULD**: сложные компоненты предоставляют typed slots/parts (Replace/Decorate/Enhance) как основной механизм кастомизации структуры.
-- **MUST NOT**: использовать string-based part identifiers.
+- **SHOULD**: complex components provide typed slots/parts (Replace/Decorate/Enhance) as the primary mechanism for customizing structure.
+- **MUST NOT**: use string-based part identifiers.
 
-См. `docs/V1_DECISIONS.md` → “Slots override: Replace + Decorate”.
+See `docs/V1_DECISIONS.md` - "Slots override: Replace + Decorate".
 
-### 2.3 Границы интеракций (без “серых зон”) — MUST
+### 2.3 Interaction boundaries (no "gray zones") - MUST
 
-Цель: один и тот же `R*` компонент должен иметь **одинаковое поведение** при любых renderer’ах (Material/Cupertino/custom), иначе headless separation теряет смысл.
+Goal: the same `R*` component must have **identical behavior** across any renderers (Material/Cupertino/custom), otherwise headless separation loses its purpose.
 
-- **MUST**: компонент владеет root‑интеракцией и accessibility корня.
-  - Root‑surface активации (например, кнопка/триггер) обрабатывает pointer/keyboard через `headless_foundation` (например, `HeadlessPressableRegion`).
-  - Root Semantics (`button`, `enabled`, `expanded`, label и т.д.) задаёт компонент, а не renderer.
-- **MUST NOT**: renderer не должен вызывать “user callbacks” приложения (например, `onPressed`, `onChanged`) и не должен создавать второй независимый путь активации.
-  - Запрещено: `InkWell(onTap: ...)` / `GestureDetector(onTap: ...)` на root‑surface, если это приводит к активации.
-  - Причина: это создаёт double‑invoke и/или расхождение поведения между renderer’ами.
-- **MAY**: renderer может “проводить провод” только к **командным** методам компонента, которые переданы в render request.
-  - Это не “решение”, а wiring UI → командный API компонента.
-  - Рекомендация (SHOULD): отличать по неймингу:
-    - **User callbacks**: `on*` параметры `R*` виджета (принадлежат приложению).
-    - **Commands**: императивные методы (`open()`, `close()`, `selectIndex(i)`, `highlight(i)`, `completeClose()`), которые живут в render request и принадлежат компоненту.
+- **MUST**: the component owns root interaction and root accessibility.
+  - The root activation surface (e.g., button/trigger) handles pointer/keyboard through `headless_foundation` (e.g., `HeadlessPressableRegion`).
+  - Root Semantics (`button`, `enabled`, `expanded`, label, etc.) are set by the component, not the renderer.
+- **MUST NOT**: the renderer must not invoke "user callbacks" of the application (e.g., `onPressed`, `onChanged`) and must not create a second independent activation path.
+  - Prohibited: `InkWell(onTap: ...)` / `GestureDetector(onTap: ...)` on the root surface if it leads to activation.
+  - Reason: this creates double-invoke and/or behavior divergence between renderers.
+- **MAY**: the renderer may "wire up" only to **command** methods of the component that are passed in the render request.
+  - This is not a "decision" but wiring UI to the component's command API.
+  - Recommendation (SHOULD): distinguish by naming:
+    - **User callbacks**: `on*` parameters of the `R*` widget (belong to the application).
+    - **Commands**: imperative methods (`open()`, `close()`, `selectIndex(i)`, `highlight(i)`, `completeClose()`), which live in the render request and belong to the component.
 
 ---
 
 ## 3) State model: controlled/uncontrolled (POLA)
 
-- **MUST**: если передан `value/state` или `controller` — компонент работает в controlled‑режиме и не “перетирает” состояние сам.
-- **MUST**: ownership controller — как у Flutter: внешний controller не диспоузим; внутренний — обязаны диспоузить.
-- **SHOULD**: иметь защиту от sync‑циклов (`onChanged → parent sets value → onChanged`) через equality/dedupe.
+- **MUST**: if `value/state` or `controller` is provided - the component operates in controlled mode and does not "overwrite" state on its own.
+- **MUST**: controller ownership - same as Flutter: an external controller is not disposed; an internal one - must be disposed.
+- **SHOULD**: have protection against sync cycles (`onChanged -> parent sets value -> onChanged`) through equality/dedupe.
 
-См. `docs/ARCHITECTURE.md` → “Ownership и lifecycle controller”.
-
----
-
-## 4) Overlay/Listbox/Effects: обязательные интеграции с core контрактами
-
-Если компонент использует overlay/menu‑паттерны:
-
-- **MUST**: использовать overlay инфраструктуру из `headless_foundation` (не Navigator).
-- **MUST**: соблюдать close/phase контракт (opening/open/closing/closed + `completeClose()` + fail‑safe таймаут).
-- **MUST**: keyboard navigation/typeahead строить на foundation listbox primitives (где применимо).
-- **SHOULD**: побочные действия оформлять как effects (E1: events → reducer → effects executor), чтобы ядро оставалось pure.
-
-См. `docs/V1_DECISIONS.md` → 0.2/0.3/0.7 и секции E1/A1.
+See `docs/ARCHITECTURE.md` - "Ownership and controller lifecycle".
 
 ---
 
-## 5) Тесты и Conformance
+## 4) Overlay/Listbox/Effects: mandatory integrations with core contracts
 
-### 5.1 Минимальный conformance‑набор (v1)
+If a component uses overlay/menu patterns:
 
-Пакет, который заявляет “совместим со Spec v1”, **MUST** иметь тесты, покрывающие:
+- **MUST**: use overlay infrastructure from `headless_foundation` (not Navigator).
+- **MUST**: follow the close/phase contract (opening/open/closing/closed + `completeClose()` + fail-safe timeout).
+- **MUST**: build keyboard navigation/typeahead on foundation listbox primitives (where applicable).
+- **SHOULD**: structure side effects as effects (E1: events -> reducer -> effects executor), so the core remains pure.
 
-- **A11y/semantics**: базовые роли/label/disabled состояния.
-- **Keyboard-only сценарии**: фокус, Escape/Enter/Space, навигация по списку (если есть listbox).
-- **Overlay lifecycle**: корректный переход в `closing`, завершение `completeClose()`, fail‑safe не зависает.
-- **Controlled/uncontrolled**: корректная работа при внешнем value/controller.
-
-### 5.2 Где живут тест‑хелперы
-
-- **SHOULD**: использовать `headless_test` helpers (когда они появятся) вместо “самописных” тестовых утилит.
+See `docs/V1_DECISIONS.md` - 0.2/0.3/0.7 and sections E1/A1.
 
 ---
 
-## 6) Версионирование и совместимость
+## 5) Tests and Conformance
 
-- **MUST**: компонент указывает совместимый диапазон версий core контрактов (как минимум один MAJOR).
-- **SHOULD**: придерживаться lockstep‑версии системы, если компонент публикуется как часть “официального набора”.
+### 5.1 Minimum conformance set (v1)
 
-См. `docs/ARCHITECTURE.md` → “Политика версионирования (SemVer)”.
+A package claiming "compatible with Spec v1" **MUST** have tests covering:
+
+- **A11y/semantics**: basic roles/label/disabled states.
+- **Keyboard-only scenarios**: focus, Escape/Enter/Space, list navigation (if listbox is present).
+- **Overlay lifecycle**: correct transition to `closing`, completion of `completeClose()`, fail-safe does not hang.
+- **Controlled/uncontrolled**: correct behavior with external value/controller.
+
+### 5.2 Where test helpers live
+
+- **SHOULD**: use `headless_test` helpers (when they become available) instead of "hand-rolled" test utilities.
 
 ---
 
-## 7) Метаданные для AI/генераторов (LLM.txt)
+## 6) Versioning and compatibility
 
-- **MUST**: publishable package содержит `LLM.txt` в корне (Purpose/Non-goals/Invariants/Correct usage/Anti-patterns).
-- **MUST**: при изменении публичного API/инвариантов обновлять `LLM.txt` в том же PR.
+- **MUST**: the component specifies a compatible version range of core contracts (at least one MAJOR).
+- **SHOULD**: follow the lockstep versioning of the system if the component is published as part of the "official set".
 
-См. `docs/ARCHITECTURE.md` → “AI/MCP metadata policy (LLM.txt)”.
+See `docs/ARCHITECTURE.md` - "Versioning policy (SemVer)".
 
+---
+
+## 7) Metadata for AI/generators (LLM.txt)
+
+- **MUST**: a publishable package contains `LLM.txt` at the root (Purpose/Non-goals/Invariants/Correct usage/Anti-patterns).
+- **MUST**: when changing the public API/invariants, update `LLM.txt` in the same PR.
+
+See `docs/ARCHITECTURE.md` - "AI/MCP metadata policy (LLM.txt)".

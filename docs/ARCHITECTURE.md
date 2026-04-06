@@ -1,8 +1,7 @@
-# Monorepo архитектура (feature-first + DDD + SOLID)
+# Monorepo Architecture (feature-first + DDD + SOLID)
 
-Этот документ автоматически разбит на части, чтобы соблюдать лимит **≤ 300 строк на файл**.
+This document has been automatically split into parts to comply with the **<= 300 lines per file** limit.
 
-## Части
+## Parts
 
-- [Monorepo архитектура (feature-first + DDD + SOLID) (part 1)](./ARCHITECTURE_part_01.md)
-
+- [Monorepo Architecture (feature-first + DDD + SOLID) (part 1)](./ARCHITECTURE_part_01.md)

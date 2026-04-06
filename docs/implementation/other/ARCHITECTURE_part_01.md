@@ -1,12 +1,11 @@
-# Monorepo архитектура (feature-first + DDD + SOLID) (part 1)
+# Monorepo Architecture (feature-first + DDD + SOLID) (part 1)
 
-Этот документ автоматически разбит на части, чтобы соблюдать лимит **≤ 300 строк на файл**.
+This document has been automatically split into parts to comply with the **<= 300 lines per file** limit.
 
-## Части
+## Parts
 
-- [Monorepo архитектура (feature-first + DDD + SOLID) (part 1) (part 1)](./ARCHITECTURE_part_01_part_01.md)
-- [Monorepo архитектура (feature-first + DDD + SOLID) (part 1) (part 2)](./ARCHITECTURE_part_01_part_02.md)
-- [Monorepo архитектура (feature-first + DDD + SOLID) (part 1) (part 3)](./ARCHITECTURE_part_01_part_03.md)
-- [Monorepo архитектура (feature-first + DDD + SOLID) (part 1) (part 4)](./ARCHITECTURE_part_01_part_04.md)
-- [Monorepo архитектура (feature-first + DDD + SOLID) (part 1) (part 5)](./ARCHITECTURE_part_01_part_05.md)
-
+- [Monorepo Architecture (feature-first + DDD + SOLID) (part 1) (part 1)](./ARCHITECTURE_part_01_part_01.md)
+- [Monorepo Architecture (feature-first + DDD + SOLID) (part 1) (part 2)](./ARCHITECTURE_part_01_part_02.md)
+- [Monorepo Architecture (feature-first + DDD + SOLID) (part 1) (part 3)](./ARCHITECTURE_part_01_part_03.md)
+- [Monorepo Architecture (feature-first + DDD + SOLID) (part 1) (part 4)](./ARCHITECTURE_part_01_part_04.md)
+- [Monorepo Architecture (feature-first + DDD + SOLID) (part 1) (part 5)](./ARCHITECTURE_part_01_part_05.md)

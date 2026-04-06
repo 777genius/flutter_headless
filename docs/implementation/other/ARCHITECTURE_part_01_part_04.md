@@ -1,244 +1,244 @@
-## Monorepo архитектура (feature-first + DDD + SOLID) (part 1) (part 4)
+## Monorepo Architecture (feature-first + DDD + SOLID) (part 1) (part 4)
 
 Back: [Index](./ARCHITECTURE_part_01.md)
 
-- **Anti-patterns**: 3–5 “нельзя”.
+- **Anti-patterns**: 3-5 "don'ts".
 
-**Когда обновлять:**
-- Любое изменение публичного API, инвариантов, или поведения по умолчанию пакета → **обновляем `LLM.txt` в том же PR**.
+**When to update:**
+- Any change to public API, invariants, or default behavior of a package -> **update `LLM.txt` in the same PR**.
 
-### Типовые кейсы (куда класть код, чтобы не нарушать границы)
+### Typical Cases (where to put code so as not to break boundaries)
 
-Ниже — ситуации, которые возникают почти всегда. Цель: не допускать связей **компонент → компонент**, но при этом не терять удобство и переиспользование.
+Below are situations that arise almost always. Goal: prevent **component -> component** links, but without losing convenience and reuse.
 
-#### Кейс 1: “Dialog хочет Button” (не делаем `dialog -> button`)
+#### Case 1: "Dialog wants Button" (don't do `dialog -> button`)
 
-- **Антипаттерн**: dialog‑компонент импортит `headless_button`, чтобы нарисовать actions.
-- **Правильно**:
-  - `Dialog` объявляет **parts/slots** (например `actions` как `Widget`/builder) в своём `presentation`.
-  - Конкретное приложение/фасад решает, что передать в `actions` (хоть `RTextButton`, хоть любой другой виджет).
-  - Если нужно единообразное расположение/отступы/поведение — это **семантические токены** (`tokens/semantic`) или **renderer** диалога, а не зависимость от кнопки.
+- **Anti-pattern**: dialog component imports `headless_button` to render actions.
+- **Correct approach**:
+  - `Dialog` declares **parts/slots** (e.g. `actions` as `Widget`/builder) in its `presentation`.
+  - The specific application/facade decides what to pass into `actions` (whether `RTextButton` or any other widget).
+  - If uniform layout/spacing/behavior is needed - that's **semantic tokens** (`tokens/semantic`) or the dialog **renderer**, not a dependency on button.
 
-#### Кейс 2: “DropdownButton хочет Dialog/Overlay” (не делаем `dropdown -> dialog`)
+#### Case 2: "DropdownButton wants Dialog/Overlay" (don't do `dropdown -> dialog`)
 
- - **Антипаттерн**: `DropdownButton` использует `RDialog` как “готовый попап”.
-- **Правильно**:
-  - Всё, что касается портала/позиционирования/барьеров/скролла/закрытия по клику снаружи — это `anchored_overlay_engine`.
-  - `DropdownButton` использует overlay‑механизм напрямую.
-  - `Dialog` тоже использует overlay‑механизм напрямую. Оба компонента становятся независимыми.
+ - **Anti-pattern**: `DropdownButton` uses `RDialog` as a "ready-made popup".
+- **Correct approach**:
+  - Everything related to portal/positioning/barriers/scroll/close-on-outside-click is `anchored_overlay_engine`.
+  - `DropdownButton` uses the overlay mechanism directly.
+  - `Dialog` also uses the overlay mechanism directly. Both components become independent.
 
-#### Кейс 3: “Несколько компонентов хотят одинаковую логику hover/pressed/focus”
+#### Case 3: "Multiple components want the same hover/pressed/focus logic"
 
-- **Антипаттерн**: копируем обработчики в каждом `R*`.
-- **Правильно**:
-  - Общие политики интеракций — в `headless_foundation/interactions` и/или `state_resolution`.
-  - Компоненты подключают общий механизм и подают свои входные сигналы (gesture/focus), а не реализуют всё заново.
+- **Anti-pattern**: copying handlers into each `R*`.
+- **Correct approach**:
+  - Shared interaction policies go in `headless_foundation/interactions` and/or `state_resolution`.
+  - Components plug into the shared mechanism and feed their input signals (gesture/focus), rather than implementing everything from scratch.
 
-#### Кейс 4: “Нужны единые правила приоритетов состояний” (pressed vs disabled vs focused)
+#### Case 4: "Need unified state priority rules" (pressed vs disabled vs focused)
 
-- **Антипаттерн**: “как получилось” через `if` в каждом компоненте/теме.
-- **Правильно**:
-  - Правила приоритетов и комбинаций — централизованно в `headless_foundation/state_resolution`.
-  - Тема/рендерер получает уже нормализованные состояния и ведёт себя предсказуемо (POLA).
+- **Anti-pattern**: "whatever happened to work" via `if` in each component/theme.
+- **Correct approach**:
+  - Priority and combination rules are centralized in `headless_foundation/state_resolution`.
+  - Theme/renderer receives already normalized states and behaves predictably (POLA).
 
-#### Кейс 5: “Хотим общий визуальный паттерн: кнопки в диалоге выглядят так-то”
+#### Case 5: "Want a shared visual pattern: buttons in a dialog look like this"
 
-- **Антипаттерн**: жёстко прошиваем структуру и виджеты внутрь `Dialog`.
-- **Правильно (headless)**:
-  - Либо это **renderer диалога** (структура/раскладка/эффекты) + семантические токены.
-  - Либо это решается **в приложении** композицией: передали нужные actions.
+- **Anti-pattern**: hard-coding structure and widgets inside `Dialog`.
+- **Correct approach (headless)**:
+  - Either it's the dialog **renderer** (structure/layout/effects) + semantic tokens.
+  - Or it's solved **in the application** via composition: passing the needed actions.
 
-#### Кейс 6: “Пользователь не хочет 10 импортов”
+#### Case 6: "User doesn't want 10 imports"
 
-- **Правильно**:
-  - `packages/headless` (facade) ре‑экспортирует популярные компоненты и базовые контракты.
-  - При этом компоненты остаются отдельными пакетами (можно подключать точечно).
+- **Correct approach**:
+  - `packages/headless` (facade) re-exports popular components and base contracts.
+  - Meanwhile, components remain separate packages (can be added individually).
 
-#### Кейс 7: “Кажется, что нужен shared UI‑компонент (например, Divider/Label/Spinner)”
+#### Case 7: "Seems like a shared UI component is needed (e.g., Divider/Label/Spinner)"
 
-- **Проверка перед выносом**:
-  - Это действительно “компонент”, или это часть рендера конкретной фичи?
-- **Правило**:
-  - Если это **чистый примитив/механизм** → `headless_foundation` или `headless_tokens`.
-  - Если это **кусок конкретной структуры** → остаётся внутри фичи в renderer/parts.
+- **Check before extracting**:
+  - Is this really a "component", or is it part of a specific feature's renderer?
+- **Rule**:
+  - If it's a **pure primitive/mechanism** -> `headless_foundation` or `headless_tokens`.
+  - If it's a **piece of specific structure** -> it stays inside the feature in renderer/parts.
 
 ---
 
-### Порог выноса в `headless_foundation` (грамотное правило 2–3 фич)
+### Threshold for extraction to `headless_foundation` (the proper 2-3 features rule)
 
-`headless_foundation` — это **инфраструктурный слой**, который должен быть максимально стабильным. Ошибка, которую часто делают: кладут туда “общие куски UI” или “удобные компоненты”. Мы так не делаем.
+`headless_foundation` is an **infrastructure layer** that should be maximally stable. A common mistake is putting "shared UI pieces" or "convenient components" there. We don't do that.
 
-#### Что такое “foundation” (а что нет)
+#### What "foundation" is (and what it is not)
 
-- **Foundation = механизмы поведения** (cross-cutting):
+- **Foundation = behavior mechanisms** (cross-cutting):
   - overlay/portal/positioning (anchored_overlay_engine), dismiss, scroll strategies
   - focus management, focus trap, keyboard navigation policy
-  - интеракции (pressed/hovered/focused) как политика, а не разметка
-  - state resolution (приоритеты/нормализация состояний)
-  - FSM primitives для сложных интерактивных паттернов
-  - a11y-утилиты уровня “поведение/семантика”, не визуал
+  - interactions (pressed/hovered/focused) as a policy, not markup
+  - state resolution (priorities/normalization of states)
+  - FSM primitives for complex interactive patterns
+  - a11y utilities at the "behavior/semantics" level, not visuals
 
-- **НЕ foundation**:
-  - готовые визуальные виджеты/структуры (это renderer/parts внутри конкретной фичи)
-  - “resolved style” модели конкретного компонента (любые `Resolved*`-типы, связанные с одним компонентом)
-  - “кусок диалога” или “кусок селекта”, который нужен только одному компоненту
-  - theme implementations (брендовые темы/рендереры)
+- **NOT foundation**:
+  - ready-made visual widgets/structures (those are renderer/parts inside a specific feature)
+  - "resolved style" models of a specific component (any `Resolved*` types tied to one component)
+  - "piece of dialog" or "piece of select" needed by only one component
+  - theme implementations (branded themes/renderers)
 
-#### Правило 2–3 фич (порог)
+#### The 2-3 features rule (threshold)
 
-Используем 3 уровня решения:
+We use 3 decision levels:
 
-- **Уровень A — остаётся в компоненте (default)**:
-  - используется **в 1 компоненте**, или
-  - это “структурный кусок” renderer/parts, или
-  - механизм зависит от доменных типов конкретного компонента.
+- **Level A - stays in the component (default)**:
+  - used in **1 component**, or
+  - it's a "structural piece" of renderer/parts, or
+  - the mechanism depends on domain types of a specific component.
 
-- **Уровень B — кандидат в foundation (2 фичи)**:
-  - одинаковая логика/инварианты используются **минимум в 2 компонентах**, и
-  - это именно **механизм поведения**, и
-  - можно описать стабильный контракт без привязки к домену компонента.
-  - Действие: выносим в foundation **только если** уже понятно, какие “ручки” расширения нужны (POLA).
+- **Level B - candidate for foundation (2 features)**:
+  - the same logic/invariants are used **in at least 2 components**, and
+  - it is specifically a **behavior mechanism**, and
+  - a stable contract can be described without tying to a component's domain.
+  - Action: extract to foundation **only if** it's already clear what extension "knobs" are needed (POLA).
 
-- **Уровень C — обязателен foundation (3+ фичи)**:
-  - механизм нужен **в 3+ компонентах** (или это очевидная платформа: overlay/anchoring, focus, state_resolution), и
-  - повторение кода ведёт к расхождениям поведения.
-  - Действие: выносим в foundation и фиксируем API/контракт.
+- **Level C - foundation is mandatory (3+ features)**:
+  - the mechanism is needed **in 3+ components** (or it's an obvious platform: overlay/anchoring, focus, state_resolution), and
+  - code duplication leads to behavioral divergence.
+  - Action: extract to foundation and lock in the API/contract.
 
-#### Чеклист перед выносом (чтобы не “засорить foundation”)
+#### Checklist before extraction (to avoid "polluting foundation")
 
-Перед тем как вынести, отвечаем “да” на всё:
+Before extracting, answer "yes" to all:
 
-- **Механизм, не виджет**: это поведение/политика, а не разметка.
-- **Нет доменной привязки**: не зависит от `ButtonSpec/DialogSpec/...`.
-- **Чёткий контракт**: можно сформулировать входы/выходы и инварианты.
-- **Тестируемость**: можно написать поведенческие тесты без golden.
-- **POLA**: дефолты предсказуемы, нет скрытых сайд‑эффектов.
+- **Mechanism, not widget**: this is behavior/policy, not markup.
+- **No domain binding**: does not depend on `ButtonSpec/DialogSpec/...`.
+- **Clear contract**: inputs/outputs and invariants can be formulated.
+- **Testability**: behavioral tests can be written without golden tests.
+- **POLA**: defaults are predictable, no hidden side effects.
 
-Если хотя бы один пункт “нет” — оставляем внутри компонента и возвращаемся позже.
+If even one item is "no" - keep it inside the component and revisit later.
 
 ---
 
-### Политика версионирования (SemVer) для monorepo пакетов
+### Versioning Policy (SemVer) for monorepo packages
 
-Цель: не получить “матрицу совместимости” из десятков пакетов. Для дизайн‑систем это критично, потому что пользователям важнее **предсказуемость**, чем микро‑оптимизация релизов.
+Goal: avoid a "compatibility matrix" of dozens of packages. For design systems this is critical, because users care more about **predictability** than micro-optimized releases.
 
-#### Рекомендация: lockstep‑версионирование для всех публичных пакетов
+#### Recommendation: lockstep versioning for all public packages
 
-Мы держим **одну общую версию `X.Y.Z`** для:
+We maintain **one shared version `X.Y.Z`** for:
 
 - `headless_tokens`
 - `headless_foundation`
 - `headless_contracts`
 - `headless_theme`
 - `headless` (facade)
-- всех `packages/components/headless_*`
+- all `packages/components/headless_*`
 
-Почему это правильно:
+Why this is correct:
 
-- Пользователь видит **одну версию системы**, а не “button@2.x + dialog@5.x + theme@1.x”.
-- Снижается риск несовместимых комбинаций.
-- Проще поддерживать документацию, примеры и миграции.
+- The user sees **one system version**, not "button@2.x + dialog@5.x + theme@1.x".
+- Reduces the risk of incompatible combinations.
+- Easier to maintain documentation, examples, and migrations.
 
-#### Правила SemVer (что считается patch/minor/major)
+#### SemVer Rules (what counts as patch/minor/major)
 
 - **PATCH (`X.Y.Z+1`)**:
-  - багфиксы, исправление документации, внутренние рефакторинги без изменения публичного API
-  - правки производительности без изменения поведения по умолчанию
+  - bug fixes, documentation fixes, internal refactorings without public API changes
+  - performance fixes without changing default behavior
 
 - **MINOR (`X.(Y+1).0`)**:
-  - добавление новых возможностей **аддитивно** (новые компоненты, новые capabilities, новые токены)
-  - новые опции/поля со значениями по умолчанию, которые сохраняют старое поведение (POLA)
-  - новые renderer parts/slots без изменения текущих дефолтов
+  - adding new capabilities **additively** (new components, new capabilities, new tokens)
+  - new options/fields with default values that preserve old behavior (POLA)
+  - new renderer parts/slots without changing current defaults
 
 - **MAJOR (`(X+1).0.0`)**:
-  - любое breaking change публичного API (сигнатуры, удаления, переименования)
-  - изменение поведения по умолчанию, которое может “сломать ожидания”
-  - удаление ранее deprecated API
+  - any breaking change to public API (signatures, removals, renames)
+  - changing default behavior that may "break expectations"
+  - removing previously deprecated API
 
-#### Политика deprecation (чтобы миграции были спокойными)
+#### Deprecation Policy (to make migrations smooth)
 
-- Любое планируемое удаление сначала помечается как deprecated.
-- **Минимум 1 MINOR релиз** API живёт в deprecated‑состоянии.
-- Удаление — только в **следующем MAJOR**.
+- Any planned removal is first marked as deprecated.
+- **At least 1 MINOR release** the API lives in deprecated state.
+- Removal happens only in the **next MAJOR**.
 
-Принцип: если пользователь обновился на новый minor — он должен получить предупреждение и время на миграцию, а не внезапный слом.
+Principle: if a user updated to a new minor, they should get a warning and time to migrate, not a sudden breakage.
 
-#### Совместимость зависимостей (инвариант)
+#### Dependency Compatibility (invariant)
 
-- Компоненты и facade зависят от core‑пакетов в пределах **одного MAJOR**.
-- Любой релиз `X.Y.Z` гарантирует, что все пакеты с версией `X.Y.Z` совместимы между собой.
+- Components and facade depend on core packages within **one MAJOR**.
+- Any release `X.Y.Z` guarantees that all packages with version `X.Y.Z` are compatible with each other.
 
-#### Релизная дисциплина (минимальная, но строгая)
+#### Release Discipline (minimal, but strict)
 
-- Один релиз = один набор изменений во всех пакетах под одной версией.
-- На каждый релиз:
-  - короткий changelog (что добавили/починили/сломали)
-  - если есть breaking — миграционные заметки
+- One release = one set of changes across all packages under one version.
+- For each release:
+  - short changelog (what was added/fixed/broken)
+  - if there are breaking changes - migration notes
 
-Это поддерживает POLA и снижает стоимость обновлений для пользователей библиотеки.
+This supports POLA and reduces the cost of upgrades for library users.
 
 ---
 
-### Управление состоянием (state management) — что рекомендуем в Headless
+### State Management - what we recommend in Headless
 
-Ключевой принцип: **Headless не навязывает пользователю стейтменеджер** (Riverpod/BLoC/MobX/Redux и т.д.).  
-Наша задача как библиотеки — дать **универсальные контракты**, чтобы любой стейтменеджер мог управлять компонентами сверху.
+Key principle: **Headless does not impose a state manager** (Riverpod/BLoC/MobX/Redux etc.) on the user.
+Our job as a library is to provide **universal contracts**, so any state manager can control components from above.
 
-#### 1) Controlled / Uncontrolled модель (как у Flutter `TextField`)
+#### 1) Controlled / Uncontrolled model (like Flutter `TextField`)
 
-- **Controlled**: состояние приходит извне через `value/state` + `onChanged`.
-- **Uncontrolled**: компонент хранит состояние внутри (если `controller/value` не переданы).
-- **Правило POLA**: если передан controller/value — компонент не “перетирает” состояние сам.
+- **Controlled**: state comes from outside via `value/state` + `onChanged`.
+- **Uncontrolled**: the component stores state internally (if `controller/value` is not provided).
+- **POLA rule**: if controller/value is provided, the component does not "overwrite" state on its own.
 
-Зачем: это позволяет “подключить” компонент к любому стейтменеджеру без форков.
+Why: this allows "plugging in" a component to any state manager without forks.
 
-#### 2) Controller-подход + `ValueListenable` как минимальный общий знаменатель
+#### 2) Controller approach + `ValueListenable` as the minimum common denominator
 
-Для интерактивных компонентов (input/select/tabs и т.д.) лучший базовый контракт:
+For interactive components (input/select/tabs etc.) the best base contract is:
 
-- controller объект (по смыслу как `TextEditingController`)
-- наружу даём наблюдение через `ValueListenable<T>` / `Listenable`
+- a controller object (similar in concept to `TextEditingController`)
+- externally we expose observation via `ValueListenable<T>` / `Listenable`
 
-Почему это “гугл-уровень”:
+Why this is "Google-level":
 
-- 0 внешних зависимостей
-- совместимо со всеми подходами (можно оборачивать в stream, mobx, riverpod, bloc)
-- предсказуемый lifecycle: controller создаётся/передаётся/диспоузится по правилам
+- 0 external dependencies
+- compatible with all approaches (can wrap in stream, mobx, riverpod, bloc)
+- predictable lifecycle: controller is created/passed/disposed by the rules
 
-#### 3) Immutable State Object + события (events) для сложных компонентов
+#### 3) Immutable State Object + events for complex components
 
-Для сложных штуковин (`Select/Combobox/Menu`):
+For complex things (`Select/Combobox/Menu`):
 
-- состояние описываем как **immutable state** (`copyWith`/паттерн матчинг)
-- обновления происходят через **явные события** (open/close/select/highlight/blur…)
-- внутри допускается FSM (см. `headless_foundation/fsm`) — но наружу всё равно выдаём “текущее состояние” и callbacks
+- state is described as **immutable state** (`copyWith`/pattern matching)
+- updates happen through **explicit events** (open/close/select/highlight/blur...)
+- internally FSM is allowed (see `headless_foundation/fsm`) - but externally we still expose "current state" and callbacks
 
-Это снижает “магические” побочные эффекты и делает поведение тестируемым.
+This reduces "magical" side effects and makes behavior testable.
 
-#### 3.1) Стандарт поведения для сложных компонентов (E1)
+#### 3.1) Behavior standard for complex components (E1)
 
-Для `Dialog`, `Select/Combobox` и menu‑подобных паттернов используем единый стандарт:
+For `Dialog`, `Select/Combobox` and menu-like patterns we use a unified standard:
 
-- **Events**: `sealed` события
+- **Events**: `sealed` events
 - **State**: immutable state object
 - **Reducer core**: `reduce(state, event) -> (nextState, effects)` (pure)
-- **Effects**: отдельный слой побочных действий (overlay/focus/announce/reposition), чтобы ядро оставалось чистым
+- **Effects**: separate side-effect layer (overlay/focus/announce/reposition), so the core remains pure
 
-FSM допускается **поверх** этого стандарта (как режимы в state или как строгие правила переходов внутри reducer), но не вместо него.
+FSM is allowed **on top of** this standard (as modes in state or as strict transition rules inside the reducer), but not instead of it.
 
-Это также естественно соответствует UDF (Unidirectional Data Flow): **state вниз**, **events вверх** — что совпадает с актуальными рекомендациями Flutter app architecture и снижает риск “магических” сайд-эффектов.
+This also naturally aligns with UDF (Unidirectional Data Flow): **state down**, **events up** - which matches current Flutter app architecture recommendations and reduces the risk of "magical" side effects.
 
-#### 3.2) Async в E1 (политика v1)
+#### 3.2) Async in E1 (v1 policy)
 
-- Reducer остаётся **pure**: никаких `Future` внутри `reduce`.
-- Async делаем через **effects executor → result events**:
-  - effect запускает операцию (с key/opId для дедупа/отмены),
-  - по завершении executor диспатчит `Succeeded/Failed` события обратно в reducer.
+- Reducer stays **pure**: no `Future` inside `reduce`.
+- Async is done through **effects executor -> result events**:
+  - effect launches an operation (with key/opId for dedup/cancel),
+  - upon completion, the executor dispatches `Succeeded/Failed` events back to the reducer.
 
-#### 3.3) Effects / Overlay / Listbox — обязательные контракты v1
+#### 3.3) Effects / Overlay / Listbox - mandatory v1 contracts
 
-Чтобы избежать “Radix perf” и “overlay костылей”, фиксируем как требования v1:
+To avoid "Radix perf" and "overlay workarounds", we lock these in as v1 requirements:
 
-- **Effects contract**: типизированные категории effects + executor с coalesce/dedupe/cancel + result events (см. `docs/V1_DECISIONS.md`).
-- **Overlay SLA**: anchoring на scroll/resize, nested scroll, flip/shift/collision, обновления не чаще 1/frame (см. `docs/V1_DECISIONS.md`).
-- **Listbox spec**: единые правила keyboard nav + typeahead (см. `docs/V1_DECISIONS.md`).
+- **Effects contract**: typed effect categories + executor with coalesce/dedupe/cancel + result events (see `docs/V1_DECISIONS.md`).
+- **Overlay SLA**: anchoring on scroll/resize, nested scroll, flip/shift/collision, updates no more than 1/frame (see `docs/V1_DECISIONS.md`).
+- **Listbox spec**: unified keyboard nav + typeahead rules (see `docs/V1_DECISIONS.md`).

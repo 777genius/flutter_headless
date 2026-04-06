@@ -4,8 +4,8 @@ title: "Headless"
 description: "Flutter UI building blocks with consistent behavior and accessibility"
 hero:
   name: "Headless"
-  text: Flutter UI Building Blocks
-  tagline: Consistent behavior and accessibility. Material, Cupertino, or your own visuals.
+  text: Reusable Logic, Any Visual
+  tagline: Write behavior once - focus, keyboard, accessibility, state. Style it however you want, in every project.
   actions:
     - theme: brand
       text: Quick Start
@@ -18,14 +18,17 @@ features:
     title: Headless Architecture
     details: Behavior, keyboard handling, and accessibility are separated from visuals. Swap renderers without forking logic.
   - icon: "\U0001F3A8"
-    title: Multi-Brand Ready
-    details: Ship Material, Cupertino, or a fully custom look from the same component set. No conditional branches or duplicated widgets.
+    title: Fully Customizable
+    details: Ship Material, Cupertino, or a completely custom look from the same component set. Users restyle everything without forking your logic.
   - icon: "\u2328\uFE0F"
     title: Keyboard & A11y
     details: Focus management, keyboard navigation, and state transitions live in headless_foundation. Semantics contracts are defined in headless_contracts and implemented by each renderer.
   - icon: "\U0001F527"
     title: Slots & Overrides
     details: Customize any part of a component per-instance via slots, style overrides, or scoped themes without touching the source.
+  - icon: "\U0001F4E6"
+    title: Great for Package Authors
+    details: Build widget libraries that users can adapt to any app design. Your package provides the behavior - they plug in their own visuals via renderers, tokens, and slots.
 ---
 
 ## Install
