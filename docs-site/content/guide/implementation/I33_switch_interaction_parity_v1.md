@@ -1,0 +1,9 @@
+## I33 — Switch Interaction Parity v1 (Material Ink ripple + Drag thumb like Flutter)
+
+Этот документ разбит на части, чтобы соблюдать лимит **≤ 300 строк на файл**.
+
+## Части
+
+- [I33 — Switch Interaction Parity v1 (part 1)](/guide/implementation/I33_switch_interaction_parity_v1_part_01)
+- [I33 — Switch Interaction Parity v1 (part 2)](/guide/implementation/I33_switch_interaction_parity_v1_part_02)
+

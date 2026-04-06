@@ -1,128 +1,128 @@
-### P0: “приземление” для реального прод-использования (чтобы это не выглядело over-engineering)
+### P0: "Landing" for real production use (so it doesn't look like over-engineering)
 
-Цель P0: чтобы обычный пользователь мог **быстро подключить** и получить “почти как Material/Cupertino”, не создавая свои renderer’ы с нуля, но сохранив headless‑контракты и возможность замены визуала.
+P0 Goal: so that a regular user can **quickly integrate** and get "almost like Material/Cupertino" without creating their own renderers from scratch, while preserving headless contracts and the ability to swap visuals.
 
 - **P0.1 — Preset packages (Material first)**
-  - `headless_material` (или аналог): реализация renderer’ов + token resolver’ов для Button/Dropdown (минимум v1).
-  - Поддержка **per-instance кастомизации** через контрактные overrides (см. `docs/FLEXIBLE_PRESETS_AND_PER_INSTANCE_OVERRIDES.md`).
-  - Advanced‑ветка: возможность передать preset‑специфичные overrides (Material/Cupertino) без привязки core.
+  - `headless_material` (or equivalent): implementation of renderers + token resolvers for Button/Dropdown (minimum v1).
+  - Support for **per-instance customization** via contractual overrides (see `docs/FLEXIBLE_PRESETS_AND_PER_INSTANCE_OVERRIDES.md`).
+  - Advanced branch: ability to pass preset-specific overrides (Material/Cupertino) without coupling to core.
 
-- **P0.2 — “Быстрый старт” в `apps/example`**
-  - пример не с тестовыми renderer’ами, а с реальным preset’ом (Material v1),
-  - показать 3 сценария: default / per-instance overrides / slot override.
+- **P0.2 — "Quick start" in `apps/example`**
+  - example not with test renderers, but with a real preset (Material v1),
+  - show 3 scenarios: default / per-instance overrides / slot override.
 
-- **P0.3 — Conformance как продуктовая гарантия (I10)**
-  - `CONFORMANCE_REPORT.md` для `headless_button` и `headless_dropdown_button`,
-  - CI‑проверка наличия отчётов там, где заявлено “passes conformance”.
+- **P0.3 — Conformance as a product guarantee (I10)**
+  - `CONFORMANCE_REPORT.md` for `headless_button` and `headless_dropdown_button`,
+  - CI check for report presence where "passes conformance" is claimed.
 
-- **P0.4 — Ограничить v1, чтобы не раздувать контракты**
-  - не тащить 100 параметров Material/Cupertino в core компоненты,
-  - расширения только аддитивно, а “мощность” через overrides/slots/scoped theme.
-
----
-
-### Улучшения, которые реально повысят “headless” (с оценкой по 10-балльной шкале)
-Ниже **оценка = ROI** (насколько “стоит делать”: польза/универсальность/долговечность относительно сложности).
-
-- **1) Вынести рендеринг из `R*` в “renderer contract” (настоящий headless) — 9/10**
-  - **Почему**: если `RTextButton` задаёт структуру (Container/Row/loader), это ограничивает бренды. Правильнее: поведение/состояния → *renderer*, который решает структуру, эффекты, примитивы (Ink/Material/градиенты/шейпы).
-  - **Что взять у мира**: React Aria “parts + slots + contexts”, Ark UI “unstyled parts”.
-
-- **2) Parts/Slots API для каждого сложного компонента — 8/10**
-  - **Почему**: `Dialog/Select/DatePicker` почти всегда требуют “анатомии” (`Root/Trigger/Content/...`), чтобы дизайн мог менять структуру без форка.
-  - **Результат**: композиция вместо монолита, меньше “copyWith hell”.
-
-- **3) Реальная Interface Segregation для темы (минимальный контракт + capability composition) — 9/10**
-  - **Почему**: `RenderlessTheme` с десятками `resolveX` быстро станет источником breaking changes.
-  - **Решение**: отдельные `ButtonResolver/InputResolver/...` + агрегатор с дефолтами/адаптерами; темы собираются композиционно.
-
-- **4) Контролируемость как в Downshift: controlled/uncontrolled + “перехват переходов” (`stateReducer`-аналог) — 7/10**
-  - **Почему**: неизбежно появятся продуктовые “исключения” (не закрывать меню при выборе, кастомные правила фокуса, и т.д.).
-  - **Эффект**: расширения без форков, предсказуемые кастомы.
-
-- **5) Единый слой “state resolution” (приоритеты состояний) — 8/10**
-  - **Почему**: `Set<WidgetState>` сам по себе не задаёт приоритеты комбинаций. Без явных правил будут неожиданные баги.
-  - **Как**: мапа правил/матрица (как идея `FWidgetStateMap`), где порядок/специфичность заданы явно.
-
-- **6) FSM (конечные автоматы) для сложных интерактивных паттернов — 8/10**
-  - **Почему**: `Select/Menu/Combobox` ломаются на краях (фокус, клавиатура, закрытие, nested overlays). FSM резко снижает “случайные” баги.
-  - **Что взять**: Ark UI/Zag.js концептуально (не обязателен exact port).
-
-- **7) Overlay/Popover инфраструктура как отдельный модуль (стратегии позиционирования/скролла) — 7/10**
-  - **Почему**: диалоги/меню/тултипы должны делить один мощный слой.  
-  - **Что взять**: Angular CDK Overlay (OverlayRef + стратегии), Floating UI (пайплайн “middleware” идейно полезен).
-
-- **8) Семантические токены поверх “сырых” (semantic tokens) — 7/10**
-  - **Почему**: бренды меняются не по “primary=фиолетовый”, а по “actionPrimaryBg”, “dangerFg”, “surfaceRaisedBg”.  
-  - **Эффект**: multi-brand становится проще, меньше каскадных правок.
-
-- **9) Политика стабильности API + версионирование контрактов — 8/10**
-  - **Почему**: дизайн-система — библиотека. Её боль — ломать пользователей.
-  - **Как**: capability discovery/optional resolvers/адаптеры/дефолтные реализации.
-
-- **10) Тестовая стратегия уровня “поведение + a11y” (не golden UI) — 7/10**
-  - **Почему**: в headless важнее корректность событий/фокуса/семантики, чем пиксели.
-  - **Что тестить**: переходы состояния, фокус-трап, клавиатурные сценарии, семантика.
+- **P0.4 — Limit v1 to avoid bloating contracts**
+  - don't drag 100 Material/Cupertino parameters into core components,
+  - extensions only additively, and "power" through overrides/slots/scoped theme.
 
 ---
 
-### Дополнения из свежего ресёрча (2025–2026)
+### Improvements that will genuinely enhance "headless" (rated on a 10-point scale)
+Below **score = ROI** (how "worth doing": benefit/universality/longevity relative to complexity).
 
-- **11) Focus management как first-class механизм (trap/restore/close button) — 9/10**
-  - **Почему**: это главный источник критических багов (keyboard trap, focus на скрытых, broken announcements).
-  - **Как**: общий механизм в `headless_foundation` + требования в `docs/V1_DECISIONS.md`.
+- **1) Extract rendering from `R*` into a "renderer contract" (true headless) — 9/10**
+  - **Why**: if `RTextButton` defines the structure (Container/Row/loader), this limits brands. Better: behavior/states -> *renderer*, which decides structure, effects, primitives (Ink/Material/gradients/shapes).
+  - **What to borrow from the world**: React Aria "parts + slots + contexts", Ark UI "unstyled parts".
 
-- **12) WCAG 2.2 baseline (Target Size 24×24, Focus Not Obscured/ensureVisible) — 8/10**
-  - **Почему**: комплаенс с 2025, лучше иметь базовые гарантии по умолчанию.
+- **2) Parts/Slots API for every complex component — 8/10**
+  - **Why**: `Dialog/Select/DatePicker` almost always require "anatomy" (`Root/Trigger/Content/...`) so that design can change structure without forking.
+  - **Result**: composition instead of monolith, less "copyWith hell".
+
+- **3) Real Interface Segregation for the theme (minimal contract + capability composition) — 9/10**
+  - **Why**: `RenderlessTheme` with dozens of `resolveX` will quickly become a source of breaking changes.
+  - **Solution**: separate `ButtonResolver/InputResolver/...` + aggregator with defaults/adapters; themes are assembled compositionally.
+
+- **4) Controllability as in Downshift: controlled/uncontrolled + "transition interception" (`stateReducer` analog) — 7/10**
+  - **Why**: product "exceptions" will inevitably appear (don't close menu on selection, custom focus rules, etc.).
+  - **Effect**: extensions without forks, predictable customizations.
+
+- **5) Unified "state resolution" layer (state priorities) — 8/10**
+  - **Why**: `Set<WidgetState>` by itself doesn't define combination priorities. Without explicit rules there will be unexpected bugs.
+  - **How**: a rule map/matrix (like the `FWidgetStateMap` idea), where order/specificity is defined explicitly.
+
+- **6) FSM (finite state machines) for complex interactive patterns — 8/10**
+  - **Why**: `Select/Menu/Combobox` break at edges (focus, keyboard, closing, nested overlays). FSM dramatically reduces "accidental" bugs.
+  - **What to borrow**: Ark UI/Zag.js conceptually (exact port not required).
+
+- **7) Overlay/Popover infrastructure as a separate module (positioning/scroll strategies) — 7/10**
+  - **Why**: dialogs/menus/tooltips should share one powerful layer.  
+  - **What to borrow**: Angular CDK Overlay (OverlayRef + strategies), Floating UI (the "middleware" pipeline is conceptually useful).
+
+- **8) Semantic tokens on top of "raw" tokens (semantic tokens) — 7/10**
+  - **Why**: brands change not by "primary=purple", but by "actionPrimaryBg", "dangerFg", "surfaceRaisedBg".  
+  - **Effect**: multi-brand becomes easier, fewer cascading edits.
+
+- **9) API stability policy + contract versioning — 8/10**
+  - **Why**: a design system is a library. Its pain point is breaking users.
+  - **How**: capability discovery/optional resolvers/adapters/default implementations.
+
+- **10) Testing strategy at the "behavior + a11y" level (not golden UI) — 7/10**
+  - **Why**: in headless, correctness of events/focus/semantics matters more than pixels.
+  - **What to test**: state transitions, focus trap, keyboard scenarios, semantics.
+
+---
+
+### Additions from recent research (2025-2026)
+
+- **11) Focus management as a first-class mechanism (trap/restore/close button) — 9/10**
+  - **Why**: this is the main source of critical bugs (keyboard trap, focus on hidden elements, broken announcements).
+  - **How**: common mechanism in `headless_foundation` + requirements in `docs/V1_DECISIONS.md`.
+
+- **12) WCAG 2.2 baseline (Target Size 24x24, Focus Not Obscured/ensureVisible) — 8/10**
+  - **Why**: compliance since 2025, better to have baseline guarantees by default.
 
 - **13) W3C Design Tokens 2025.10 import (CLI) — 8/10**
-  - **Почему**: стандартный формат → проще multi-brand и интеграция с Figma/Tools.
-  - **Как**: CLI команда вида `headless tokens import design-tokens.json` (позже реализуем), поддержка `$extends` как наследование бренда.
+  - **Why**: standard format -> easier multi-brand and integration with Figma/Tools.
+  - **How**: CLI command like `headless tokens import design-tokens.json` (to be implemented later), support for `$extends` as brand inheritance.
 
 - **14) Context splitting policy (avoid re-render storms) — 8/10**
-  - **Почему**: на больших деревьях “context value per build” убивает perf.
-  - **Как**: `ValueListenable`/`InheritedNotifier` и разделение контекстов по смыслу (open/highlight/positioning).
+  - **Why**: on large trees "context value per build" kills perf.
+  - **How**: `ValueListenable`/`InheritedNotifier` and splitting contexts by meaning (open/highlight/positioning).
 
 - **15) Animations as first-class (enter/exit + overlay closing phase) — 9/10**
-  - **Почему**: типовая проблема headless UI — exit-анимации ломаются, когда subtree удаляют “сразу”.
-  - **Как**: overlay механизм должен поддерживать “closing phase” (держать subtree до завершения exit), а renderer contracts — принимать motion policy (durations/easing).
+  - **Why**: a typical headless UI problem is that exit animations break when the subtree is removed "immediately".
+  - **How**: the overlay mechanism should support a "closing phase" (keep subtree until exit completes), and renderer contracts should accept a motion policy (durations/easing).
 
-- **16) AI/MCP metadata (LLM.txt) для правильного использования компонентов агентами — 8.5/10**
-  - **Почему**: генерация UI без инвариантов даёт несогласованность и баги; метаданные + доки резко повышают шанс корректного использования.
-  - **Как**: в каждом пакете держим короткий `LLM.txt` (или эквивалентный документ), где описаны инварианты, точки расширения, примеры правильного использования.
+- **16) AI/MCP metadata (LLM.txt) for correct component usage by agents — 8.5/10**
+  - **Why**: UI generation without invariants leads to inconsistency and bugs; metadata + docs dramatically increase the chance of correct usage.
+  - **How**: keep a short `LLM.txt` (or equivalent document) in each package, describing invariants, extension points, examples of correct usage.
 
-- **17) a11y test helpers + ручные проверки (automation 30–50%) — 8.5/10**
-  - **Почему**: автоматизация ловит только часть проблем; без хелперов тесты будут нерегулярными и неполными.
-  - **Как**: добавить тестовые matchers/assertions для semantics/focus/keyboard и закрепить manual checklist (VoiceOver/NVDA/keyboard).
+- **17) a11y test helpers + manual checks (automation 30-50%) — 8.5/10**
+  - **Why**: automation catches only a portion of problems; without helpers, tests will be irregular and incomplete.
+  - **How**: add test matchers/assertions for semantics/focus/keyboard and establish a manual checklist (VoiceOver/NVDA/keyboard).
 
-- **18) Unified press events (как “usePress”, но по‑Flutter) — 8.5/10**
-  - **Почему**: нажатия приходят из разных источников (mouse/touch/keyboard/assistive tech), и без единой политики `pressed` будет “залипать”/ломаться на краях.
-  - **Как**: общий механизм в `headless_foundation/interactions` (press events + pointerType + cancel/drag-off semantics), который используют все `R*`.
+- **18) Unified press events (like "usePress", but Flutter-style) — 8.5/10**
+  - **Why**: presses come from different sources (mouse/touch/keyboard/assistive tech), and without a unified policy `pressed` will "stick"/break at edges.
+  - **How**: common mechanism in `headless_foundation/interactions` (press events + pointerType + cancel/drag-off semantics), used by all `R*`.
 
-- **19) Positioning middleware pipeline (Floating UI‑style) — 8.5/10**
-  - **Почему**: стабильное позиционирование overlay требует композиции правил (offset/flip/shift/arrow) и автообновления на scroll/resize/layout.
-  - **Как**: typed middleware в `anchored_overlay_engine/positioning` + coalesce обновлений до 1/frame (perf guardrail).
+- **19) Positioning middleware pipeline (Floating UI-style) — 8.5/10**
+  - **Why**: stable overlay positioning requires rule composition (offset/flip/shift/arrow) and auto-updating on scroll/resize/layout.
+  - **How**: typed middleware in `anchored_overlay_engine/positioning` + coalescing updates to 1/frame (perf guardrail).
 
 ---
 
-### Подходы/принципы, которые ты назвал (и как они ложатся на Headless)
+### Approaches/principles you mentioned (and how they map to Headless)
 - **Composition > Inheritance — 10/10**
-  - Это прям основа headless: поведение/рендер/токены/варианты собираются “как конструктор”.  
-  - Практически: меньше `BaseTheme extends ...`, больше “theme = композиция резолверов/токенов/политик”.
+  - This is literally the foundation of headless: behavior/render/tokens/variants are assembled "like building blocks".  
+  - In practice: less `BaseTheme extends ...`, more "theme = composition of resolvers/tokens/policies".
 
 - **Principle of Least Astonishment (POLA) — 9/10**
-  - В headless это критично: API должно вести себя “как ожидает разработчик Flutter”.
-  - Правила POLA, которые особенно важны:
-    - предсказуемые дефолты (disabled/loading/focus),
-    - стабильные имена и роли (variant/size/state),
-    - минимальные “магические” сайд-эффекты (не закрываем/не меняем фокус без причины),
-    - единая модель controlled/uncontrolled.
+  - In headless this is critical: the API should behave "as the Flutter developer expects".
+  - POLA rules that are especially important:
+    - predictable defaults (disabled/loading/focus),
+    - stable names and roles (variant/size/state),
+    - minimal "magic" side effects (don't close/change focus without reason),
+    - unified controlled/uncontrolled model.
 
 ---
 
-### Если выбирать 3 “самых правильных” улучшения в твоём контексте
-1) **Renderer contract (настоящий headless)** — 9/10  
-2) **Segregated theme contract + композиция резолверов** — 9/10  
-3) **Parts/Slots API для сложных компонентов** — 8/10  
+### If choosing the 3 "most impactful" improvements in your context
+1) **Renderer contract (true headless)** — 9/10  
+2) **Segregated theme contract + resolver composition** — 9/10  
+3) **Parts/Slots API for complex components** — 8/10  
 
-Скажи, какой у тебя приоритет: **максимальная гибкость для брендов** или **скорость выпуска набора компонентов** — и я от этого предложу “целевую” архитектуру (минимальный набор контрактов + раскладка по модулям/пакетам).
+Tell me your priority: **maximum flexibility for brands** or **speed of releasing a component set** — and I'll propose a "target" architecture (minimal set of contracts + layout by modules/packages).
