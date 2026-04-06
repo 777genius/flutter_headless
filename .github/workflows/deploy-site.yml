@@ -75,7 +75,7 @@ jobs:
 
       - name: Build docs (jaspr)
         working-directory: docs-site
-        run: dart run jaspr_cli:jaspr build
+        run: dart run jaspr_cli:jaspr build --dart-define DOCS_BASE_PATH=/flutter_headless
         timeout-minutes: 10
 
       # --- Demo app ---
