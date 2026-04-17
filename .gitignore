@@ -32,6 +32,7 @@ melos_test_output.txt
 
 # Temp
 .tmp/
+tmp/
 
 .clinerules/byterover-rules.md
 .kilocode/rules/byterover-rules.md

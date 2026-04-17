@@ -32,6 +32,8 @@ features:
 
 ```bash
 flutter pub add headless
+# or
+flutter pub add headless_button headless_checkbox headless_switch headless_dropdown_button headless_textfield headless_autocomplete
 ```
 
 [View on pub.dev](https://pub.dev/packages/headless)
@@ -320,7 +322,9 @@ void main() => runApp(const HeadlessCupertinoApp(home: MyApp()));
 Both presets use the exact same `RTextButton`, `RDropdownButton`, `RCheckbox` etc. - only the renderer changes.
 :::
 
-[Open Demo App](https://777genius.github.io/flutter_headless/demo/) - *WIP, more components coming soon.*
+[Open Demo App](https://777genius.github.io/flutter_headless/demo/)
+
+Current demo screens include Button, Dropdown, Autocomplete, TextField, Phone Field, Pinput, Switch, Glassmorphism, and Intentional Errors.
 
 ## Inspired By
 
@@ -338,6 +342,6 @@ Both presets use the exact same `RTextButton`, `RDropdownButton`, `RCheckbox` et
 ## Learn More
 
 - [Why Headless in depth](/guide/headless_workspace/WHY_HEADLESS) - detailed comparison with "just write custom widgets"
-- [Users Guide](/guide/headless_workspace/users/README) - complete walkthrough for app developers
+- [Getting Started](/guide/headless_workspace/users/COOKBOOK) - install, configure, and build your first app
 - [Cookbook](/guide/headless_workspace/users/COOKBOOK) - common recipes and patterns
 - [GitHub](https://github.com/777genius/flutter_headless) - source code, issues, contributing

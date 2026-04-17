@@ -66,6 +66,9 @@ jobs:
           --guide-exclude='implementation/.*,competitors/.*,v1_decisions/.*,ru/.*,en/.*,contributors/.*,CONFORMANCE\.md,SPEC_V1\.md,MUST\.md,ARCHITECTURE\.md,RESEARCH\.md,ITERATION_PLAN.*,FLEXIBLE_PRESETS.*'
           --output docs-site
 
+      - name: Normalize API docs descriptions
+        run: dart run tools/headless_cli/bin/normalize_api_docs.dart --api-dir=docs-site/content/api
+
       # dartdoc_modern generates web/guide/<name>.html with <meta http-equiv="refresh">.
       # On GitHub Pages these .html files take priority over Jaspr SSR
       # guide/<name>/index.html, causing an infinite redirect loop.

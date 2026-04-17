@@ -70,10 +70,11 @@ Below **score = ROI** (how "worth doing": benefit/universality/longevity relativ
 
 - **11) Focus management as a first-class mechanism (trap/restore/close button) — 9/10**
   - **Why**: this is the main source of critical bugs (keyboard trap, focus on hidden elements, broken announcements).
-  - **How**: common mechanism in `headless_foundation` + requirements in `docs/V1_DECISIONS.md`.
+  - **How**: common mechanism in `headless_foundation` + requirements in `docs/v1_decisions/V1_DECISIONS.md`.
 
 - **12) WCAG 2.2 baseline (Target Size 24x24, Focus Not Obscured/ensureVisible) — 8/10**
   - **Why**: compliance since 2025, better to have baseline guarantees by default.
+  - **How**: target size и «focus not obscured» обеспечиваются контрактами/токенами в компонентах с интерактивной площадью (button, dropdown trigger, checkbox, switch) и должны соблюдаться в пресетах.
 
 - **13) W3C Design Tokens 2025.10 import (CLI) — 8/10**
   - **Why**: standard format -> easier multi-brand and integration with Figma/Tools.

@@ -28,7 +28,8 @@ Notable documentation changes are logged here (not code changes).
   - `docs/ARCHITECTURE.md` - Spec-first section + Definition of Done for a Headless-compatible package + updated `docs/` tree.
 - Updated cross-references:
   - `README.md` - spec-first positioning + links to SPEC/CONFORMANCE.
-  - `docs/V1_DECISIONS.md` - added link to `docs/CONFORMANCE.md`.
+  - `docs/v1_decisions/V1_DECISIONS.md` - added link to `docs/CONFORMANCE.md`.
+  - Added note that full architecture text lives in repo (`docs/ARCHITECTURE.md`) and is split under `docs/implementation/other/` to respect file size limits.
 
 ---
 

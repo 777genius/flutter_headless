@@ -114,8 +114,12 @@ void main() {
 ## Most common recipes
 
 - Button style: `docs/users/COOKBOOK.md#button-style`
+- Button slots: `docs/users/COOKBOOK.md#button-slots-decorate-surface`
 - Dropdown with items: `docs/users/COOKBOOK.md#dropdown-with-items`
-- Dropdown multi-select row: `docs/users/COOKBOOK.md#dropdown-multi-select-item-row-checkbox--label`
+- Dropdown menu style: `docs/users/COOKBOOK.md#dropdown-menu-style-simple`
+- Dropdown menu surface: `docs/users/COOKBOOK.md#dropdown-menu-surface-wrap-structure`
+- Dropdown row with selection indicator: `docs/users/COOKBOOK.md#dropdown-item-row-with-selection-indicator-checkbox--label`
+- Checkbox slots: `docs/users/COOKBOOK.md#checkbox-slots-decorate-box`
 - CheckboxListTile tile slot: `docs/users/COOKBOOK.md#checkboxlisttile-tile-slot-decorate`
 - SafeDropdownRenderer template: `docs/users/COOKBOOK.md#safedropdownrenderer-full-takeover-minimal-template`
 - TextField recipes: `docs/users/COOKBOOK_TEXTFIELD.md`
@@ -141,7 +145,13 @@ void main() {
 
 ## Example screens (code)
 
+- Home: `apps/example/lib/screens/home_screen.dart`
 - Button: `apps/example/lib/screens/button_demo_screen.dart`
 - Dropdown: `apps/example/lib/screens/dropdown_demo_screen.dart`
 - Autocomplete: `apps/example/lib/screens/autocomplete_demo_screen.dart`
 - TextField: `apps/example/lib/screens/textfield_demo_screen.dart`
+- Phone field: `apps/example/lib/screens/phone_field_demo_screen.dart`
+- Pinput: `apps/example/lib/screens/pinput_demo_screen.dart`
+- Switch: `apps/example/lib/screens/switch_demo_screen.dart`
+- Glassmorphism: `apps/example/lib/screens/glass_demo_screen.dart`
+- Intentional errors: `apps/example/lib/screens/intentional_errors_screen.dart`

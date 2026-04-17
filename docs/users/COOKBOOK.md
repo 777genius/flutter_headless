@@ -197,9 +197,9 @@ class ConsentCheckbox extends StatelessWidget {
 }
 ```
 
-## Dropdown multi-select item row (checkbox + label)
+## Dropdown item row with selection indicator (checkbox + label)
 
-This keeps behavior intact, but changes visuals for multi-select rows.
+This keeps behavior intact, but changes visuals by showing a selection indicator.
 
 ```dart
 import 'package:flutter/material.dart';
@@ -207,8 +207,8 @@ import 'package:headless_contracts/headless_contracts.dart';
 import 'package:headless_dropdown_button/headless_dropdown_button.dart';
 import 'package:headless_foundation/headless_foundation.dart';
 
-class MultiSelectCityDropdown extends StatelessWidget {
-  const MultiSelectCityDropdown({super.key});
+class CityDropdownWithIndicator extends StatelessWidget {
+  const CityDropdownWithIndicator({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -218,8 +218,8 @@ class MultiSelectCityDropdown extends StatelessWidget {
         id: (v) => ListboxItemId(v),
         titleText: (v) => v,
       ),
-      selectedValues: const ['Paris'],
-      onSelectionChanged: (_) {},
+      value: 'Paris',
+      onChanged: (_) {},
       slots: RDropdownButtonSlots(
         itemContent: Decorate(
           (ctx, child) => Row(

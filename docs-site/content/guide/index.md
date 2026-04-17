@@ -7,14 +7,14 @@ Build Flutter UI with consistent behavior, accessibility, and fully swappable vi
 Follow these steps to go from zero to production:
 
 1. **[Why Headless?](/guide/headless_workspace/WHY_HEADLESS)** - understand the architecture and when it makes sense
-2. **[Users Guide](/guide/headless_workspace/users/README)** - install, configure, and build your first app
+2. **[Getting Started](/guide/headless_workspace/users/COOKBOOK)** - install, configure, and build your first app
 3. **[Recipes](/guide/headless_workspace/users/COOKBOOK)** - common patterns and a hands-on cookbook
 4. **[Customize](/guide/headless_workspace/users/GUARDRAILS)** - style tweaks, slots, scoped themes, and guardrails
 
 ## Getting Started
 
 :::tip First time here?
-Head straight to the **[Users Guide](/guide/headless_workspace/users/README)** for a step-by-step walkthrough covering installation, renderer setup, and your first component.
+Head straight to the **[Common Recipes](/guide/headless_workspace/users/COOKBOOK)** page for a step-by-step walkthrough covering installation, renderer setup, and your first component.
 :::
 
 ## Recipes
@@ -30,6 +30,7 @@ Head straight to the **[Users Guide](/guide/headless_workspace/users/README)** f
 
 - [Guardrails](/guide/headless_workspace/users/GUARDRAILS) - safe customization boundaries and what to avoid
 - [Changelog](/guide/headless_workspace/CHANGELOG) - what changed between versions
+- [Architecture](/guide/ARCHITECTURE) - как устроен монорепозиторий и политики зависимостей (источник: `docs/ARCHITECTURE.md`)
 
 :::info Key Concepts
 - **Behavior vs Visuals** - Headless separates what a component does (focus, keyboard, state, a11y) from how it looks. Behavior lives in `headless_foundation`; visuals are pluggable.

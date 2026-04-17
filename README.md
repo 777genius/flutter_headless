@@ -19,7 +19,7 @@ dependencies:
 If you are working inside this monorepo, bootstrap once:
 
 ```bash
-melos bootstrap
+dart run melos bootstrap
 ```
 
 ## 60s quick start (Material)

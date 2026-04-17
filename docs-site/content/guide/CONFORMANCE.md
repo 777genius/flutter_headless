@@ -7,7 +7,7 @@ This document defines **how exactly** a package claims Headless compatibility.
 A package is considered compatible only if it:
 
 - fulfills the requirements of `docs/SPEC_V1.md`,
-- adheres to v1 contracts from `docs/V1_DECISIONS.md` (for the parts it uses),
+- adheres to v1 contracts from `docs/v1_decisions/V1_DECISIONS.md` (for the parts it uses),
 - has a minimum set of tests (see below).
 
 If any of these are not met, the package **should not** be called "Headless-compatible".
@@ -55,6 +55,7 @@ If the component uses an overlay/menu pattern:
 ### 1.5 AI metadata
 
 - **MUST**: publishable package contains `LLM.txt` (Purpose / Non-goals / Invariants / Correct usage / Anti-patterns).
+- **SHOULD**: if a package claims compatibility, README links to upstream `docs/SPEC_V1.md` and `docs/CONFORMANCE.md` at a specific tag/commit (not `main`).
 
 ---
 

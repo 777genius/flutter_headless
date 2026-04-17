@@ -1,7 +1,12 @@
 # Monorepo Architecture (feature-first + DDD + SOLID)
 
-This document has been automatically split into parts to comply with the **<= 300 lines per file** limit.
+Полный нормативный документ хранится в репозитории в файле `docs/ARCHITECTURE.md` и автоматически разбит на части в каталоге `docs/implementation/other/` (чтобы соблюдать лимит 300 строк на файл). В веб-версии не дублируем содержание, чтобы избежать расхождений с исходником.
 
-## Parts
+Если нужен полный текст:
+- основной индекс: `docs/ARCHITECTURE.md`
+- части: `docs/implementation/other/ARCHITECTURE_part_01_part_01.md` … `ARCHITECTURE_part_01_part_05.md`
 
-- [Monorepo Architecture (feature-first + DDD + SOLID) (part 1)](./ARCHITECTURE_part_01.md)
+Сопутствующие документы:
+- спецификация: `docs/SPEC_V1.md`
+- конформанс: `docs/CONFORMANCE.md`
+- v1 решения: `docs/v1_decisions/V1_DECISIONS.md`

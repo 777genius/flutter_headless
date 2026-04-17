@@ -14,7 +14,7 @@ This document is **normative**. It describes requirements at the "MUST/SHOULD/MA
 ### How this differs from other documents
 
 - `docs/ARCHITECTURE.md`: architecture of **this repository** (package boundaries, dependency rules, policy).
-- `docs/V1_DECISIONS.md`: documented **v1 decisions for core contracts** (overlay/listbox/effects/theme/tokens) and invariants that compatibility relies on.
+- `docs/v1_decisions/V1_DECISIONS.md`: documented **v1 decisions for core contracts** (overlay/listbox/effects/theme/tokens) and invariants that compatibility relies on.
 - `docs/SPEC_V1.md` (this file): requirements for **third-party packages** to be "Headless-compatible".
 - `docs/CONFORMANCE.md`: how exactly a package **claims compatibility** and what minimum set of checks/tests is required.
 
@@ -94,7 +94,7 @@ Invariants still hold:
 - **MUST**: an `R*` component obtains the renderer capability from the theme/composition (capability discovery), and does not import specific renderer implementations.
 - **MUST**: absence of a capability must result in clear diagnostics (assert/throw with instructions for connecting).
 
-See `docs/V1_DECISIONS.md`:
+See `docs/v1_decisions/V1_DECISIONS.md`:
 - 0.1 Renderer contracts
 - "Absence of a renderer = explicit error"
 
@@ -104,6 +104,7 @@ See `docs/V1_DECISIONS.md`:
 - **SHOULD**: override behavior must be POLA: override-wins, otherwise fallback to the base theme.
 - **MUST NOT**: require "theme merging" as mandatory semantics (no auto-merge of preset configs).
 - **SHOULD**: capability contracts used for discovery should be non-generic (stable type identity).
+- **SHOULD**: HeadlessTheme provides a capability for motion tokens (e.g. `HeadlessMotionTheme`), and renderers respect resolved motion tokens with priority: per-instance -> motion capability -> preset defaults.
 
 ### 2.1.2 App-level motion theme (SHOULD)
 
@@ -177,7 +178,7 @@ Example (dropdown menu):
 - **SHOULD**: complex components provide typed slots/parts (Replace/Decorate/Enhance) as the primary mechanism for customizing structure.
 - **MUST NOT**: use string-based part identifiers.
 
-See `docs/V1_DECISIONS.md` - "Slots override: Replace + Decorate".
+See `docs/v1_decisions/V1_DECISIONS.md` - "Slots override: Replace + Decorate".
 
 ### 2.3 Interaction boundaries (no "gray zones") - MUST
 
@@ -216,7 +217,7 @@ If a component uses overlay/menu patterns:
 - **MUST**: build keyboard navigation/typeahead on foundation listbox primitives (where applicable).
 - **SHOULD**: structure side effects as effects (E1: events -> reducer -> effects executor), so the core remains pure.
 
-See `docs/V1_DECISIONS.md` - 0.2/0.3/0.7 and sections E1/A1.
+See `docs/v1_decisions/V1_DECISIONS.md` - 0.2/0.3/0.7 and sections E1/A1.
 
 ---
 
