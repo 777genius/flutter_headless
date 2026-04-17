@@ -16,7 +16,8 @@ void main() {
     await tester.tap(find.text('Autocomplete Demo'));
     await tester.pumpAndSettle();
 
-    expect(find.text('D1 - Default Autocomplete'), findsOneWidget);
+    expect(find.text('Theme Presets'), findsOneWidget);
+    expect(find.text('Cupertino preset active'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 }

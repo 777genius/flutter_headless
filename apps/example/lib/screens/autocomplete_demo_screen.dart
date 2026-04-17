@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/theme_mode_switch.dart';
-import 'widgets/autocomplete_demo_basic_section.dart';
-import 'widgets/autocomplete_demo_multiselect_section.dart';
-import 'widgets/autocomplete_demo_rich_section.dart';
+import 'widgets/autocomplete_demo/autocomplete_demo_parity_section.dart';
+import 'widgets/autocomplete_demo/autocomplete_demo_showcase_section.dart';
+import 'widgets/autocomplete_demo/autocomplete_demo_theme_presets_section.dart';
 
 class AutocompleteDemoScreen extends StatelessWidget {
   const AutocompleteDemoScreen({super.key});
@@ -21,11 +21,11 @@ class AutocompleteDemoScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: const [
-          AutocompleteDemoBasicSection(),
+          AutocompleteDemoThemePresetsSection(),
           SizedBox(height: 24),
-          AutocompleteDemoRichSection(),
+          AutocompleteDemoParitySection(),
           SizedBox(height: 24),
-          AutocompleteDemoMultiSelectSection(),
+          AutocompleteDemoShowcaseSection(),
         ],
       ),
     );

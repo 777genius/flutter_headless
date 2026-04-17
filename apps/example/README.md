@@ -4,8 +4,19 @@ Demo app for the Headless component architecture.
 
 ## What this app demonstrates
 
-- Material preset (`MaterialHeadlessTheme`)
-- Global `AnchoredOverlayEngineHost` for overlay-based components (Dropdown)
+- A shared header that switches between Material and Cupertino headless themes
+- Light and dark theme toggles in the example shell
+- Global `AnchoredOverlayEngineHost` for overlay-based components like Dropdown
+- Example screens for the current component set:
+  - Button
+  - Dropdown
+  - Autocomplete
+  - TextField
+  - Phone field
+  - Pinput
+  - Switch
+  - Glassmorphism
+  - Intentional errors
 - Customization layers:
   - default preset
   - per-instance token overrides (`RenderOverrides`)

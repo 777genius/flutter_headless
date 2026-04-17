@@ -211,7 +211,7 @@ void main() {
 
               expect(
                 tokens.trigger.padding,
-                const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                const EdgeInsets.fromLTRB(13, 11, 7, 11),
               );
               expect(
                 tokens.trigger.borderRadius,

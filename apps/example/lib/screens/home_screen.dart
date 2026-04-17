@@ -50,6 +50,20 @@ class HomeScreen extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           _DemoTile(
+            title: 'Phone Field Demo',
+            subtitle: 'Country selection, custom trigger, normalized parsing',
+            icon: Icons.phone_android,
+            onTap: () => Navigator.pushNamed(context, '/phone-field'),
+          ),
+          const SizedBox(height: 12),
+          _DemoTile(
+            title: 'Pinput Demo',
+            subtitle: 'OTP behavior, variants, scoped renderer, custom keypad',
+            icon: Icons.password,
+            onTap: () => Navigator.pushNamed(context, '/pinput'),
+          ),
+          const SizedBox(height: 12),
+          _DemoTile(
             title: 'Switch Demo',
             subtitle: 'RSwitch, RSwitchListTile, thumbIcon, overrides',
             icon: Icons.toggle_on,

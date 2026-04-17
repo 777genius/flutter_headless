@@ -22,8 +22,10 @@ final class RTextFieldViewModel {
     required this.textCapitalization,
     required this.autocorrect,
     required this.enableSuggestions,
+    required this.enableIMEPersonalizedLearning,
     required this.smartDashesType,
     required this.smartQuotesType,
+    required this.autofillHints,
     required this.maxLines,
     required this.minLines,
     required this.maxLength,
@@ -58,8 +60,10 @@ final class RTextFieldViewModel {
   final TextCapitalization textCapitalization;
   final bool autocorrect;
   final bool enableSuggestions;
+  final bool enableIMEPersonalizedLearning;
   final SmartDashesType? smartDashesType;
   final SmartQuotesType? smartQuotesType;
+  final Iterable<String>? autofillHints;
   final int? maxLines;
   final int? minLines;
   final int? maxLength;
@@ -98,8 +102,10 @@ final class RTextFieldViewModel {
       textCapitalization: widget.textCapitalization,
       autocorrect: widget.autocorrect,
       enableSuggestions: widget.enableSuggestions,
+      enableIMEPersonalizedLearning: widget.enableIMEPersonalizedLearning,
       smartDashesType: widget.smartDashesType,
       smartQuotesType: widget.smartQuotesType,
+      autofillHints: widget.autofillHints,
       maxLines: widget.maxLines,
       minLines: widget.minLines,
       maxLength: widget.maxLength,

@@ -42,7 +42,10 @@ class _AutocompletePointerTapHandlerState
   }
 
   void _onUp(PointerUpEvent e) {
-    if (!_moved) widget.onTap();
+    final hadDown = _down != null;
+    if (hadDown && !_moved) {
+      widget.onTap();
+    }
     _down = null;
     _moved = false;
   }

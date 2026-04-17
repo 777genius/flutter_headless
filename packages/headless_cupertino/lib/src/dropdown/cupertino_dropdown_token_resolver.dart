@@ -85,28 +85,19 @@ class CupertinoDropdownTokenResolver implements RDropdownTokenResolver {
     );
     final isDisabled =
         visualState == HeadlessDropdownTriggerVisualState.disabled;
-    final isFocused =
-        visualState == HeadlessDropdownTriggerVisualState.focused ||
-            visualState == HeadlessDropdownTriggerVisualState.open;
-
     // iOS-style colors
     final foregroundColor = isDisabled
         ? CupertinoColors.inactiveGray
         : (isDark ? CupertinoColors.white : CupertinoColors.black);
 
-    final backgroundColor = isDark
-        ? CupertinoColors.tertiarySystemBackground
-        : CupertinoColors.white;
-
-    final borderColor = isFocused
-        ? CupertinoColors.activeBlue
-        : (isDark ? CupertinoColors.systemGrey4 : CupertinoColors.systemGrey3);
+    final backgroundColor = CupertinoColors.tertiarySystemFill;
+    final borderColor = CupertinoColors.separator;
 
     final padding = density == null
         ? overrides?.triggerPadding ??
-            const EdgeInsets.symmetric(horizontal: 12, vertical: 10)
+            const EdgeInsets.symmetric(horizontal: 14)
         : CupertinoDropdownDensity.applyPadding(
-            const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            const EdgeInsets.symmetric(horizontal: 14),
             density,
           );
     final minSize = _resolveMinSize(
@@ -115,15 +106,15 @@ class CupertinoDropdownTokenResolver implements RDropdownTokenResolver {
     );
     final borderRadius = _resolveCornerRadius(cornerStyle) ??
         overrides?.triggerBorderRadius ??
-        const BorderRadius.all(Radius.circular(8));
+        const BorderRadius.all(Radius.circular(14));
 
     return RDropdownTriggerTokens(
       textStyle: overrides?.triggerTextStyle ??
           TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.w400,
-            fontFamily: '.SF Pro Text',
             color: foregroundColor,
+            decoration: TextDecoration.none,
           ),
       foregroundColor: overrides?.triggerForegroundColor ?? foregroundColor,
       backgroundColor: overrides?.triggerBackgroundColor ?? backgroundColor,
@@ -204,7 +195,7 @@ class CupertinoDropdownTokenResolver implements RDropdownTokenResolver {
           const TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.w400,
-            fontFamily: '.SF Pro Text',
+            decoration: TextDecoration.none,
           ),
       foregroundColor: foregroundColor,
       disabledForegroundColor: CupertinoColors.inactiveGray,
@@ -235,7 +226,7 @@ class CupertinoDropdownTokenResolver implements RDropdownTokenResolver {
       case CupertinoCornerStyle.sharp:
         return const BorderRadius.all(Radius.circular(4));
       case CupertinoCornerStyle.rounded:
-        return const BorderRadius.all(Radius.circular(8));
+        return const BorderRadius.all(Radius.circular(14));
       case CupertinoCornerStyle.pill:
         return const BorderRadius.all(Radius.circular(999));
       case null:

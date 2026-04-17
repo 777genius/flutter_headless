@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'demo_mode_palette.dart';
+
 class DemoSection extends StatelessWidget {
   const DemoSection({
     super.key,
@@ -14,7 +16,15 @@ class DemoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    final palette = DemoModePalette.of(context);
+    final textTheme = Theme.of(context).textTheme;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: palette.surface,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: palette.border),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -22,16 +32,22 @@ class DemoSection extends StatelessWidget {
           children: [
             Text(
               title,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: textTheme.titleMedium?.copyWith(
+                color: palette.primaryText,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 4),
             Text(
               description,
-              style: Theme.of(context).textTheme.bodySmall,
+              style: textTheme.bodySmall?.copyWith(
+                color: palette.secondaryText,
+              ),
             ),
-            const Divider(height: 24),
+            Divider(
+              height: 24,
+              color: palette.divider,
+            ),
             child,
           ],
         ),

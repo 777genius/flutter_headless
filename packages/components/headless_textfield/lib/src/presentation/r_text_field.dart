@@ -38,8 +38,10 @@ class RTextField extends StatefulWidget {
     this.textCapitalization = TextCapitalization.none,
     this.autocorrect = true,
     this.enableSuggestions = true,
+    this.enableIMEPersonalizedLearning = true,
     this.smartDashesType,
     this.smartQuotesType,
+    this.autofillHints,
     this.maxLines = 1,
     this.minLines,
     this.maxLength,
@@ -81,8 +83,10 @@ class RTextField extends StatefulWidget {
   final TextCapitalization textCapitalization;
   final bool autocorrect;
   final bool enableSuggestions;
+  final bool enableIMEPersonalizedLearning;
   final SmartDashesType? smartDashesType;
   final SmartQuotesType? smartQuotesType;
+  final Iterable<String>? autofillHints;
   final int? maxLines;
   final int? minLines;
   final int? maxLength;

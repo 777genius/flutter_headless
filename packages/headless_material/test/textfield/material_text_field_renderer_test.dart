@@ -522,7 +522,7 @@ void main() {
       expect(find.byType(InputDecorator), findsOneWidget);
     });
 
-    testWidgets('wraps with GestureDetector for tapContainer', (tester) async {
+    testWidgets('wraps with pointer listener for tapContainer', (tester) async {
       var tapped = false;
 
       await tester.pumpWidget(
@@ -548,7 +548,15 @@ void main() {
         ),
       );
 
-      await tester.tap(find.byType(GestureDetector).first);
+      expect(
+        find.byWidgetPredicate(
+          (widget) =>
+              widget is Listener &&
+              widget.behavior == HitTestBehavior.translucent,
+        ),
+        findsOneWidget,
+      );
+      await tester.tap(find.byType(InputDecorator));
       expect(tapped, isTrue);
     });
   });

@@ -1,4 +1,4 @@
-# melos_managed_dependency_overrides: headless,headless_button,headless_dropdown_button,headless_foundation,headless_theme,headless_tokens,headless_cupertino,headless_material,headless_textfield,headless_contracts,anchored_overlay_engine,headless_adaptive,headless_autocomplete,headless_checkbox,headless_switch,liquid_glass_apple
+# melos_managed_dependency_overrides: headless,headless_button,headless_dropdown_button,headless_foundation,headless_theme,headless_tokens,headless_cupertino,headless_material,headless_textfield,headless_contracts,anchored_overlay_engine,headless_adaptive,headless_autocomplete,headless_checkbox,headless_switch,liquid_glass_apple,headless_pinput,headless_phone_field
 dependency_overrides:
   anchored_overlay_engine:
     path: ../../packages/anchored_overlay_engine
@@ -22,6 +22,10 @@ dependency_overrides:
     path: ../../packages/headless_foundation
   headless_material:
     path: ../../packages/headless_material
+  headless_phone_field:
+    path: packages/headless_phone_field
+  headless_pinput:
+    path: packages/headless_pinput
   headless_switch:
     path: ../../packages/components/headless_switch
   headless_textfield:

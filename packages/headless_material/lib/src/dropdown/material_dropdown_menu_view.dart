@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:headless_contracts/headless_contracts.dart';
 import 'package:headless_theme/headless_theme.dart';
@@ -45,7 +44,10 @@ final class MaterialDropdownMenuView extends StatelessWidget {
 
     final menuContent = ConstrainedBox(
       constraints: BoxConstraints(maxHeight: menuTokens.maxHeight),
-      child: Padding(padding: menuTokens.padding, child: menuInner),
+      child: Padding(
+        padding: menuTokens.padding,
+        child: _MaterialDropdownMenuIntrinsicWidth(child: menuInner),
+      ),
     );
 
     final menuSurface = slots?.menuSurface != null
@@ -170,33 +172,35 @@ final class MaterialDropdownMenuView extends StatelessWidget {
   }
 
   Widget _defaultMenu(RDropdownMenuContext ctx) {
-    if (defaultTargetPlatform == TargetPlatform.iOS ||
-        defaultTargetPlatform == TargetPlatform.android) {
-      return ListView.builder(
-        primary: false,
-        shrinkWrap: true,
-        padding: EdgeInsets.zero,
-        physics: const ClampingScrollPhysics(),
-        itemCount: ctx.items.length,
-        itemBuilder: (context, index) => ctx.itemBuilder(index),
-      );
-    }
-
     final estimatedItemExtent =
         tokens.item.minHeight + tokens.item.padding.vertical;
     final estimatedTotalHeight =
         tokens.menu.padding.vertical + (ctx.items.length * estimatedItemExtent);
     final needsScroll = estimatedTotalHeight > tokens.menu.maxHeight;
 
-    return ListView.builder(
+    final content = Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: List.generate(ctx.items.length, ctx.itemBuilder),
+    );
+
+    return SingleChildScrollView(
       primary: false,
-      shrinkWrap: true,
-      padding: EdgeInsets.zero,
       physics: needsScroll
           ? const ClampingScrollPhysics()
           : const NeverScrollableScrollPhysics(),
-      itemCount: ctx.items.length,
-      itemBuilder: (context, index) => ctx.itemBuilder(index),
+      child: content,
     );
+  }
+}
+
+final class _MaterialDropdownMenuIntrinsicWidth extends StatelessWidget {
+  const _MaterialDropdownMenuIntrinsicWidth({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return IntrinsicWidth(child: child);
   }
 }

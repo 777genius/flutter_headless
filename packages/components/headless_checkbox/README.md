@@ -32,7 +32,7 @@ class _MyAppState extends State<MyApp> {
         ),
         RCheckboxListTile(
           value: value,
-          onChanged: (v) => setState(() => value = v),
+          onChanged: (v) => setState(() => value = v ?? false),
           title: const Text('Accept terms'),
         ),
       ],
@@ -50,7 +50,7 @@ void main() {
 ```dart
 RCheckbox(
   value: value,
-  onChanged: (v) => setState(() => value = v),
+  onChanged: (v) => setState(() => value = v ?? false),
   style: const RCheckboxStyle(
     activeColor: Color(0xFF0066FF),
     borderColor: Color(0xFFCCCCCC),
@@ -62,7 +62,7 @@ RCheckbox(
 ```dart
 RCheckboxListTile(
   value: value,
-  onChanged: (v) => setState(() => value = v),
+  onChanged: (v) => setState(() => value = v ?? false),
   title: const Text('Accept terms'),
   style: const RCheckboxListTileStyle(
     minHeight: 56,
@@ -89,7 +89,7 @@ import 'package:headless_contracts/headless_contracts.dart';
 
 RCheckbox(
   value: value,
-  onChanged: (v) => setState(() => value = v),
+  onChanged: (v) => setState(() => value = v ?? false),
   slots: RCheckboxSlots(
     box: Decorate(
       (ctx, child) => ClipRRect(
@@ -106,7 +106,7 @@ import 'package:headless_contracts/headless_contracts.dart';
 
 RCheckboxListTile(
   value: value,
-  onChanged: (v) => setState(() => value = v),
+  onChanged: (v) => setState(() => value = v ?? false),
   title: const Text('Accept terms'),
   slots: RCheckboxListTileSlots(
     tile: Decorate(
@@ -128,7 +128,7 @@ Rules:
 ```dart
 RCheckbox(
   value: value,
-  onChanged: (v) => setState(() => value = v),
+  onChanged: (v) => setState(() => value = v ?? false),
   overrides: RenderOverrides({
     RCheckboxOverrides: RCheckboxOverrides.tokens(
       activeColor: Color(0xFF0066FF),

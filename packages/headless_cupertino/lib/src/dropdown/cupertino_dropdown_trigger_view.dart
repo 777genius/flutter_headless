@@ -64,24 +64,30 @@ final class CupertinoDropdownTriggerView extends StatelessWidget {
   }
 
   Widget _wrapTrigger(String displayText, Widget chevron) {
-    return CupertinoPressableOpacity(
-      duration: menuMotion.enterDuration,
-      pressedOpacity: tokens.pressOpacity,
-      isPressed: request.state.isTriggerPressed,
-      isEnabled: !request.state.isDisabled,
-      visualEffects: request.visualEffects,
-      child: CupertinoDropdownTrigger(
-        backgroundColor: tokens.backgroundColor,
-        foregroundColor: tokens.foregroundColor,
-        borderColor: tokens.borderColor,
-        borderRadius: tokens.borderRadius,
-        padding: tokens.padding,
-        textStyle: tokens.textStyle,
-        minSize: tokens.minSize,
-        displayText: displayText,
-        chevron: chevron,
-        animationDuration: menuMotion.enterDuration,
-        isFocused: request.state.isTriggerFocused,
+    return Align(
+      alignment: Alignment.centerLeft,
+      widthFactor: 1,
+      child: IntrinsicWidth(
+        child: CupertinoPressableOpacity(
+          duration: menuMotion.enterDuration,
+          pressedOpacity: tokens.pressOpacity,
+          isPressed: request.state.isTriggerPressed,
+          isEnabled: !request.state.isDisabled,
+          visualEffects: request.visualEffects,
+          child: CupertinoDropdownTrigger(
+            backgroundColor: tokens.backgroundColor,
+            foregroundColor: tokens.foregroundColor,
+            borderColor: tokens.borderColor,
+            borderRadius: tokens.borderRadius,
+            padding: tokens.padding,
+            textStyle: tokens.textStyle,
+            minSize: tokens.minSize,
+            displayText: displayText,
+            chevron: chevron,
+            animationDuration: menuMotion.enterDuration,
+            isFocused: request.state.isTriggerFocused,
+          ),
+        ),
       ),
     );
   }

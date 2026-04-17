@@ -112,5 +112,12 @@ Rect resolveAutocompleteAnchorRect(GlobalKey fieldKey, Rect? lastAnchorRect) {
     return lastAnchorRect ?? Rect.zero;
   }
   final topLeft = renderBox.localToGlobal(Offset.zero);
-  return topLeft & renderBox.size;
+  final rawRect = topLeft & renderBox.size;
+  const verticalGap = 4.0;
+  return Rect.fromLTRB(
+    rawRect.left,
+    rawRect.top - verticalGap,
+    rawRect.right,
+    rawRect.bottom + verticalGap,
+  );
 }

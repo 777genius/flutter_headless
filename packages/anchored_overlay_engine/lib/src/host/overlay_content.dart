@@ -132,6 +132,9 @@ class _OverlayContentState extends State<OverlayContent> {
         viewportRectGlobal.height,
       );
       final anchorRectLocal = anchorRect.shift(-viewportRectGlobal.topLeft);
+      final constrainedMinWidth = preferredWidth > viewportRectLocal.width
+          ? viewportRectLocal.width
+          : preferredWidth;
 
       contentBody = Padding(
         padding: viewportPadding,
@@ -143,7 +146,10 @@ class _OverlayContentState extends State<OverlayContent> {
             padding: EdgeInsets.zero,
           ),
           child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: preferredWidth),
+            constraints: BoxConstraints(
+              minWidth: constrainedMinWidth,
+              maxWidth: viewportRectLocal.width,
+            ),
             child: focusWrapped,
           ),
         ),

@@ -28,9 +28,9 @@ class CupertinoTextFieldSurface extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
+    return Listener(
+      behavior: HitTestBehavior.translucent,
+      onPointerDown: onTap == null ? null : (_) => onTap!(),
       child: AnimatedContainer(
         duration: animationDuration,
         padding: padding,

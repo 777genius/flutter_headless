@@ -28,10 +28,17 @@ dependencies:
     path: ../../packages/components/headless_checkbox
   headless_switch:
     path: ../../packages/components/headless_switch
+  headless_autocomplete:
+    path: ../../packages/components/headless_autocomplete
   headless_textfield:
     path: ../../packages/components/headless_textfield
+  headless_phone_field:
+    path: packages/headless_phone_field
+  headless_pinput:
+    path: packages/headless_pinput
   liquid_glass_apple:
     path: ../../packages/liquid_glass_apple
+  marionette_flutter: ^0.5.0
 
 dev_dependencies:
   flutter_test:
@@ -42,4 +49,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-

@@ -47,16 +47,12 @@ class MaterialTextFieldRenderer implements RTextFieldRenderer {
       child: request.input,
     );
 
-    // GestureDetector делегирует tap на контейнере в фокус-логику компонента.
-    // Flutter TextField делает то же через _TextFieldState._handleTap.
-    // Здесь FocusNode принадлежит компоненту; tapContainer — его команда.
-    //
-    // When tapContainer is null, GestureDetector(onTap: null, behavior: opaque)
-    // silently blocks taps — so we skip the wrapper entirely.
+    // Use a pointer-level listener so interactive slot content can keep owning
+    // tap gestures without competing with the container's focus request.
     if (commands?.tapContainer != null) {
-      return GestureDetector(
-        onTap: commands!.tapContainer,
-        behavior: HitTestBehavior.opaque,
+      return Listener(
+        behavior: HitTestBehavior.translucent,
+        onPointerDown: (_) => commands!.tapContainer?.call(),
         child: decorator,
       );
     }

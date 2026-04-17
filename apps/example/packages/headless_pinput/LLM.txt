@@ -1,0 +1,9 @@
+Purpose:
+Headless Pinput component (behavior + a11y).
+
+Non-goals:
+- No renderer implementation in this package.
+
+Key types (public API):
+- RPinput: Component widget.
+- RPinputStyle: Simple style sugar.

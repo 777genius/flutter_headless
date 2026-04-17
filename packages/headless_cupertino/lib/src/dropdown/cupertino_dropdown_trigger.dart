@@ -42,11 +42,12 @@ class CupertinoDropdownTrigger extends StatelessWidget {
           borderRadius: borderRadius,
           border: Border.all(
             color: borderColor,
-            width: isFocused ? 2 : 1,
+            width: 1,
           ),
         ),
         padding: padding,
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Flexible(
               fit: FlexFit.loose,

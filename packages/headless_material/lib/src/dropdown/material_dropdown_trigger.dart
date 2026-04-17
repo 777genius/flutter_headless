@@ -43,8 +43,7 @@ class MaterialDropdownTrigger extends StatelessWidget {
         animationDuration: animationDuration,
         child: Row(
           children: [
-            Flexible(
-              fit: FlexFit.loose,
+            Expanded(
               child: Text(
                 displayText,
                 style: textStyle.copyWith(color: foregroundColor),

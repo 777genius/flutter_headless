@@ -27,6 +27,8 @@ void main() {
               expect(tokens.trigger.padding, isNotNull);
               expect(tokens.trigger.borderRadius, isNotNull);
               expect(tokens.trigger.minSize, const Size(44, 44));
+              expect(tokens.trigger.textStyle.decoration, TextDecoration.none);
+              expect(tokens.item.textStyle.decoration, TextDecoration.none);
 
               return const SizedBox.shrink();
             },
@@ -89,7 +91,7 @@ void main() {
       );
     });
 
-    testWidgets('applies focused state to trigger', (tester) async {
+    testWidgets('keeps trigger geometry stable when focused', (tester) async {
       await tester.pumpWidget(
         CupertinoApp(
           home: Builder(
@@ -108,10 +110,13 @@ void main() {
                 overlayPhase: ROverlayPhase.closed,
               );
 
-              // Focused should have activeBlue border
               expect(
                 focusedTokens.trigger.borderColor,
-                isNot(normalTokens.trigger.borderColor),
+                normalTokens.trigger.borderColor,
+              );
+              expect(
+                focusedTokens.trigger.padding,
+                normalTokens.trigger.padding,
               );
 
               return const SizedBox.shrink();
@@ -237,7 +242,7 @@ void main() {
 
               expect(
                 tokens.trigger.padding,
-                const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                const EdgeInsets.symmetric(horizontal: 10),
               );
               expect(
                 tokens.trigger.borderRadius,

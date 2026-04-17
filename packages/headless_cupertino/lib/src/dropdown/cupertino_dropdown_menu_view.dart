@@ -39,18 +39,34 @@ final class CupertinoDropdownMenuView extends StatelessWidget {
             ? slots!.menu!.build(menuContext, _defaultMenu)
             : _defaultMenu(menuContext);
 
+    final paddedInner = Padding(
+      padding: menuTokens.padding,
+      child: slots?.menu != null
+          ? menuInner
+          : _CupertinoDropdownMenuIntrinsicWidth(child: menuInner),
+    );
     final estimatedMinHeight = request.items.length * tokens.item.minHeight +
         menuTokens.padding.vertical;
-    final needsScroll = estimatedMinHeight > menuTokens.maxHeight;
+    final menuContent = LayoutBuilder(
+      builder: (context, constraints) {
+        final availableHeight = constraints.maxHeight.isFinite
+            ? constraints.maxHeight.clamp(0.0, menuTokens.maxHeight)
+            : menuTokens.maxHeight;
+        final needsScroll = estimatedMinHeight > availableHeight;
 
-    final paddedInner = Padding(padding: menuTokens.padding, child: menuInner);
-    final menuContent = ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: menuTokens.maxHeight),
-      child: slots?.menu != null
-          ? paddedInner
-          : needsScroll
-              ? SingleChildScrollView(child: paddedInner)
-              : paddedInner,
+        return ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: menuTokens.maxHeight),
+          child: slots?.menu != null
+              ? paddedInner
+              : needsScroll
+                  ? SingleChildScrollView(
+                      primary: false,
+                      physics: const BouncingScrollPhysics(),
+                      child: paddedInner,
+                    )
+                  : paddedInner,
+        );
+      },
     );
 
     final menuSurface = slots?.menuSurface != null
@@ -182,5 +198,16 @@ final class CupertinoDropdownMenuView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: List.generate(ctx.items.length, ctx.itemBuilder),
     );
+  }
+}
+
+final class _CupertinoDropdownMenuIntrinsicWidth extends StatelessWidget {
+  const _CupertinoDropdownMenuIntrinsicWidth({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return IntrinsicWidth(child: child);
   }
 }

@@ -24,15 +24,6 @@ extension _AutocompleteCoordinatorEvents<T> on AutocompleteCoordinator<T> {
 
   void _handleFocusChanged(bool hasFocus) {
     if (!hasFocus) {
-      final keepMenuOpenOnSelection =
-          _config.selectionMode is AutocompleteMultipleSelectionMode<T> ||
-              !_config.closeOnSelected;
-      if (keepMenuOpenOnSelection && _menuCoordinator.isMenuOpen) {
-        autocompleteDebugLog(
-          'focusLostIgnored: selectionKeepsMenuOpen+menuOpen',
-        );
-        return;
-      }
       autocompleteDebugLog(
         'focusLost: menuOpen=${_menuCoordinator.isMenuOpen} dismissed=${_menuCoordinator.wasDismissed}',
       );
@@ -119,12 +110,40 @@ extension _AutocompleteCoordinatorEvents<T> on AutocompleteCoordinator<T> {
       closeOnSelected: _config.closeOnSelected,
       closeMenu: () => _closeMenu(programmatic: true),
     );
+    _restoreInputCaretAfterSelectionIfNeeded();
     _menuCoordinator.refreshMenuState();
     if (_config.closeOnSelected) return;
     _syncOptions();
     if (_config.selectionMode is AutocompleteMultipleSelectionMode<T>) {
       focusNode.requestFocus();
     }
+  }
+
+  void _restoreInputCaretAfterSelectionIfNeeded() {
+    final shouldRestoreCaret = _config.closeOnSelected &&
+        _config.selectionMode is! AutocompleteMultipleSelectionMode<T>;
+    if (!shouldRestoreCaret) return;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_isDisposed || _config.isDisabled) return;
+      focusNode.requestFocus();
+      _collapseCaretToEnd();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_isDisposed || _config.isDisabled) return;
+        _collapseCaretToEnd();
+      });
+    });
+  }
+
+  void _collapseCaretToEnd() {
+    final offset = controller.text.length;
+    final selection = controller.selection;
+    if (selection.isCollapsed &&
+        selection.baseOffset == offset &&
+        selection.extentOffset == offset) {
+      return;
+    }
+    controller.selection = TextSelection.collapsed(offset: offset);
   }
 
   void _highlightIndex(int index) {

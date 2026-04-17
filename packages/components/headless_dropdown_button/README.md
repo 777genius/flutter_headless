@@ -73,9 +73,9 @@ void main() {
             builder: (context) => overlayBuilder(
               context,
               const RDropdownButton<String>(
+                options: <RDropdownOption<String>>[],
                 value: null,
                 onChanged: null,
-                options: <RDropdownOption<String>>[],
               ),
             ),
           ),
