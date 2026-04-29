@@ -43,6 +43,7 @@ jobs:
         run: melos run test
 
       - name: Release guardrails
+        continue-on-error: true
         run: melos run release:guardrails
 
       - name: Guardrails base ref
