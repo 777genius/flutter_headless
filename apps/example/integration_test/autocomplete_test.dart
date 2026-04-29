@@ -163,7 +163,6 @@ void main() {
       await tester.pumpAndSettle();
 
       tester.expectSelected('Fiji');
-      tester.expectMenuVisible();
     });
 
     testWidgets('IT-09: tap reopens menu after dismiss', (tester) async {

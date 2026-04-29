@@ -19,7 +19,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          flutter-version: 3.41.7
 
       - name: Flutter version
         run: flutter --version
@@ -101,7 +101,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          flutter-version: 3.41.7
 
       - name: Install workspace tooling (melos)
         run: |
