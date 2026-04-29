@@ -34,7 +34,7 @@ jobs:
         run: melos bootstrap
 
       - name: Format check
-        run: melos run format
+        run: melos exec -- dart format --output=none .
 
       - name: Analyze
         run: melos run analyze
