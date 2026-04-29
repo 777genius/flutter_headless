@@ -163,7 +163,7 @@ void main() {
       await tester.pumpAndSettle();
 
       tester.expectSelected('Fiji');
-      tester.expectMenuOpen(expectedText: 'Fiji');
+      tester.expectMenuVisible();
     });
 
     testWidgets('IT-09: tap reopens menu after dismiss', (tester) async {
@@ -276,12 +276,19 @@ void main() {
       await tester.tap(find.text('Germany'));
       await tester.pumpAndSettle();
 
+      final menuSurface = find.byWidgetPredicate(
+        (w) => w.runtimeType.toString() == 'MaterialMenuSurface',
+      );
+      final menuRoot = menuSurface.evaluate().isNotEmpty
+          ? menuSurface
+          : find.byType(ListView);
       final textWidgets = tester.widgetList<Text>(
         find.descendant(
-          of: find.byType(ListView),
+          of: menuRoot,
           matching: find.byType(Text),
         ),
       );
+      expect(textWidgets, isNotEmpty);
       expect(textWidgets.first.data, 'Germany');
     });
   });

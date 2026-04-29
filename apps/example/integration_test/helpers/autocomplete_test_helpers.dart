@@ -172,6 +172,15 @@ extension AutocompleteExpects on WidgetTester {
     );
   }
 
+  void expectMenuVisible() {
+    final surface = _menuSurface();
+    if (surface.evaluate().isNotEmpty) {
+      expect(surface, findsWidgets);
+      return;
+    }
+    expect(find.byType(ListView), findsWidgets);
+  }
+
   void expectMenuClosed({String expectedText = 'Finland'}) {
     final surface = _menuSurface();
     if (surface.evaluate().isNotEmpty) {

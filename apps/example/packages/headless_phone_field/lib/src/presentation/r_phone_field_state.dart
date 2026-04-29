@@ -184,6 +184,8 @@ class RPhoneFieldStateImpl extends State<RPhoneField> {
       AutovalidateMode.always => true,
       AutovalidateMode.onUserInteraction =>
         _hasUserInteraction || _showValidation,
+      AutovalidateMode.onUserInteractionIfError =>
+        _hasUserInteraction || _showValidation,
       AutovalidateMode.onUnfocus =>
         (!_focusNode.hasFocus && _hasUserInteraction) || _showValidation,
       AutovalidateMode.disabled => _showValidation,
