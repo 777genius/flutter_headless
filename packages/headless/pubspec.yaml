@@ -1,6 +1,6 @@
 name: headless
 description: Headless facade package (re-exports core contracts + common components).
-version: 1.0.0
+version: 1.1.0
 homepage: https://github.com/777genius/flutter_headless
 repository: https://github.com/777genius/flutter_headless
 issue_tracker: https://github.com/777genius/flutter_headless/issues
@@ -13,29 +13,29 @@ dependencies:
   flutter:
     sdk: flutter
   headless_tokens:
-    version: ^1.0.0
+    version: ^1.1.0
   headless_foundation:
-    version: ^1.0.0
+    version: ^1.1.0
   headless_contracts:
-    version: ^1.0.0
+    version: ^1.1.0
   headless_theme:
-    version: ^1.0.0
+    version: ^1.1.0
   headless_material:
-    version: ^1.0.0
+    version: ^1.1.0
   headless_cupertino:
-    version: ^1.0.0
+    version: ^1.1.0
   headless_button:
-    version: ^1.0.0
+    version: ^1.1.0
   headless_checkbox:
-    version: ^1.0.0
+    version: ^1.1.0
   headless_switch:
-    version: ^1.0.0
+    version: ^1.1.0
   headless_dropdown_button:
-    version: ^1.0.0
+    version: ^1.1.0
   headless_textfield:
-    version: ^1.0.0
+    version: ^1.1.0
   headless_autocomplete:
-    version: ^1.0.0
+    version: ^1.1.0
 
 dev_dependencies:
   flutter_test:

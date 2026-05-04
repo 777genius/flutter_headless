@@ -1,5 +1,7 @@
 import 'dart:io';
 
+const releaseVersion = '1.1.0';
+
 const releasePackages = <ReleasePackage>[
   ReleasePackage('anchored_overlay_engine', 'packages/anchored_overlay_engine'),
   ReleasePackage('headless_tokens', 'packages/headless_tokens'),

@@ -1,6 +1,6 @@
 name: headless_material
 description: Material 3 preset for Headless components - renderers and token resolvers.
-version: 1.0.0
+version: 1.1.0
 homepage: https://github.com/777genius/flutter_headless
 repository: https://github.com/777genius/flutter_headless
 issue_tracker: https://github.com/777genius/flutter_headless/issues
@@ -13,21 +13,21 @@ dependencies:
   flutter:
     sdk: flutter
   anchored_overlay_engine:
-    version: ^1.0.0
+    version: ^1.1.0
   headless_contracts:
-    version: ^1.0.0
+    version: ^1.1.0
   headless_theme:
-    version: ^1.0.0
+    version: ^1.1.0
   headless_foundation:
-    version: ^1.0.0
+    version: ^1.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   lints: ^5.1.1
   headless_test:
-    version: ^1.0.0
+    version: ^1.1.0
   headless_textfield:
-    version: ^1.0.0
+    version: ^1.1.0
   headless_button:
-    version: ^1.0.0
+    version: ^1.1.0

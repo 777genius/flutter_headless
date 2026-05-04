@@ -218,8 +218,7 @@ class _RTextFieldState extends State<RTextField> {
       );
     }
 
-    // Web stability: if the field stays focused through a rebuild (theme switch,
-    // parent layout changes, etc.) refresh the editing session geometry.
+    // Keep focused web inputs aligned through parent rebuilds.
     if (_focusNode.hasFocus) {
       _scheduleKeyboardRefresh();
     }
@@ -242,12 +241,7 @@ class _RTextFieldState extends State<RTextField> {
   }
 
   void _scheduleKeyboardRefresh() {
-    // Web stability: DOM-backed text input can occasionally desync its geometry
-    // after rebuilds while remaining focused, leaving an invisible element that
-    // blocks pointer events elsewhere (e.g. AppBar actions).
-    //
-    // Calling requestKeyboard() post-frame nudges the engine to ensure the
-    // editing session + geometry are up to date.
+    // DOM-backed web inputs can desync geometry after focused rebuilds.
     if (_keyboardRefreshScheduled) return;
     _keyboardRefreshScheduled = true;
     SchedulerBinding.instance.addPostFrameCallback((_) {

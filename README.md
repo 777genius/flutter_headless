@@ -1,4 +1,8 @@
-# Headless
+# [Headless](https://777genius.github.io/flutter_headless/)
+
+[![pub package](https://img.shields.io/pub/v/headless?logo=dart)](https://pub.dev/packages/headless)
+[![CI](https://github.com/777genius/flutter_headless/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/777genius/flutter_headless/actions/workflows/ci.yml)
+[![Deploy Site](https://github.com/777genius/flutter_headless/actions/workflows/deploy-site.yml/badge.svg?branch=main)](https://github.com/777genius/flutter_headless/actions/workflows/deploy-site.yml)
 
 Headless gives you Flutter UI building blocks with consistent behavior and
 accessibility, while letting you swap visuals (Material, Cupertino, or your own).
@@ -13,7 +17,7 @@ Application install:
 
 ```yaml
 dependencies:
-  headless: ^1.0.0
+  headless: ^1.1.0
 ```
 
 If you are working inside this monorepo, bootstrap once:

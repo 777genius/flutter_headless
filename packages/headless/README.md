@@ -14,7 +14,7 @@ Use this package when you want one import surface for most application code.
 
 ```yaml
 dependencies:
-  headless: ^1.0.0
+  headless: ^1.1.0
 ```
 
 ## What you get

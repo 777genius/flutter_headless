@@ -1,6 +1,6 @@
-# Releasing Headless 1.0
+# Releasing Headless 1.1
 
-This repository uses a lockstep `1.0.0` release set. Publish packages in the
+This repository uses a lockstep `1.1.0` release set. Publish packages in the
 order below so downstream dependencies are already available on pub.dev.
 
 ## Release order
@@ -76,8 +76,8 @@ CHROME_EXECUTABLE="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 Create and push the repository tag after `release:check` is green:
 
 ```bash
-git tag -a v1.0.0 -m "Headless 1.0.0"
-git push origin v1.0.0
+git tag -a v1.1.0 -m "Headless 1.1.0"
+git push origin v1.1.0
 ```
 
 The tag triggers the release-readiness workflow in CI.

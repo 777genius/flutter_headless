@@ -1,18 +1,25 @@
-# Headless 1.0.0 Release Notes
+# Headless 1.1.0 Release Notes
 
 ## Summary
 
-Headless 1.0.0 promotes the monorepo from an internal pre-release workspace to
-an externally releasable package ecosystem.
+Headless 1.1.0 is a lockstep release for the published package set after
+`1.0.0`. It promotes the post-1.0 fixes and polish currently on `main` to
+pub.dev.
 
 ## Highlights
 
-- Lockstep `1.0.0` versions across the Headless release set.
-- Release metadata added for every published package.
-- Dedicated release guardrails, dry-run publishing, and integration/golden
-  release lanes.
-- Known skipped release blockers removed from generated scaffolds and example
-  coverage.
+- `RTextField` now exposes `enableIMEPersonalizedLearning` and `autofillHints`.
+- Autocomplete restores input focus and caret after selection and adds focused
+  regression coverage for anchor geometry, pointer taps, and selection caret
+  behavior.
+- Material and Cupertino dropdown/textfield renderers receive layout, focus, and
+  menu sizing refinements.
+- Overlay content clamps menu width to the available viewport instead of
+  overflowing narrow screens.
+- `headless_test` semantics helpers are compatible with current Flutter
+  semantics flag shapes.
+- Example and docs-site coverage now includes richer autocomplete/dropdown
+  parity showcases plus phone and PIN input experiments.
 
 ## Release Set
 
@@ -37,4 +44,5 @@ an externally releasable package ecosystem.
 
 - `apps/example` and `tools/headless_cli` remain non-published workspace
   projects.
-- `liquid_glass_apple` remains outside the Headless 1.0 release wave.
+- `headless_phone_field` and `headless_pinput` remain example-local packages.
+- `liquid_glass_apple` remains outside the Headless 1.1 release wave.

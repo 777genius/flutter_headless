@@ -294,7 +294,7 @@ String _pubspecTemplate(ComponentSpec spec) {
   return '''
 name: ${spec.packageName}
 description: Headless ${spec.titleName} component package.
-version: 1.0.0
+version: 1.1.0
 homepage: https://github.com/777genius/flutter_headless
 repository: https://github.com/777genius/flutter_headless
 issue_tracker: https://github.com/777genius/flutter_headless/issues
@@ -307,17 +307,17 @@ dependencies:
   flutter:
     sdk: flutter
   headless_foundation:
-    version: ^1.0.0
+    version: ^1.1.0
   headless_contracts:
-    version: ^1.0.0
+    version: ^1.1.0
   headless_theme:
-    version: ^1.0.0
+    version: ^1.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   headless_test:
-    version: ^1.0.0
+    version: ^1.1.0
   lints: ^5.1.1
 ''';
 }

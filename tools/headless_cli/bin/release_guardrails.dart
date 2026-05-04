@@ -37,7 +37,7 @@ void _checkPackageMetadata(ReleasePackage package, List<String> errors) {
   final pubspecPath = package.pubspecPath;
   final pubspec = File(pubspecPath).readAsStringSync();
 
-  _requireContains(pubspec, pubspecPath, 'version: 1.0.0', errors);
+  _requireContains(pubspec, pubspecPath, 'version: $releaseVersion', errors);
   _requireContains(
     pubspec,
     pubspecPath,
@@ -86,8 +86,8 @@ void _checkPackageChangelog(ReleasePackage package, List<String> errors) {
   }
 
   final contents = changelogFile.readAsStringSync();
-  if (!contents.contains('## 1.0.0')) {
-    errors.add('$changelogPath is missing a 1.0.0 entry');
+  if (!contents.contains('## $releaseVersion')) {
+    errors.add('$changelogPath is missing a $releaseVersion entry');
   }
 }
 
