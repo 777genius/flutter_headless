@@ -182,11 +182,13 @@ class _LogicStatus extends StatelessWidget {
           children: [
             ShowcaseFactPill(
               label: 'International',
-              value: value.nsn.isEmpty ? 'Waiting for input' : value.international,
+              value:
+                  value.nsn.isEmpty ? 'Waiting for input' : value.international,
             ),
             ShowcaseFactPill(
               label: 'Local',
-              value: value.nsn.isEmpty ? 'No local digits yet' : value.formatNsn(),
+              value:
+                  value.nsn.isEmpty ? 'No local digits yet' : value.formatNsn(),
             ),
             ShowcaseFactPill(
               label: 'Validation',

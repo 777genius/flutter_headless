@@ -38,31 +38,31 @@ class PhoneFieldDemoScreen extends StatelessWidget {
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 1120),
-              child: const SingleChildScrollView(
-                padding: EdgeInsets.fromLTRB(20, 20, 20, 32),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    PhoneFieldShowcaseThemeScope(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          PhoneFieldShowcaseHero(),
-                          SizedBox(height: 24),
-                          PhoneFieldShellGalleryDemoSection(),
-                        ],
-                      ),
+            child: const SingleChildScrollView(
+              padding: EdgeInsets.fromLTRB(20, 20, 20, 32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  PhoneFieldShowcaseThemeScope(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        PhoneFieldShowcaseHero(),
+                        SizedBox(height: 24),
+                        PhoneFieldShellGalleryDemoSection(),
+                      ],
                     ),
-                    SizedBox(height: 24),
-                    PhoneFieldNavigatorDemoSection(),
-                    SizedBox(height: 24),
-                    PhoneFieldCustomTriggerDemoSection(),
-                    SizedBox(height: 24),
-                    PhoneFieldLogicDemoSection(),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 24),
+                  PhoneFieldNavigatorDemoSection(),
+                  SizedBox(height: 24),
+                  PhoneFieldCustomTriggerDemoSection(),
+                  SizedBox(height: 24),
+                  PhoneFieldLogicDemoSection(),
+                ],
               ),
             ),
+          ),
         ),
       ),
     );

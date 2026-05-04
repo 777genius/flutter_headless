@@ -105,7 +105,8 @@ class _DropdownDemoCupertinoPickerParityCardState
               slots: RDropdownButtonSlots(
                 anchor: Replace((ctx) {
                   return DropdownDemoCupertinoHeadlessAnchor(
-                    key: const Key('dropdown-cupertino-picker-headless-surface'),
+                    key:
+                        const Key('dropdown-cupertino-picker-headless-surface'),
                     label: _selectedValue,
                     isOpen: ctx.state.isOpen,
                   );

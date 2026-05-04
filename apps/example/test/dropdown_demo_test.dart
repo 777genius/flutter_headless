@@ -126,7 +126,8 @@ void main() {
     expect((richHeadlessRect.width - richNativeRect.width).abs(), lessThan(6));
   });
 
-  testWidgets('Cupertino parity triggers match native geometry', (tester) async {
+  testWidgets('Cupertino parity triggers match native geometry',
+      (tester) async {
     tester.view.devicePixelRatio = 1.0;
     tester.view.physicalSize = const Size(1600, 1800);
     addTearDown(() {
@@ -168,10 +169,14 @@ void main() {
     final actionNativeRect = tester.getRect(actionNative);
     final actionHeadlessRect = tester.getRect(actionHeadless);
 
-    expect((pickerHeadlessRect.width - pickerNativeRect.width).abs(), lessThan(2.5));
-    expect((pickerHeadlessRect.height - pickerNativeRect.height).abs(), lessThan(1));
-    expect((actionHeadlessRect.width - actionNativeRect.width).abs(), lessThan(2.5));
-    expect((actionHeadlessRect.height - actionNativeRect.height).abs(), lessThan(1));
+    expect((pickerHeadlessRect.width - pickerNativeRect.width).abs(),
+        lessThan(2.5));
+    expect((pickerHeadlessRect.height - pickerNativeRect.height).abs(),
+        lessThan(1));
+    expect((actionHeadlessRect.width - actionNativeRect.width).abs(),
+        lessThan(2.5));
+    expect((actionHeadlessRect.height - actionNativeRect.height).abs(),
+        lessThan(1));
   });
 
   testWidgets('Material parity visuals match Flutter SDK geometry',
@@ -261,9 +266,8 @@ void main() {
     );
     expect(menuSurface, findsOneWidget);
 
-    final triggerWidth = tester
-        .getSize(find.byType(DropdownDemoUnderlineVisual).last)
-        .width;
+    final triggerWidth =
+        tester.getSize(find.byType(DropdownDemoUnderlineVisual).last).width;
     final menuWidth = tester.getSize(menuSurface).width;
 
     expect((menuWidth - (triggerWidth + 40)).abs(), lessThan(1));

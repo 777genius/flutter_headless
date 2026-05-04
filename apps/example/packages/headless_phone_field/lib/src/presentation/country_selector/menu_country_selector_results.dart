@@ -92,7 +92,8 @@ final class RPhoneFieldCountryMenuTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final background = isSelected ? theme.selectedTileColor : Colors.transparent;
+    final background =
+        isSelected ? theme.selectedTileColor : Colors.transparent;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 4),
@@ -108,7 +109,8 @@ final class RPhoneFieldCountryMenuTile extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               child: LayoutBuilder(
-                builder: (context, constraints) => _PhoneFieldCountryMenuTileRow(
+                builder: (context, constraints) =>
+                    _PhoneFieldCountryMenuTileRow(
                   country: country,
                   isSelected: isSelected,
                   theme: theme,

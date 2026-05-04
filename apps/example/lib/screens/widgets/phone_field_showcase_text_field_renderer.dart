@@ -5,7 +5,8 @@ import 'phone_field_showcase_text_field_token_resolver.dart';
 
 final class PhoneFieldShowcaseTextFieldRenderer implements RTextFieldRenderer {
   const PhoneFieldShowcaseTextFieldRenderer({
-    this.fallbackTokenResolver = const PhoneFieldShowcaseTextFieldTokenResolver(),
+    this.fallbackTokenResolver =
+        const PhoneFieldShowcaseTextFieldTokenResolver(),
   });
 
   final PhoneFieldShowcaseTextFieldTokenResolver fallbackTokenResolver;
@@ -184,8 +185,7 @@ final class _PhoneFieldShowcaseDecoration {
   }
 
   bool get _showsBorder {
-    return tokens.containerBorderWidth > 0 &&
-        tokens.containerBorderColor.a > 0;
+    return tokens.containerBorderWidth > 0 && tokens.containerBorderColor.a > 0;
   }
 }
 

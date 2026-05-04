@@ -18,7 +18,8 @@ final class ShowcaseFactPill extends StatelessWidget {
       decoration: ShapeDecoration(
         color: scheme.surface.withValues(alpha: 0.76),
         shape: StadiumBorder(
-          side: BorderSide(color: scheme.outlineVariant.withValues(alpha: 0.52)),
+          side:
+              BorderSide(color: scheme.outlineVariant.withValues(alpha: 0.52)),
         ),
       ),
       child: Padding(

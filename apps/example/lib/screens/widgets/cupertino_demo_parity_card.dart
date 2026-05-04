@@ -48,24 +48,24 @@ class CupertinoDemoParityCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: CupertinoTheme.of(context).textTheme.navTitleTextStyle
+                  style: CupertinoTheme.of(context)
+                      .textTheme
+                      .navTitleTextStyle
                       .copyWith(
-                    color: primary,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700,
-                  ),
+                        color: primary,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                      ),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   caption,
-                  style: CupertinoTheme.of(context)
-                      .textTheme
-                      .textStyle
-                      .copyWith(
-                        color: secondary,
-                        fontSize: 15,
-                        height: 1.35,
-                      ),
+                  style:
+                      CupertinoTheme.of(context).textTheme.textStyle.copyWith(
+                            color: secondary,
+                            fontSize: 15,
+                            height: 1.35,
+                          ),
                 ),
                 const SizedBox(height: 18),
                 child,

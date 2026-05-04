@@ -19,16 +19,18 @@ final class PhoneCountryShowcaseAnchor extends StatelessWidget {
       RPhoneFieldCountryButtonPlacement.leading ||
       RPhoneFieldCountryButtonPlacement.trailing =>
         _PhoneCountrySurfaceAnchor(request: request, isOpen: isOpen),
-      RPhoneFieldCountryButtonPlacement.prefix => _PhoneCountryInlineAccentAnchor(
-        request: request,
-        isOpen: isOpen,
-        dividerSide: _PhoneCountryDividerSide.end,
-      ),
-      RPhoneFieldCountryButtonPlacement.suffix => _PhoneCountryInlineAccentAnchor(
-        request: request,
-        isOpen: isOpen,
-        dividerSide: _PhoneCountryDividerSide.start,
-      ),
+      RPhoneFieldCountryButtonPlacement.prefix =>
+        _PhoneCountryInlineAccentAnchor(
+          request: request,
+          isOpen: isOpen,
+          dividerSide: _PhoneCountryDividerSide.end,
+        ),
+      RPhoneFieldCountryButtonPlacement.suffix =>
+        _PhoneCountryInlineAccentAnchor(
+          request: request,
+          isOpen: isOpen,
+          dividerSide: _PhoneCountryDividerSide.start,
+        ),
     };
   }
 }

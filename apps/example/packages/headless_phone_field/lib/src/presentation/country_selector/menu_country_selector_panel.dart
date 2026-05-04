@@ -25,7 +25,8 @@ final class RPhoneFieldCountryMenuPanel extends StatefulWidget {
       _RPhoneFieldCountryMenuPanelState();
 }
 
-class _RPhoneFieldCountryMenuPanelState extends State<RPhoneFieldCountryMenuPanel> {
+class _RPhoneFieldCountryMenuPanelState
+    extends State<RPhoneFieldCountryMenuPanel> {
   late final TextEditingController _controller;
   final _resolver = const RPhoneFieldCountryDataResolver();
 

@@ -79,7 +79,8 @@ _NormalizeResult _normalizeMarkdown(String input) {
     } else {
       final collapsed = _collapseWhitespace(trimmedDescription);
       if (collapsed.endsWith(':')) {
-        final withoutColon = collapsed.substring(0, collapsed.length - 1).trim();
+        final withoutColon =
+            collapsed.substring(0, collapsed.length - 1).trim();
         if (withoutColon.isNotEmpty) {
           descriptionCell = ' $withoutColon. ';
           fixedTrailingColonDescriptions++;

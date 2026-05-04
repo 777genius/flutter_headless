@@ -61,7 +61,8 @@ class _PhoneFieldNavigatorMenuLauncherState
   }
 
   Rect? _anchorRect() {
-    final renderBox = _buttonKey.currentContext?.findRenderObject() as RenderBox?;
+    final renderBox =
+        _buttonKey.currentContext?.findRenderObject() as RenderBox?;
     if (renderBox == null || !renderBox.hasSize) return null;
     return renderBox.localToGlobal(Offset.zero) & renderBox.size;
   }

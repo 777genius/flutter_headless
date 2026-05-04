@@ -34,7 +34,8 @@ void main() {
     expect(richNative, findsOneWidget);
     expect(richHeadless, findsOneWidget);
 
-    _expectFieldGeometryMatch(tester, pureNative, pureHeadless, 'San Francisco');
+    _expectFieldGeometryMatch(
+        tester, pureNative, pureHeadless, 'San Francisco');
     _expectFieldGeometryMatch(
       tester,
       richNative,
@@ -100,6 +101,8 @@ void _expectFieldGeometryMatch(
         .abs(),
     lessThan(2),
   );
-  expect((nativeTextRect.center.dy - headlessTextRect.center.dy).abs(), lessThan(1));
-  expect((nativeIconRect.center.dy - headlessIconRect.center.dy).abs(), lessThan(1));
+  expect((nativeTextRect.center.dy - headlessTextRect.center.dy).abs(),
+      lessThan(1));
+  expect((nativeIconRect.center.dy - headlessIconRect.center.dy).abs(),
+      lessThan(1));
 }

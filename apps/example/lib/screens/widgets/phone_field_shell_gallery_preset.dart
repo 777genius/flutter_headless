@@ -88,5 +88,6 @@ RPhoneFieldCountryButtonPlacement phoneFieldShellPlacement(
       PhoneFieldShellPreset.minimal =>
         RPhoneFieldCountryButtonPlacement.trailing,
       PhoneFieldShellPreset.travel => RPhoneFieldCountryButtonPlacement.leading,
-      PhoneFieldShellPreset.console => RPhoneFieldCountryButtonPlacement.leading,
+      PhoneFieldShellPreset.console =>
+        RPhoneFieldCountryButtonPlacement.leading,
     };

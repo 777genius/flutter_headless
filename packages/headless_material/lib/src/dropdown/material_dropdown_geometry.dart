@@ -29,9 +29,7 @@ MaterialDropdownTriggerSizeTokens materialDropdownTriggerSizeTokens(
     case RDropdownSize.medium:
       return MaterialDropdownTriggerSizeTokens(
         textStyle:
-            text.titleMedium ??
-            text.bodyLarge ??
-            const TextStyle(fontSize: 16),
+            text.titleMedium ?? text.bodyLarge ?? const TextStyle(fontSize: 16),
         padding: const EdgeInsets.fromLTRB(17, 13, 11, 13),
       );
     case RDropdownSize.large:

@@ -136,7 +136,8 @@ final class RPinInputStateImpl extends State<RPinInput>
 
   void _clampValueToCurrentLengthIfNeeded(RPinInput oldWidget) {
     if (widget.length == oldWidget.length) return;
-    final isControlledByValue = widget.controller == null && widget.value != null;
+    final isControlledByValue =
+        widget.controller == null && widget.value != null;
     if (isControlledByValue) return;
     _applyControllerValue(_controller.text);
   }

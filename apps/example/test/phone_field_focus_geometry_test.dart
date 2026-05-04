@@ -77,10 +77,12 @@ void main() {
 
     final afterSoft = tester.getRect(softShell);
     final afterMinimal = tester.getRect(minimalShell);
-    expect(tester.widget<EditableText>(softEditable).focusNode.hasFocus, isTrue);
+    expect(
+        tester.widget<EditableText>(softEditable).focusNode.hasFocus, isTrue);
 
     expect(afterSoft.width, moreOrLessEquals(beforeSoft.width, epsilon: 0.01));
-    expect(afterSoft.height, moreOrLessEquals(beforeSoft.height, epsilon: 0.01));
+    expect(
+        afterSoft.height, moreOrLessEquals(beforeSoft.height, epsilon: 0.01));
     expect(afterSoft.left, moreOrLessEquals(beforeSoft.left, epsilon: 0.01));
     expect(afterSoft.top, moreOrLessEquals(beforeSoft.top, epsilon: 0.01));
     expect(

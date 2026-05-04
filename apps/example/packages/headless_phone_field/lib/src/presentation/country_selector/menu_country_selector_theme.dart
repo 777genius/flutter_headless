@@ -39,16 +39,15 @@ RPhoneFieldCountryMenuTheme resolvePhoneFieldCountryMenuTheme(
   final theme = Theme.of(context);
   final scheme = theme.colorScheme;
   final surface = request.backgroundColor ?? scheme.surface;
-  final isDark = ThemeData.estimateBrightnessForColor(surface) == Brightness.dark;
+  final isDark =
+      ThemeData.estimateBrightnessForColor(surface) == Brightness.dark;
   final accent = request.searchBoxIconColor ??
       request.titleStyle?.color ??
       (isDark ? const Color(0xFF9BE66E) : scheme.primary);
   final primaryBase = request.titleStyle?.color ??
       (isDark ? Colors.white.withValues(alpha: 0.92) : scheme.onSurface);
   final secondaryBase = request.subtitleStyle?.color ??
-      (isDark
-          ? Colors.white.withValues(alpha: 0.68)
-          : scheme.onSurfaceVariant);
+      (isDark ? Colors.white.withValues(alpha: 0.68) : scheme.onSurfaceVariant);
 
   return RPhoneFieldCountryMenuTheme(
     surfaceColor: surface,
@@ -59,23 +58,28 @@ RPhoneFieldCountryMenuTheme resolvePhoneFieldCountryMenuTheme(
     ),
     shadowColor: isDark ? Colors.black : scheme.shadow,
     accentColor: accent,
-    primaryTextStyle: (theme.textTheme.bodyLarge ?? const TextStyle()).copyWith(
-      color: primaryBase,
-      fontWeight: FontWeight.w600,
-    ).merge(request.titleStyle),
-    secondaryTextStyle:
-        (theme.textTheme.bodySmall ?? const TextStyle()).copyWith(
-      color: secondaryBase,
-    ).merge(request.subtitleStyle),
+    primaryTextStyle: (theme.textTheme.bodyLarge ?? const TextStyle())
+        .copyWith(
+          color: primaryBase,
+          fontWeight: FontWeight.w600,
+        )
+        .merge(request.titleStyle),
+    secondaryTextStyle: (theme.textTheme.bodySmall ?? const TextStyle())
+        .copyWith(
+          color: secondaryBase,
+        )
+        .merge(request.subtitleStyle),
     sectionLabelStyle:
         (theme.textTheme.labelMedium ?? const TextStyle()).copyWith(
       color: secondaryBase,
       fontWeight: FontWeight.w700,
     ),
-    searchTextStyle: (theme.textTheme.bodyMedium ?? const TextStyle()).copyWith(
-      color: request.searchBoxTextStyle?.color ?? primaryBase,
-      fontWeight: FontWeight.w500,
-    ).merge(request.searchBoxTextStyle),
+    searchTextStyle: (theme.textTheme.bodyMedium ?? const TextStyle())
+        .copyWith(
+          color: request.searchBoxTextStyle?.color ?? primaryBase,
+          fontWeight: FontWeight.w500,
+        )
+        .merge(request.searchBoxTextStyle),
     searchIconColor: accent,
     searchBackgroundColor: _blend(
       color: isDark ? Colors.white : scheme.surfaceTint,

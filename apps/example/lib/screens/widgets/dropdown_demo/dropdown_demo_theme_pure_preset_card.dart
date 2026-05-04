@@ -58,7 +58,8 @@ class _DropdownDemoThemePurePresetCardState
                     slots: RDropdownButtonSlots(
                       anchor: Replace((ctx) {
                         return DropdownDemoCupertinoHeadlessAnchor(
-                          key: const Key('dropdown-theme-pure-headless-surface'),
+                          key:
+                              const Key('dropdown-theme-pure-headless-surface'),
                           label: _selected,
                           isOpen: ctx.state.isOpen,
                         );

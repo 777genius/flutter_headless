@@ -283,7 +283,8 @@ void main() {
 
       await openExampleDemo(tester, 'Autocomplete Demo');
 
-      final travelShell = find.byKey(const ValueKey('autocomplete-shell-travel'));
+      final travelShell =
+          find.byKey(const ValueKey('autocomplete-shell-travel'));
       await tester.ensureVisible(travelShell);
       await pumpUi(tester);
 
@@ -347,7 +348,8 @@ void main() {
       final commandInputCenter = tester.getRect(commandInput).center;
 
       expect(
-        tester.getRect(find.descendant(of: commandShell, matching: find.text('LIVE'))),
+        tester.getRect(
+            find.descendant(of: commandShell, matching: find.text('LIVE'))),
         hasVerticalCenterNear(commandInputCenter),
       );
       expect(

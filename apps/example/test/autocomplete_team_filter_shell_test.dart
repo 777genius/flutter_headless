@@ -46,8 +46,10 @@ void main() {
       await openExampleDemo(tester, 'Autocomplete Demo');
       await _openTeamFilterMenu(tester);
 
-      final finlandRow = find.byKey(const ValueKey('autocomplete-team-item-FI'));
-      final germanyRow = find.byKey(const ValueKey('autocomplete-team-item-DE'));
+      final finlandRow =
+          find.byKey(const ValueKey('autocomplete-team-item-FI'));
+      final germanyRow =
+          find.byKey(const ValueKey('autocomplete-team-item-DE'));
       final finlandIndicator = find.byKey(
         const ValueKey('autocomplete-team-indicator-FI'),
       );
@@ -81,7 +83,8 @@ void main() {
       expect(tester.getSize(germanyIndicator), const Size(28, 28));
 
       final finlandCenter = tester.getRect(finlandRow).center;
-      expect(tester.getRect(finlandIndicator), hasVerticalCenterNear(finlandCenter));
+      expect(tester.getRect(finlandIndicator),
+          hasVerticalCenterNear(finlandCenter));
     },
   );
 }

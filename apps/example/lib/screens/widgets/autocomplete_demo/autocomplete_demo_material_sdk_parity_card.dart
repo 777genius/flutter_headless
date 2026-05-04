@@ -70,7 +70,8 @@ class _AutocompleteDemoMaterialSdkParityCardState
                           final query = value.text.toLowerCase();
                           return _filter(query);
                         },
-                        onSelected: (value) => setState(() => _selected = value),
+                        onSelected: (value) =>
+                            setState(() => _selected = value),
                         fieldViewBuilder: (
                           context,
                           textController,
@@ -105,7 +106,8 @@ class _AutocompleteDemoMaterialSdkParityCardState
                           },
                         ),
                         itemAdapter: _parityAdapter,
-                        onSelected: (value) => setState(() => _selected = value),
+                        onSelected: (value) =>
+                            setState(() => _selected = value),
                         placeholder: _parityPrompt,
                         semanticLabel: 'Material parity autocomplete',
                         maxOptions: 3,

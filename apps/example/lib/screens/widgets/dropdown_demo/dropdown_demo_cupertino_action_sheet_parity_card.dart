@@ -73,7 +73,8 @@ class _DropdownDemoCupertinoActionSheetParityCardState
               slots: RDropdownButtonSlots(
                 anchor: Replace((ctx) {
                   return DropdownDemoCupertinoHeadlessAnchor(
-                    key: const Key('dropdown-cupertino-action-headless-surface'),
+                    key:
+                        const Key('dropdown-cupertino-action-headless-surface'),
                     label: _selected.title,
                     isOpen: ctx.state.isOpen,
                   );

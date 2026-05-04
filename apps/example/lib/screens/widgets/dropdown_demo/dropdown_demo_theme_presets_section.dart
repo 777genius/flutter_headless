@@ -27,8 +27,9 @@ class DropdownDemoThemePresetsSection extends StatelessWidget {
           LayoutBuilder(
             builder: (context, constraints) {
               final isWide = constraints.maxWidth >= 900;
-              final cardWidth =
-                  isWide ? (constraints.maxWidth - 16) / 2 : constraints.maxWidth;
+              final cardWidth = isWide
+                  ? (constraints.maxWidth - 16) / 2
+                  : constraints.maxWidth;
 
               return Wrap(
                 spacing: 16,

@@ -89,22 +89,22 @@ final class _MenuRenderer implements RDropdownButtonRenderer {
     return switch (request) {
       RDropdownTriggerRenderRequest() => const SizedBox.shrink(),
       RDropdownMenuRenderRequest() => Material(
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.zero,
-          children: [
-            for (var i = 0; i < request.items.length; i++)
-              GestureDetector(
-                key: Key('menu-item-$i'),
-                onTap: () => request.commands.selectIndex(i),
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Text(request.items[i].primaryText),
+          child: ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            children: [
+              for (var i = 0; i < request.items.length; i++)
+                GestureDetector(
+                  key: Key('menu-item-$i'),
+                  onTap: () => request.commands.selectIndex(i),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Text(request.items[i].primaryText),
+                  ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
-      ),
     };
   }
 }

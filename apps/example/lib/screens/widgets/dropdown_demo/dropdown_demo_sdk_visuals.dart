@@ -111,9 +111,8 @@ class DropdownDemoFlutterMenuSurface extends StatelessWidget {
     final triggerBox =
         triggerKey.currentContext?.findRenderObject() as RenderBox?;
     final triggerWidth = triggerBox?.size.width;
-    final menuWidth = triggerWidth == null
-        ? null
-        : triggerWidth + resolvedMargin.horizontal;
+    final menuWidth =
+        triggerWidth == null ? null : triggerWidth + resolvedMargin.horizontal;
 
     return Transform.translate(
       offset: Offset(-resolvedMargin.left, 0),

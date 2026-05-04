@@ -85,8 +85,7 @@ final class PhoneFieldShowcaseTextFieldTokenResolver
       selectionColor: contractOverrides?.selectionColor ??
           defaultCursorColor.withValues(alpha: 0.18),
       disabledOpacity: isDisabled ? 0.52 : 1,
-      iconColor:
-          contractOverrides?.iconColor ?? scheme.onSurfaceVariant,
+      iconColor: contractOverrides?.iconColor ?? scheme.onSurfaceVariant,
       iconSpacing: contractOverrides?.iconSpacing ?? (isUnderlined ? 10 : 12),
       minSize: contractOverrides?.minSize ??
           Size(
@@ -120,9 +119,8 @@ TextStyle _defaultTextStyle({
   required Color color,
 }) {
   final base = switch (variant) {
-    RTextFieldVariant.underlined =>
-      textTheme.headlineSmall ??
-          const TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
+    RTextFieldVariant.underlined => textTheme.headlineSmall ??
+        const TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
     _ => textTheme.titleLarge ??
         const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
   };
@@ -140,9 +138,8 @@ TextStyle _defaultPlaceholderStyle({
   required Color color,
 }) {
   final base = switch (variant) {
-    RTextFieldVariant.underlined =>
-      textTheme.headlineSmall ??
-          const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+    RTextFieldVariant.underlined => textTheme.headlineSmall ??
+        const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
     _ => textTheme.titleLarge ??
         const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
   };
