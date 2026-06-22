@@ -153,7 +153,8 @@ class _HeadlessAdaptiveAppState extends State<HeadlessAdaptiveApp> {
   bool _useCupertinoPlatform(BuildContext context) {
     final hasMaterialTheme =
         context.findAncestorWidgetOfExactType<Theme>() != null;
-    final platform = widget.platformOverride ??
+    final platform =
+        widget.platformOverride ??
         (hasMaterialTheme ? Theme.of(context).platform : defaultTargetPlatform);
     return platform == TargetPlatform.iOS || platform == TargetPlatform.macOS;
   }

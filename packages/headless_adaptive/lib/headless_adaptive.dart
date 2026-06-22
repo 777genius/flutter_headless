@@ -1,4 +1,20 @@
 library;
 
 export 'headless_adaptive_app.dart';
+export 'src/controllers/adaptive_pane_controller.dart';
+export 'src/core/adaptive_breakpoint.dart';
+export 'src/core/adaptive_decision.dart';
+export 'src/core/adaptive_environment.dart';
+export 'src/core/adaptive_layout.dart';
+export 'src/core/adaptive_policy.dart';
+export 'src/core/adaptive_state.dart';
+export 'src/core/adaptive_value.dart';
+export 'src/flutter/adaptive_builder.dart';
+export 'src/flutter/adaptive_list_detail_scaffold.dart';
+export 'src/flutter/adaptive_max_width.dart';
+export 'src/flutter/adaptive_navigation_shell.dart';
+export 'src/flutter/adaptive_scope.dart';
+export 'src/flutter/adaptive_slot_layout.dart';
+export 'src/flutter/adaptive_value_builder.dart';
+export 'src/flutter/flutter_adaptive_environment_reader.dart';
 export 'theme.dart';

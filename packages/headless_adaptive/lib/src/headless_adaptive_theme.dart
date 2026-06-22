@@ -33,7 +33,8 @@ class HeadlessAdaptiveTheme extends StatelessWidget {
   Widget build(BuildContext context) {
     final hasMaterialTheme =
         context.findAncestorWidgetOfExactType<Theme>() != null;
-    final platform = platformOverride ??
+    final platform =
+        platformOverride ??
         (hasMaterialTheme ? Theme.of(context).platform : defaultTargetPlatform);
 
     final useCupertino =
@@ -43,9 +44,6 @@ class HeadlessAdaptiveTheme extends StatelessWidget {
         ? (cupertinoTheme ?? CupertinoHeadlessTheme())
         : (materialTheme ?? MaterialHeadlessTheme());
 
-    return HeadlessThemeProvider(
-      theme: theme,
-      child: child,
-    );
+    return HeadlessThemeProvider(theme: theme, child: child);
   }
 }
