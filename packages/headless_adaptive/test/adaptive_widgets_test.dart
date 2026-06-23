@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:headless_adaptive/headless_adaptive.dart';
@@ -62,6 +64,49 @@ void main() {
     );
 
     expect(find.text('compact'), findsOneWidget);
+  });
+
+  testWidgets('environment reader maps all Flutter display feature states', (
+    tester,
+  ) async {
+    final mappedStates = <AdaptiveDisplayFeatureState>[];
+
+    await tester.pumpWidget(
+      Directionality(
+        textDirection: TextDirection.ltr,
+        child: MediaQuery(
+          data: MediaQueryData(
+            size: const Size(800, 600),
+            displayFeatures: [
+              for (final state in ui.DisplayFeatureState.values)
+                ui.DisplayFeature(
+                  bounds: ui.Rect.fromLTWH(
+                    state.index.toDouble(),
+                    0,
+                    1,
+                    600,
+                  ),
+                  type: ui.DisplayFeatureType.fold,
+                  state: state,
+                ),
+            ],
+          ),
+          child: Builder(
+            builder: (context) {
+              mappedStates.addAll(
+                FlutterAdaptiveEnvironmentReader.fromContext(
+                  context,
+                ).displayFeatures.map((feature) => feature.state),
+              );
+              return const SizedBox.shrink();
+            },
+          ),
+        ),
+      ),
+    );
+
+    expect(mappedStates, hasLength(ui.DisplayFeatureState.values.length));
+    expect(mappedStates, everyElement(isA<AdaptiveDisplayFeatureState>()));
   });
 
   testWidgets('AdaptiveBuilder exposes state through AdaptiveScope', (

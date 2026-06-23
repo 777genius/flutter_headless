@@ -30,14 +30,12 @@ abstract final class FlutterAdaptiveEnvironmentReader {
   }
 
   static Size _resolveSize(Size windowSize, BoxConstraints? constraints) {
-    final width =
-        constraints != null &&
+    final width = constraints != null &&
             constraints.hasBoundedWidth &&
             constraints.maxWidth.isFinite
         ? constraints.maxWidth
         : windowSize.width;
-    final height =
-        constraints != null &&
+    final height = constraints != null &&
             constraints.hasBoundedHeight &&
             constraints.maxHeight.isFinite
         ? constraints.maxHeight
@@ -82,8 +80,7 @@ abstract final class FlutterAdaptiveEnvironmentReader {
               adaptive.AdaptiveDisplayFeatureState.flat,
             ui.DisplayFeatureState.postureHalfOpened =>
               adaptive.AdaptiveDisplayFeatureState.halfOpened,
-            ui.DisplayFeatureState.unknown =>
-              adaptive.AdaptiveDisplayFeatureState.unknown,
+            _ => adaptive.AdaptiveDisplayFeatureState.unknown,
           },
         ),
     ];
@@ -101,14 +98,16 @@ abstract final class FlutterAdaptiveEnvironmentReader {
     return switch (defaultTargetPlatform) {
       TargetPlatform.android ||
       TargetPlatform.fuchsia ||
-      TargetPlatform.iOS => const {adaptive.AdaptiveInputCapability.touch},
+      TargetPlatform.iOS =>
+        const {adaptive.AdaptiveInputCapability.touch},
       TargetPlatform.linux ||
       TargetPlatform.macOS ||
-      TargetPlatform.windows => const {
-        adaptive.AdaptiveInputCapability.keyboard,
-        adaptive.AdaptiveInputCapability.mouse,
-        adaptive.AdaptiveInputCapability.trackpad,
-      },
+      TargetPlatform.windows =>
+        const {
+          adaptive.AdaptiveInputCapability.keyboard,
+          adaptive.AdaptiveInputCapability.mouse,
+          adaptive.AdaptiveInputCapability.trackpad,
+        },
     };
   }
 
