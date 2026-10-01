@@ -42,6 +42,12 @@ jobs:
       - name: Test
         run: melos run test
 
+      # Native tests do not validate the web compiler or its dart:ui surface.
+      - name: Build demo app (web)
+        working-directory: apps/example
+        run: flutter build web --release --base-href /flutter_headless/demo/
+        timeout-minutes: 10
+
       - name: Release guardrails
         continue-on-error: true
         run: melos run release:guardrails

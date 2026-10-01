@@ -15,7 +15,8 @@ command:
 
 scripts:
   analyze:
-    run: melos exec -- dart analyze .
+    # Each analyzer loads transitive packages; keep memory use bounded in CI.
+    run: melos exec --concurrency=2 -- dart analyze .
 
   test:dart:
     run: melos exec --fail-fast -- "dart test"
