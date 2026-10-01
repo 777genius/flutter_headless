@@ -24,7 +24,8 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          # Keep the deployment SDK aligned with the version validated by CI.
+          flutter-version: 3.41.7
 
       - name: Setup Dart pub global path
         run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
