@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:headless_contracts/headless_contracts.dart';
 import 'package:headless_theme/headless_theme.dart';
 
-import '../primitives/cupertino_menu_item.dart';
+import '../primitives/cupertino_menu_item.dart' as headless;
 import '../primitives/cupertino_popover_surface.dart';
 import 'cupertino_dropdown_menu_close_contract.dart';
 
@@ -168,7 +168,7 @@ final class CupertinoDropdownMenuView extends StatelessWidget {
       selected: isSelected,
       enabled: !item.isDisabled,
       label: item.semanticsLabel ?? item.primaryText,
-      child: CupertinoMenuItem(
+      child: headless.CupertinoMenuItem(
         isDisabled: item.isDisabled,
         minHeight: itemTokens.minHeight,
         padding: itemTokens.padding,
