@@ -123,15 +123,13 @@ final class RTextFieldRenderView extends StatelessWidget {
     reportUnconsumedRenderOverrides('RTextField', overrides);
 
     return Semantics(
-      textField: true,
       enabled: viewModel.enabled,
-      readOnly: viewModel.readOnly,
       label: viewModel.label,
-      hint: viewModel.placeholder,
-      value: requestComposer.createSemanticsValue(
-        viewModel: viewModel,
-        text: controller.text,
-      ),
+      hint: requestComposer.createSemanticsHint(viewModel),
+      // EditableText owns the editable node, value and editing actions. A second
+      // textField node here creates an inert DOM input over the real editor.
+      onTap: viewModel.enabled && !viewModel.readOnly ? onTapContainer : null,
+      onFocus: viewModel.enabled ? onTapContainer : null,
       child: content,
     );
   }

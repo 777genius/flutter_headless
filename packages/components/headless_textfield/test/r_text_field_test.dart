@@ -564,7 +564,7 @@ void main() {
         child: RTextField(),
       ));
 
-      final semantics = tester.getSemantics(find.byType(RTextField));
+      final semantics = tester.getSemantics(find.byType(EditableText));
       expect(
           SemanticsUtils.hasFlag(semantics, SemanticsFlag.isTextField), isTrue);
     });
@@ -597,7 +597,8 @@ void main() {
       expect(renderer.lastRequest?.semantics?.isObscured, isTrue);
     });
 
-    testWidgets('errorText is included in semantics value', (tester) async {
+    testWidgets('errorText augments hint without changing editable value',
+        (tester) async {
       final renderer = _TestTextFieldRenderer();
 
       await tester.pumpWidget(_buildTestWidget(
@@ -608,10 +609,10 @@ void main() {
         ),
       ));
 
-      // Error should be in semantics for screen readers
-      // Find the RTextField's Semantics (the outermost one wrapping our field)
-      final semantics = tester.getSemantics(find.byType(RTextField));
-      expect(semantics.value, contains('Error: Invalid input'));
+      final semantics = tester.getSemantics(find.byType(EditableText));
+      expect(semantics.value, 'test');
+      expect(tester.getSemantics(find.byType(RTextField)).hint,
+          contains('Error: Invalid input'));
     });
   });
 

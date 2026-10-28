@@ -49,17 +49,13 @@ final class RTextFieldRequestComposer {
     );
   }
 
-  String? createSemanticsValue({
-    required RTextFieldViewModel viewModel,
-    required String text,
-  }) {
-    if (viewModel.obscureText) return null;
-    if (viewModel.errorText == null || viewModel.errorText!.isEmpty) {
-      return text;
-    }
-    return text.isEmpty
-        ? 'Error: ${viewModel.errorText}'
-        : '$text, Error: ${viewModel.errorText}';
+  String? createSemanticsHint(RTextFieldViewModel viewModel) {
+    final error = viewModel.errorText;
+    if (error == null || error.isEmpty) return viewModel.placeholder;
+    return [viewModel.placeholder, 'Error: $error']
+        .whereType<String>()
+        .where((part) => part.isNotEmpty)
+        .join(', ');
   }
 
   Widget wrapWithInteraction({
