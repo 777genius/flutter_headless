@@ -331,7 +331,7 @@ void _checkEntrypointExportsResolve({
   // Barrel exports of this package's own src/ are idiomatic Dart and
   // intentionally expose selected APIs. Validate the files exist; consumers
   // are still prohibited from importing another package's src/ directly.
-  final relativeExport = RegExp(r'''^\\s*export\\s+['"]([^'"]+)['"]''');
+  final relativeExport = RegExp(r'''^\s*export\s+['"]([^'"]+)['"]''');
   for (final p in packageInfos) {
     final entrypoint = File(_join(p.dirPath, _join('lib', '${p.name}.dart')));
     if (!entrypoint.existsSync()) continue;
