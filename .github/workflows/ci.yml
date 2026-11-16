@@ -54,7 +54,6 @@ jobs:
         timeout-minutes: 10
 
       - name: Release guardrails
-        continue-on-error: true
         run: melos run release:guardrails
 
       - name: Guardrails base ref
@@ -67,7 +66,6 @@ jobs:
           fi
 
       - name: Guardrails (architecture)
-        continue-on-error: true
         run: melos run guardrails
 
       - name: Architecture checks — domain purity
