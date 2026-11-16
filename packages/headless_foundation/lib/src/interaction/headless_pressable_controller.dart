@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/scheduler.dart';
 
 import 'headless_pressable_state.dart';
 import 'logic/headless_pressable_key_intent.dart';
@@ -25,6 +26,8 @@ final class HeadlessPressableController extends ChangeNotifier {
   bool _spaceDown = false;
   bool _enterDown = false;
 
+  bool _disposed = false;
+
   void setDisabled(bool isDisabled) {
     if (_state.isDisabled == isDisabled) return;
 
@@ -36,7 +39,28 @@ final class HeadlessPressableController extends ChangeNotifier {
       _state = _state.copyWith(isPressed: false);
     }
 
-    notifyListeners();
+    _notifyListenersSafely();
+  }
+
+  // Components derive disabled state from widget configuration and may sync it
+  // during build (HeadlessPressableRegion). A synchronous notify would then
+  // mark the owning component dirty mid-build, so defer to after the frame.
+  void _notifyListenersSafely() {
+    final binding = SchedulerBinding.instance;
+    if (binding.schedulerPhase == SchedulerPhase.idle ||
+        binding.schedulerPhase == SchedulerPhase.postFrameCallbacks) {
+      notifyListeners();
+    } else {
+      binding.addPostFrameCallback((_) {
+        if (!_disposed) notifyListeners();
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
   }
 
   void handleFocusChange(bool focused) {
