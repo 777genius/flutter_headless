@@ -46,7 +46,15 @@ final class HeadlessPressableController extends ChangeNotifier {
   // during build (HeadlessPressableRegion). A synchronous notify would then
   // mark the owning component dirty mid-build, so defer to after the frame.
   void _notifyListenersSafely() {
-    final binding = SchedulerBinding.instance;
+    SchedulerBinding binding;
+    try {
+      binding = SchedulerBinding.instance;
+    } catch (_) {
+      // Plain Dart consumers may use this controller before Flutter installs
+      // a binding. In that case there is no build phase to defer beyond.
+      notifyListeners();
+      return;
+    }
     if (binding.schedulerPhase == SchedulerPhase.idle ||
         binding.schedulerPhase == SchedulerPhase.postFrameCallbacks) {
       notifyListeners();
