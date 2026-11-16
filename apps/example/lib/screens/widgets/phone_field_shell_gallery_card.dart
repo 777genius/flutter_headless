@@ -8,7 +8,6 @@ final class PhoneFieldShellGalleryCard extends StatelessWidget {
   const PhoneFieldShellGalleryCard({required this.preset, super.key});
 
   final PhoneFieldShellPreset preset;
-
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(

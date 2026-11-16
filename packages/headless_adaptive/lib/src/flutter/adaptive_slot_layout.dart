@@ -122,14 +122,14 @@ class _AdaptiveSlotLayoutState extends State<AdaptiveSlotLayout> {
         return ListenableBuilder(
           listenable: _controller,
           builder: (context, _) {
-            return _buildSlots(context, adaptive);
+            return _composeSlots(context, adaptive);
           },
         );
       },
     );
   }
 
-  Widget _buildSlots(BuildContext context, AdaptiveState adaptive) {
+  Widget _composeSlots(BuildContext context, AdaptiveState adaptive) {
     final inlineRoles = [
       for (final role in adaptive.decision.visiblePanes)
         if (widget.slots.has(role)) role,
